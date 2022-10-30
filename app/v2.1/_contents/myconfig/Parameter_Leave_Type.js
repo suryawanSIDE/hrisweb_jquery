@@ -1,5 +1,5 @@
 //> modify module
-function JA_All(getObj) {
+function Parameter_Leave_Type(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,10 +61,10 @@ function JA_All(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myios/JA_All/'; //> modify module
+        globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
         
         // set global formType
-        globalData[tagId]['formType'] = 'Form';
+        globalData[tagId]['formType'] = 'Form'; // Form/FormTr
         
         // set global field search
         if (Object.keys(globalData[tagId].fieldSearch).length === 0) {
@@ -120,6 +120,9 @@ function JA_All(getObj) {
             globalData[tagId]['dataFilter'] = objFilter;
         }
 		
+		// set globalData dataRules
+		globalData[tagId]['dataRules']['pCategory'] = 'leave_type';
+		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
 		// update globalData eventSelectedTr
@@ -170,302 +173,51 @@ function JA_All(getObj) {
             'require': 0
             });
 			
-		tdWidth    = 15;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 2
-            'label': 'JA',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_reg_assignment',
-            'field_value_default': '',
-            'require': 1
-            });
-			
-		tdWidth    = 10;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
-            'label': 'JA Date',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'date',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_assignment_date_dmy',
-            'field_value_default': '',
-            'require': -1
-            });
-			
-		tdWidth    = 10;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 4
             'label': 'Status',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_status_ja',
+            'field': 'col_status_sw_active',
+            'field_value_default': 'Active',
+            'require': 1
+            });
+			
+		tdWidth    = 30;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 3
+            'label': 'Parameter',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_parameter_name',
             'field_value_default': '',
             'require': 1
             });
-		tdWidth    = 10;
+			
+		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'Status Date',
+        tableHead.push({ // 4
+            'label': 'Description',
             'width': (tdWidth),
             'short': true,
-            'type': 'date',
-            'align': 'right',
+            'type': 'text',
+            'align': '',
                 'valueConverter': [],
-            'field': 'col_status_date_dmy',
+            'field': 'col_description',
             'field_value_default': '',
             'require': 0
-            });
-				
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Title',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_assignment_title',
-            'field_value_default': '',
-            'require': 1
-            });
-			
-		tdWidth    = 10;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Project',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_project_number_ref',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Contract',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_contract_number_ref',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Client',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_client_name',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'PM',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_project_manager',
-            'field_value_default': '',
-            'require': 1
-            });
-			
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Mob Date',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'date',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_mob_date_dmy',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Demob Date',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'date',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_demob_date_dmy',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Inspector',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_merge_inspector',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Equipment',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_merge_equipment',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Location Type',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_location_type',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Inspection Location',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_location_fix',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Remark',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_remark',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Appointment Letter',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_appointment_letter',
-            'field_value_default': '',
-            'require': 1
-            });
-			
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'ARS No.',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_ars_no',
-            'field_value_default': '',
-            'require': 1
-            });
-
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Supporting Doc.',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_supporting_doc',
-            'field_value_default': '',
-            'require': 1
-            });
-			
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Output BA',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_status_sw_yes',
-            'field_value_default': '',
-            'require': 1
-            });	
-			
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Certificate Status',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_certificate_status',
-            'field_value_default': '',
-            'require': 1
             });
 			
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
-        result['tdHeight']   = 35;//tdHeightDefault;
+        result['tdHeight']   = 30;//tdHeightDefault;
         
         return result;
     } // _Field
@@ -479,24 +231,12 @@ function JA_All(getObj) {
 
         const field = [
 				{
-                'label': 'JA',
-                'field': 'col_reg_assignment'
+                'label': 'Parameter',
+                'field': 'col_parameter_name'
                 },
 				{
-                'label': 'Project No.',
-                'field': 'col_project_number_ref'
-                },
-                {
-                'label': 'Title',
-                'field': 'col_assignment_title'
-                },
-                {
-                'label': 'Client',
-                'field': 'col_client_name'
-                },
-                {
-                'label': 'Contract',
-                'field': 'col_contract_number_ref'
+                'label': 'Description',
+                'field': 'col_description'
                 }
             ];
 
@@ -512,22 +252,8 @@ function JA_All(getObj) {
 
         const field = [
 				{
-				'label': 'Project',
-				'field': 'col_project_number_ref',
-				'filterModel': 'list', // (list/rangeDate)
-				'searchInput': 1,
-				'defaultFilter': []
-				},
-				{
-				'label': 'Client',
-				'field': 'col_client_name',
-				'filterModel': 'list', // (list/rangeDate)
-				'searchInput': 1,
-				'defaultFilter': []
-				},
-				{
 				'label': 'Status',
-				'field': 'col_status_ja',
+				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
 				'defaultFilter': []
@@ -669,10 +395,8 @@ function JA_All(getObj) {
 		let selectedCb   = [];
 		let selectedData = [];
 		if (getObj.reqAction === 'formreload') {
-			selectedCb = getObj.selectedCb;
-			$.map(getObj.selectedCb, ( val, indexCb ) => {
-				selectedData.push(globalData[tagId]['dataTable'][val].col_data_key);
-			});
+			selectedCb 	 = getObj.selectedCb;
+			selectedData = getObj.selectedData;
 		}
 		
         // async load data
@@ -766,8 +490,8 @@ function JA_All(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_reg_assignment;
-									// additional field
+                                    dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+									// additional field here 
 									
                                 dataTable_Row.push(dataTable_Col);
 
@@ -828,19 +552,19 @@ function JA_All(getObj) {
                         set_Right_Panel_Bottom({
                             'tagId': tagId,
                             'btnDetail': permission.btn_read, 
-                                'eventDetail': 'onclick="JA_All_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `detail`)"',
                             'btnAdd': permission.btn_create, 
-                                'eventAdd': 'onclick="JA_All_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="JA_All_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
                             'btnEdit': permission.btn_update,
-                                'eventEdit': 'onclick="JA_All_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="JA_All_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
                             'btnExport': permission.btn_export,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `JA_All_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `JA_All_Event`)"',
+                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Leave_Type_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Leave_Type_Event`)"',
                             'btnImport': permission.btn_import,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
                             'btnDelete': permission.btn_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `JA_All_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `JA_All_Event`)"',
+                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Leave_Type_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Leave_Type_Event`)"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -849,12 +573,13 @@ function JA_All(getObj) {
 						const dataLength    = Object.keys(currentData).length;
 						const dataDb        = myObj.response_data.data; 
 						
-						var dataTable_Row = [];
+						// relplace dataTable
 						$.map(dataDb, ( rowData, x ) => {
+							let selectedCb_Index = rowData.col_temp_index_cb;
 							$.map(tableHead, ( colData, y ) => {
 								// update global dataTable
 								if (typeof rowData[colData.field] !== 'undefined') {
-									currentData[x][colData.field] = rowData[colData.field];
+									currentData[selectedCb_Index][colData.field] = rowData[colData.field];
 								}
 							}); // map col
 							
@@ -862,13 +587,11 @@ function JA_All(getObj) {
 								// hidden value 
 								//> modify module
 								// relate to __Fetch_Data
-								currentData[x]['col_data_key']   = rowData.col_data_key;
-								currentData[x]['col_text_alert'] = rowData.col_reg_assignment;
-								currentData[x]['indexTr'] 		 = x;
-								// additional field
+								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_parameter_name;
+								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
+								// additional field here 
 								
-							dataTable_Row.push(currentData[x]);
-							
 						}); // map row
 						
 						// update global dataTable
@@ -1137,60 +860,19 @@ function JA_All(getObj) {
         //> modify module
 			fieldForm.push({
 						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_project_number_ref
+						'label': tableHead[col].label, // col_status_sw_active
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
+						'maxlength': -1,
 						'placeholder': 'select-item',
 						'readonly': '',
 							'eventObject': {
-											'eventInput': 'List_Autofill',
+											'eventInput': 'List_Autofill_Status_Active',
 											'searchInput': 1, // search 1/0
-											'col': col
-										}
-					});
-					// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'myto_project_number',
-						'listFormat': 'table', // list/table
-						'selectedFunction': 'JA_All_Event',
-						'eventParam': '_selected_Project'
-						});	
-					}
-					
-			col = (col+1); // 3
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_map_title
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'placeholder': 'readonly',
-						'readonly': 'readonly="readonly"'
-					});
-					
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input_Select',
-                        'label': tableHead[col].label, // col_map_type_reporting
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-                        'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill_Map_Type',
 											'col': col
 										}
 					});
@@ -1199,36 +881,37 @@ function JA_All(getObj) {
 						globalData[tagId]['dataAutofill_Param'].push({
 						'col': col
 						});	
-					}	
+					}
 					
-			col = (col+1); // 5
+			col = (col+1); // 3
 			fieldForm.push({
                         'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_tag_number
+                        'label': tableHead[col].label, // col_parameter_name
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-                        'placeholder': 'input-'+ tableHead[col].type,
+						'maxlength': 100,
+						'placeholder': 'input-'+ tableHead[col].type + ' max(100)',
 						'readonly': ''
-                    });
+					});
 					
-			col = (col+1); // 6
+			col = (col+1); // 4
 			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_pm_name
+                        'input_Type': 'get_Input_Textarea',
+                        'label': tableHead[col].label, // col_description
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-                        'placeholder': 'readonly',
-						'readonly': 'readonly="readonly"'
-                    });
-			
+						'maxlength': -1,
+						'placeholder': 'input-'+ tableHead[col].type,
+						'readonly': ''
+					});
 					
         return fieldForm;
         
@@ -1262,9 +945,9 @@ function JA_All(getObj) {
         set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="JA_All_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="JA_All_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="JA_All_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="Parameter_Leave_Type_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
+            'eventNewForm': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `add`)"',
+			'eventReload_All': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `reload`)"'
         });
         
         // button focus
@@ -1278,7 +961,6 @@ function JA_All(getObj) {
         
         // route 
         const levelRow_Child = 1;
-        // child => globalRoute[levelRow_Child] = [];
         
         //> modify module
         if (selectedLength > 300) {
@@ -1301,13 +983,43 @@ function JA_All(getObj) {
 			let form_Index  = 0;
 			
             switch(action) {
-                case 'reload':
+                case 'add':
+                    
+                    // components/table 
+                    _reset_Cb_All(tagId);
+                    
+                    $.map(Field.tableHead, ( val, i ) => {
+                        if (i > 0 ) {
+                            dataTable[val.field] = val.field_value_default;
+                        }
+                    }); // map
+                    dataTable['col_data_key']   = 0;
+                    dataTable['col_text_alert'] = '';
+					// additional field here
+                    
+                        // components/form
+                        set_Content_Form(tagId, ___Form_Item({
+                            'tagId': tagId,
+                            'action': action,
+                            'dataTable_Index': get_Num_Row_Page(tagId)+1,
+                            'data': dataTable,
+                               // child =>  'levelRow_Child': levelRow_Child,
+                               // child =>  'form_Index': 0,
+                            }));
+                            
+                    // components/loader
+                    _hide_Loader();
+                    
+                break;
+				case 'reload':
 					
-					const mytimer = setTimeout(() => {
-						let selectedCb = [];
+					const mytimer = setTimeout(() => {						
+						let selectedCb 	 = [];
+						let selectedData = []
 						baseLevel.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0").each(function(i) {
 							if (this.checked) {
 							selectedCb.push(i);
+							selectedData.push(globalData[tagId]['dataTable'][i].col_data_key);
 							}
 						}),
 						_hide_Form(tagId),
@@ -1317,9 +1029,10 @@ function JA_All(getObj) {
 							'tdHeight': Field.tdHeight,
 							'loadMethode': 99,
 							'reqAction': 'formreload',
-							'selectedCb': selectedCb
+							'selectedCb': selectedCb,
+							'selectedData': selectedData
 							}),
-						JA_All_Event(`Form`, tagId, `edit`)
+						Parameter_Leave_Type_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1332,10 +1045,7 @@ function JA_All(getObj) {
                     form_Index  = 0;
                     baseLevel.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0").each(function(i) {
                         if (this.checked) {
-
-                        // route
-                        // child =>  globalRoute[levelRow_Child][form_Index] = [];
-                                                    
+							
                             // components/form
                             content_Form_Append(tagId, ___Form_Item({
                                 'tagId': tagId,
@@ -1503,6 +1213,332 @@ function JA_All(getObj) {
         return result;
     } // ___Form_Item
 
+    function _Save_Data(getObj) {
+        /*
+        consumer :
+            this
+        */
+        
+        const tagId         = getObj.tagId;
+        const reqAction     = getObj.action;
+        const urlController = globalData[tagId].urlController;
+        const col           = _Form_Start_Col(); // form start field
+        const Field         = _Field();
+        const tableHead     = Field.tableHead;
+        const tdHeight      = Field.tdHeight;
+        const fieldForm     = _Form_Field(tagId);
+        let alertText       = '';
+        
+        const baseLevel      = $("#level-"+ tagId);
+        const baseEl_Form   = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item");
+        const formLength    = baseEl_Form.length;
+        
+        // button blur
+        baseLevel.find(".my-content-form").eq(0)
+            .find(".my-form-header .form-action-save").blur();
+        
+        //> modify module
+        if (formLength > 300) {
+            // components/loader
+            set_Loader();
+                set_Loader_Progress(formLength + ' DATA');
+            const mytimer = setTimeout(() => {__process_Save()}, 5); //5 ms
+			
+			// update globaldata dataTimer
+			globalData[tagId]['dataTimer']['_Save_Data'].push(mytimer);
+			
+        } else {
+            if (formLength > 0 ) {
+            // components/loader
+            set_Loader();
+                set_Loader_Progress(formLength + ' DATA');
+                    __process_Save();
+            } else {
+                // components/alert
+                set_Alert({
+                    'type': 'warning', 
+                    'body': 'Empty selected row', 
+                    'footer': get_Alert_Footer(1)
+                });
+
+            }
+        }
+        
+        function __process_Save() {
+            let dataFormRow = {};
+            for (let x=0; x<formLength; x++) {
+                let alertField  = '';
+                let formSeq     = baseEl_Form.eq(x).find(".form-item-seq").html();
+                let inputLength = baseEl_Form.eq(x).find(".item-data-col .col-data").length;
+                let dataFormCol = {};
+                for (let y=0; y<inputLength; y++) {
+                    let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();         
+                        
+                        // set data input value
+                        dataFormCol[fieldForm[y].field] = value;
+                    
+                    // check value
+                    if (fieldForm[y].require === 1) {
+                        let alertField_Temp = alertField;
+                            alertField = _validate_Input_Submit({
+                                    'baseEl_Form': baseEl_Form,
+                                    'formIndex': x,
+                                    'inputIndex': y,
+                                    'alertField': alertField_Temp,
+                                    'type': fieldForm[y].type,
+                                    'label': fieldForm[y].label,
+                                    'value': value,
+                                });
+                    } // require
+                } // input  
+                    
+                    // add hiden value per column
+                    //> modify module
+                    dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
+                    dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
+                    dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
+                dataFormRow[x] = dataFormCol;
+                
+                // alert text
+                if (alertField !== '') {
+                    let new_alertField = alertField.substring(0, (alertField.length-2));
+                        alertText = alertText + ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
+                }
+            } // form length
+                
+            if (alertText !== '') {     
+
+                // components/loader
+                _hide_Loader();
+
+                // components/alert
+                set_Alert({
+                    'type': 'warning', 
+                    'body': 'Please complete :<br>'+ alertText,  
+                    'footer': get_Alert_Footer(1)
+                });
+				
+            } else {
+				
+                // async save data
+                $.ajax({
+                    type: "post",
+                    url: baseUrl + urlController,
+                    dataType: "json",
+                    data: {
+                        'appId': appId,
+                        'loginKey': get_LoginKey(), // components/key
+                        'randomKey': get_RandomKey(), // components/key
+                        'moduleId': globalData[tagId].moduleId,
+                        'reqAction': reqAction,
+                        'setObj': {
+                            'dataInput': dataFormRow,
+							'dataRules': globalData[tagId]['dataRules']
+                        }
+                    }, // data
+                    success: (response) => {    
+                        
+                        // components/loader
+                        _hide_Loader();
+						tr_Empty_Rmv(tagId);
+						
+                        const myObj  = response;
+                        
+                        if (myObj.status === 'success') {
+                            
+                            if (reqAction === 'add') {
+                            
+                                const num_success   = myObj.response_data.num_success;
+                                const numrow        = get_Num_Row(tagId)+num_success;
+                                const numrowpage    = get_Num_Row_Page(tagId)+num_success;
+                                
+								// replace paging
+								globalData[tagId]['dataPaging'].numrow          = numrow;
+								globalData[tagId]['dataPaging'].numrowpage      = numrowpage;
+								
+                                const display_row   = parseInt(globalData[tagId]['dataPaging'].display_row);
+                                const current_page  = parseInt(globalData[tagId]['dataPaging'].current_page);
+                                const start_row     = (parseInt(display_row) * (parseInt(current_page)-1));
+                                
+                                const currentData   = globalData[tagId].dataTable;
+                                const dataLength    = Object.keys(currentData).length;
+                                const dataDb        = myObj.response_data.data; 
+                                
+                                set_Num_Row(tagId, numrow); 
+                                set_Num_Row_Page(tagId, numrowpage);
+                                
+                                var dataTable_Row = [];
+                                $.map(dataDb, ( rowData, x ) => {
+                                    let dataTable_Col = {};
+                                    var seq = (x)+start_row+numrowpage;
+                                    
+                                    $.map(tableHead, ( colData, y ) => {
+                                        
+                                        let value = ''; 
+                                        if (colData.type === 'checkboxAction') {
+                                            value = '';
+                                        } if (colData.type === 'seqNumber') {
+                                            value = seq;
+                                        } else {
+                                            value = rowData[colData.field];
+                                        }
+                                        
+                                        // condition for global variable
+                                        if (colData.type !== 'checkboxAction') {
+                                            dataTable_Col[colData.field] = value;
+                                        }
+                                        
+                                    }); // map col
+                                    
+                                    // for global variable
+                                        // hidden value 
+                                        //> modify module
+                                        // relate to __Fetch_Data
+                                        dataTable_Col['col_data_key']   = rowData.col_data_key;
+                                        dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+										// additional field
+										
+                                    dataTable_Row.push(dataTable_Col);
+                                    
+                                    // replace data global dataTable
+                                    globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
+                                    
+                                }); // map row
+                                
+								const mytimer = setTimeout(() => {
+									// components/table
+									// add new data to table
+									set_Map_Table_After_Add({
+										'tagId': tagId,
+										'tableHead': tableHead,
+										'tdHeight': tdHeight,
+										'dataTable': dataTable_Row
+									}),
+									_select_Tr_After_Add({
+										'tagId': tagId,
+										'indexTr': dataLength
+									}),
+									// components/topbar
+									set_Num_Selected(tagId, 1),                     
+									// components/form
+									_reset_Form_Body(tagId),
+									//components/table
+									_bottom_Right_Panel_Btn_Handler(tagId, 1),
+									// update form
+									_Form({
+										'tagId': tagId, 
+										'action': 'edit'
+										}),
+									set_Alert({
+										'type': 'info', 
+										'body': myObj.message, 
+										'footer': get_Alert_Footer(1) 
+									})	
+								}, 5); // 5 ms
+                                
+								// update globaldata dataTimer
+								globalData[tagId]['dataTimer']['__process_Save_add'].push(mytimer);
+								
+                            } // reqAction = add
+                            else if (reqAction === 'edit') {
+                                
+                                const currentData   = globalData[tagId].dataTable;
+                                const dataLength    = Object.keys(currentData).length;
+                                const dataDb        = myObj.response_data.data; 
+                                
+                                var dataTable_Row = [];
+                                $.map(dataDb, ( rowData, x ) => {
+                                    $.map(tableHead, ( colData, y ) => {
+                                        // update global dataTable
+                                        if (typeof rowData[colData.field] !== 'undefined') {
+                                            currentData[x][colData.field] = rowData[colData.field];
+                                        }
+                                    }); // map col
+                                    
+                                    // for global variable
+                                        // hidden value 
+                                        //> modify module
+                                        // relate to __Fetch_Data
+                                        currentData[x]['col_data_key']   = rowData.col_data_key;
+                                        currentData[x]['col_text_alert'] = rowData.col_parameter_name;
+                                        currentData[x]['indexTr'] 		 = x;
+										// additional field here 
+										
+                                    dataTable_Row.push(currentData[x]);
+                                    
+                                }); // map row
+                                
+                                // update global dataTable
+                                globalData[tagId]['dataTable'] = currentData;
+                                
+								const mytimer = setTimeout(() => {
+									// components/table
+									// update table body
+									set_Map_Table_Replace_Tr({
+										'tagId': tagId,
+										'tableHead': tableHead,
+										'tdHeight': tdHeight,
+										'dataTable': dataTable_Row                              
+									}),
+									set_Alert({
+										'type': 'info', 
+										'body': myObj.message, 
+										'footer': get_Alert_Footer(1) 
+									})
+								}, 2); // 2 ms
+								
+								// update globaldata dataTimer
+								globalData[tagId]['dataTimer']['__process_Save_edit'].push(mytimer);
+								
+                            } // reqAction = edit
+                            else {
+								// components/alert
+								if (myObj.message !== '') {
+									set_Alert({
+										'type': 'info', 
+										'body': myObj.message, 
+										'footer': get_Alert_Footer(1) 
+									});             
+								}
+							}
+                        } else if (myObj.status === 'reject') {
+
+                            // components/key
+                            unset_LoginKey("sesUser");
+
+                            // controllers
+                            Load_Redirect();
+
+                        } else {
+                            
+                            // components/loader
+                            _hide_Loader();
+
+                            // components/alert
+                            set_Alert({
+                                'type': 'danger', 
+                                'body': myObj.message, 
+                                'footer': get_Alert_Footer(1)
+                            });
+
+                        }
+                    }, // success
+                    error: (xhr) => {
+                        
+                        // components/loader
+                        _hide_Loader();
+
+                        // components/alert
+                        set_Alert({
+                            'type': 'danger', 
+                            'body': 'Error: '+ xhr.status +', '+xhr.responseText, //'Error connection', 
+                            'footer': get_Alert_Footer(1)
+                        });
+                    }, // error
+                }); // ajax
+            } // alertText
+        } // setSave
+    } // _Save_Data
 // ======== FORM
 
     //> modify module
@@ -1511,15 +1547,24 @@ function JA_All(getObj) {
         case 'Main': 
 			functionResult = _Main(getObj);
         break;
+        case 'Export_Table': 
+			functionResult = _Export_Table(getObj);
+		break;
+		case 'Delete': 
+            functionResult = _Delete(getObj);
+        break;
         case 'Form': 
 			_clearTimer(getObj.tagId, '_Form'); // global
 			_clearTimer(getObj.tagId, '__process_Form_reload'); // global
             functionResult = _Form(getObj);
         break;
-        case 'Export_Table': 
-			functionResult = _Export_Table(getObj);
-		break;
-		default:
+        case 'Save_Data': 
+            _clearTimer(getObj.tagId, '_Save_Data'); // global
+            _clearTimer(getObj.tagId, '__process_Save_add'); // global
+            _clearTimer(getObj.tagId, '__process_Save_edit'); // global
+            functionResult = _Save_Data(getObj);
+        break;
+        default:
             functionResult = set_Alert({
                                 'type': 'danger', 
                                 'body': 'Undefined (setFunction)', 
@@ -1531,29 +1576,42 @@ function JA_All(getObj) {
 }
 
 //> modify module
-function JA_All_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
-		case 'Form': 
-			eventResult = JA_All({
-				'setFunction': eventParam,
-				'tagId': param_1,
-				'action': param_2
-			});
-		break;
-        case 'Export_Table': 
+		case 'Export_Table': 
 			const exportType = $("#my-confirm").find("input[name='export_type']:checked").val();
 			const exportPage = $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = JA_All({
+			eventResult = Parameter_Leave_Type({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
 				'exportPage': exportPage
 			});
 		break;
-		default:
+		case 'Delete': 
+			eventResult = Parameter_Leave_Type({
+                'setFunction': eventParam,
+                'tagId': param_1
+            });
+        break;
+        case 'Form': 
+			eventResult = Parameter_Leave_Type({
+				'setFunction': eventParam,
+				'tagId': param_1,
+				'action': param_2
+			});
+		break;
+        case 'Save_Data': 
+			eventResult = Parameter_Leave_Type({
+                'setFunction': eventParam,
+                'tagId': param_1,
+                'action': param_2
+            });
+        break;
+        default:
             eventResult = set_Alert({
                             'type': 'danger', 
                             'body': 'Undefined (eventParam)', 

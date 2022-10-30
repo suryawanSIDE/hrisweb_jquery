@@ -220,8 +220,6 @@ function set_Map_Table(getObj) {
 					let td_0 = [];	
 					$.map(getObj.tableHead, ( colData, y ) => {			
 						
-						//let width = globalData[tagId]['tableProperty']['tdWidth'][y];
-						
 						let value = '';
 						if (typeof rowData[colData.field] !== 'undefined') {
 							value = rowData[colData.field];
@@ -425,7 +423,161 @@ function set_Map_Table(getObj) {
 		} // for data_current_page
 		
 	} // dekstop
-}
+} // set_Map_Table
+function set_Map_Table_After_Add(getObj) {
+	
+	const tagId 		= getObj.tagId;
+	const baseLevel 	= $("#level-"+ tagId);
+	const baseEl_Th_Box = baseLevel.find(".my-table-head-box").eq(0);
+	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
+	
+	const dataTable		= getObj.dataTable;
+	const dataFilter	= globalData[tagId].dataFilter;
+	
+	if (deviceType === 'mobile') {
+		_mobile();
+	} else {
+		_dekstop();
+	}
+	
+	function _mobile() {
+		$.map(dataTable, ( rowData, x ) => {
+			let file_path = '';
+			var seq  = rowData.seq;
+			let td_0 = [];	
+			$.map(getObj.tableHead, ( colData, y ) => {			
+				
+				let value = '';
+				if (typeof rowData[colData.field] !== 'undefined') {
+					value = rowData[colData.field];
+				}
+				
+				td_0[y] = { // object td
+						'tagId': tagId,
+						'row': seq,
+						'col': y,
+						'type': colData.type,
+						'width': 0, //width, //colData.width,
+						'height': getObj.tdHeight,
+						'align': colData.align,
+						'value': value,
+							'valueConverter': colData.valueConverter,
+							'otherParam': []
+					};
+					
+				// extend obj td
+				if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
+					file_path = rowData['col_file_path'];
+					td_0[y]['otherParam']['file_path'] = file_path;
+				} // _event_open_file
+				
+			}); // col
+			
+			let tr_0 = {
+				'row' : seq,
+				'objTd': td_0,
+					'action': ''
+				};
+				
+			
+			baseEl_Tb_Box.find(".my-tbody").eq(0).append(get_Tr(tr_0));
+			
+		}); // row 	
+	} // mobile
+	
+	function _dekstop() {
+		$.map(dataTable, ( rowData, x ) => {
+			let file_path = '';
+			var seq  = rowData.seq;
+			let td_0 = [];
+			let td_1 = [];		
+			$.map(getObj.tableHead, ( colData, y ) => {			
+				
+				let width = globalData[tagId]['tableProperty']['tdWidth'][y];
+				
+				let value = '';
+				if (typeof rowData[colData.field] !== 'undefined') {
+					value = rowData[colData.field];
+				}
+				
+				if (y <= globalData[tagId]['tableProperty']['tableFreeze']) {
+					
+					td_0[y] = { // object td
+							'tagId': tagId,
+							'row': seq,
+							'col': y,
+							'type': colData.type,
+							'width': width, //colData.width,
+							'height': getObj.tdHeight,
+							'align': colData.align,
+							'value': value,
+								'valueConverter': colData.valueConverter,
+								'otherParam': []
+						};
+					// tdFreeze_Bottom
+					td_1[y] = { // object td
+							'tagId': tagId,
+							'row': seq,
+							'col': y,
+							'type': 'tdFreeze_Bottom', //colData.type,
+							'width': width, //colData.width,
+							'height': getObj.tdHeight,
+							'align': colData.align,
+							'value': value,
+								'valueConverter': colData.valueConverter,
+								'otherParam': []
+						};	
+					
+					// extend obj td
+					if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
+						file_path = rowData['col_file_path'];
+						td_0[y]['otherParam']['file_path'] = file_path;
+						td_1[y]['otherParam']['file_path'] = file_path;
+					} // _event_open_file
+					
+				} // tableFreeze
+				else {
+					td_1[y] = { // object td
+							'tagId': tagId,
+							'row': seq,
+							'col': y,
+							'type': colData.type,
+							'width': width, //colData.width,
+							'height': getObj.tdHeight,
+							'align': colData.align,
+							'value': value,
+								'valueConverter': colData.valueConverter,
+								'otherParam': []
+						};
+					
+					// extend obj td
+					if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
+						file_path = rowData['col_file_path'];
+						td_1[y]['otherParam']['file_path'] = file_path;
+					} // _event_open_file
+					
+				} // tableFreeze
+				
+			}); // col
+			
+			let tr_0 = {
+				'row' : seq,
+				'objTd': td_0,
+					'action': ''
+				};
+				
+			let tr_1 = {
+				'row' : seq,
+				'objTd': td_1,
+					'action': ''
+				};
+				
+			baseEl_Tb_Box.find(".my-tbody").eq(0).append(get_Tr(tr_0));
+			baseEl_Tb_Box.find(".my-tbody").eq(1).append(get_Tr(tr_1));
+			
+		}); // row 	
+	} // dekstop
+} // set_Map_Table_After_Add
 
 function set_Map_Table_Replace_Tr(getObj) {
 	
@@ -719,7 +871,7 @@ function get_Td(getObj, action) {
 			if (getObj.type === 'seqNumber') {
 				value = getObj.row;
 			} else {
-				value = getObj.value;
+				value = replaceNull(getObj.value); // global
 				$.map(getObj.valueConverter, ( valueConverter ) => {
 					
 					let objOther = {};
@@ -736,7 +888,7 @@ function get_Td(getObj, action) {
 					} // switch valueConverter
 					
 					convert = get_Value_Converter(valueConverter, value, objOther);
-					value = convert;
+					value 	= convert;
 				});
 			}
 
@@ -832,7 +984,7 @@ function get_Td(getObj, action) {
 			if (getObj.type === 'seqNumber') {
 				value = getObj.row;
 			} else {				
-				value = getObj.value;
+				value = replaceNull(getObj.value); // global
 				$.map(getObj.valueConverter, ( valueConverter ) => {
 					
 					let objOther = {};
@@ -1477,7 +1629,7 @@ function _select_Tr(targetThis, tagId) {
 		_bottom_Right_Panel_Btn_Handler(tagId, newSelectCount);
 	} // dekstop
 }
-function _select_Tr_After_Save(getObj) {
+function _select_Tr_After_Add(getObj) {
 	
 	const tagId		= getObj['tagId'];
 	const indexTr 	= getObj['indexTr'];

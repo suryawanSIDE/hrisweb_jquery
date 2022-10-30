@@ -4,10 +4,6 @@ function Load_Module(targetThis, tagModule) {
 	const dataLevelCol = 0;
 	const tagId	   	   = tagModule+'-'+ dataLevelRow +'-'+ dataLevelCol;
 	
-	// router	
-	globalRoute[dataLevelRow] = [];
-	globalRoute[dataLevelRow].push(tagId);
-	
 	if (globalData.hasOwnProperty(tagId) === false) {
 		globalData[tagId] = {};
 	} 
@@ -273,10 +269,10 @@ function Route_Content(getObj) {
 			_screen_Adjust(tagId);	
 		break;
 		
-		// myhris
+		// myhris/employee
 		case (key +'emp-'+ dataLevelRow +'-'+ dataLevelCol) :
 			globalData[tagId]['moduleId'] = 'emp';
-			JA_All({
+			Employee_Profile({
 				'setFunction': 'Main',
 				'tagId': tagId,
 				'loadMethode': loadMethode,
@@ -284,7 +280,20 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		// myhris 
+		// myhris/employee 
+		
+		// myhris/parameter
+		case (key +'prm-lv-'+ dataLevelRow +'-'+ dataLevelCol) :
+			globalData[tagId]['moduleId'] = 'prm-lv';
+			Parameter_Leave_Type({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		// myhris/parameter
 		
 		default:		
 			globalData[tagId]['moduleId'] = tagModule_Default;

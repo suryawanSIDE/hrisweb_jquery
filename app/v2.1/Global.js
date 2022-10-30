@@ -3,7 +3,6 @@ const wHeight 				= $(window).height();
 
 var globalData 				= {};
 var globalUser 				= [];
-var globalRoute 			= [];
 const currentUrl 			= window.location.href;
 const splitUrl 				= currentUrl.split("/");
 const baseUrl 				= splitUrl[0] + '//' + splitUrl[2] + '/hrisserver/';
@@ -306,6 +305,16 @@ function _pick_Date(targetThis) {
 	$(targetThis).datepicker({
 		dateFormat: 'dd M yy'
 	});
+}
+
+function replaceNull(value) {
+	let new_value = '';
+	if (value === null) {
+		new_value = '';
+	} else {
+		new_value = value;
+	}
+	return new_value;
 }
 
 function get_Value_Converter(converter, value, getObj) {

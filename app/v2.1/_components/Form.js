@@ -393,6 +393,11 @@ function get_Input(getObj) {
 		inputStyle = inputStyle +'text-align: '+ getObj.align +';';
 	}
 	
+	let maxlength = '';
+	if (getObj.maxlength > -1) {
+		maxlength = 'maxlength="'+ getObj.maxlength +'"';
+	}
+	
 	let labelCol	 = '';
 	let labelRequire = '';
 	if (getObj.formType === 'FormTr') {
@@ -408,10 +413,13 @@ function get_Input(getObj) {
 		eventInput = getObj.eventInput;
 	}
 	
+	const value = replaceNull(getObj.value);
+	
 	const result  = `<div class="item-data-col">
 					${labelCol}
 					${labelRequire}
 					<input 
+						${maxlength} 
 						style="${inputStyle}" 
 						onkeyup="_validate_Input(this, '${tagId}', '${classXY}')" 
 						onkeypress="_press_Input(event, '${tagId}')" 
@@ -420,7 +428,7 @@ function get_Input(getObj) {
 						data-require="${getObj.require}"
 						type="${getObj.type}" 
 						class="col-data col-data-${classXY} form-control input-sm" 
-						value="${getObj.value}" 
+						value="${value}" 
 						placeholder="${getObj.placeholder}" 
 						${getObj.readonly} />
 				</div>`;
@@ -466,6 +474,8 @@ function get_Input_Select(getObj) {
 		}
 	}
 	
+	const value = replaceNull(getObj.value);
+	
 	const result  = `<div class="item-data-col">
 					${labelCol}
 					${labelRequire}
@@ -478,7 +488,7 @@ function get_Input_Select(getObj) {
 						data-require="${getObj.require}"
 						type="${getObj.type}" 
 						class="col-data col-data-${classXY} form-control input-sm" 
-						value="${getObj.value}" 
+						value="${value}" 
 						placeholder="${getObj.placeholder}" 
 						readonly="readonly" />
 					<span class="select-container select-container-${classXY}"></span>
@@ -508,6 +518,8 @@ function get_Input_Textarea(getObj) {
 		labelRequire = `<span class="my-required col-notif col-notif-${classXY}"></span>`;
 	}
 	
+	const value = replaceNull(getObj.value);
+	
 	const result  = `<div class="item-data-col">
 					${labelCol}
 					${labelRequire}
@@ -518,7 +530,7 @@ function get_Input_Textarea(getObj) {
 						data-require="${getObj.require}"
 						class="col-data col-data-${classXY} form-control input-sm" 
 						placeholder="${getObj.placeholder}" 
-						${getObj.readonly} >${getObj.value}</textarea>
+						${getObj.readonly} >${value}</textarea>
 				</div>`;
 	return result;
 }
@@ -548,6 +560,7 @@ function get_Input_File(getObj) {
 		labelRequire = `<span class="my-required col-notif col-notif-${classXY}"></span>`;
 	}
 	
+	const value = replaceNull(getObj.value);
 	
 	const result  = `<div class="item-data-col">
 					${labelCol}
@@ -557,7 +570,7 @@ function get_Input_File(getObj) {
 						data-require="${getObj.require}"
 						type="file" 
 						class="col-data col-data-${classXY} form-control input-sm" 
-						value="${getObj.value}" 
+						value="${value}" 
 						placeholder="${getObj.placeholder}" 
 						${getObj.readonly} />
 				</div>`;
@@ -581,9 +594,9 @@ function get_Input_Detail(getObj) {
 			}
 		}
 	}} else {
-		value_fix = getObj.value;
+		value_fix = replaceNull(getObj.value);
 	}
-
+	
 	if (value_fix === '' || value_fix === null) {
 		value_fix = '-';
 	}
