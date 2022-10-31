@@ -283,9 +283,69 @@ function Route_Content(getObj) {
 		// myhris/employee 
 		
 		// myhris/parameter
-		case (key +'prm-lv-'+ dataLevelRow +'-'+ dataLevelCol) :
+		case (key +'prm-lv-'+ dataLevelRow +'-'+ dataLevelCol) : 
 			globalData[tagId]['moduleId'] = 'prm-lv';
 			Parameter_Leave_Type({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'prm-hdy-'+ dataLevelRow +'-'+ dataLevelCol) : 
+			globalData[tagId]['moduleId'] = 'prm-hdy';
+			Parameter_Holiday_Type({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'prm-edu-'+ dataLevelRow +'-'+ dataLevelCol) : 
+			globalData[tagId]['moduleId'] = 'prm-edu';
+			Parameter_Educational_Stage({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'prm-mjr_sbj-'+ dataLevelRow +'-'+ dataLevelCol) : 
+			globalData[tagId]['moduleId'] = 'prm-mjr_sbj';
+			Parameter_Major_Subject({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'prm-rlg-'+ dataLevelRow +'-'+ dataLevelCol) : 
+			globalData[tagId]['moduleId'] = 'prm-rlg';
+			Parameter_Religion({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'prm-rel-'+ dataLevelRow +'-'+ dataLevelCol) : 
+			globalData[tagId]['moduleId'] = 'prm-rel';
+			Parameter_Relationship({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'prm-bk-'+ dataLevelRow +'-'+ dataLevelCol) : 
+			globalData[tagId]['moduleId'] = 'prm-bk';
+			Parameter_Bank({
 				'setFunction': 'Main',
 				'tagId': tagId,
 				'loadMethode': loadMethode,

@@ -173,420 +173,112 @@ function set_Map_Table(getObj) {
 	const baseLevel 	= $("#level-"+ tagId);
 	const baseEl_Th_Box = baseLevel.find(".my-table-head-box").eq(0);
 	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
-	
 	const dataTable		= getObj.dataTable;
-	const dataFilter	= globalData[tagId].dataFilter;
 	
 	const processID		= 'dataTable-'+ parseInt(Math.random() * 1000);
 		baseEl_Tb_Box.find(".my-tbody").addClass(processID);
 	
-	if (deviceType === 'mobile') {
-		_mobile();
-	} else {
-		_dekstop();
+	const data_numrow 		= dataTable.length;
+	let data_numrowpage		= 0;
+	let data_display_row	= data_numrow;
+	let data_start_row		= 0;
+	let data_max_page		= 1;
+	let data_current_page	= 1;
+	
+	if (data_numrow >= 200) {
+		data_display_row	= 100;
+		data_start_row		= 0;
+		data_max_page		= (data_numrow/data_display_row);
+		data_current_page	= 1;
 	}
 	
-	function _mobile() {
-		
-		const data_numrow 		= dataTable.length;
-		let data_numrowpage		= 0;
-		let data_display_row	= data_numrow;
-		let data_start_row		= 0;
-		let data_max_page		= 1;
-		let data_current_page	= 1;
-		
-		if (data_numrow >= 200) {
-			data_display_row	= 100;
-			data_start_row		= 0;
-			data_max_page		= (data_numrow/data_display_row);
-			data_current_page	= 1;
-		}
-		
-		for(let i=data_current_page; i<=data_max_page; i++) { // show ke table per 100 baris
-			let max_part = (i*data_display_row);
-			for(let x=data_start_row; x<max_part; x++) {
-				if (dataTable.hasOwnProperty(x)) {
-					
-				let time = 0.1;
-				if (i > 1) {
-					time = 0.5;
-				}
-				
-				let mytimer = setTimeout(() => {
-					let rowData = dataTable[x];
-					
-					let file_path = '';
-					var seq  = rowData.seq;
-					let td_0 = [];	
-					$.map(getObj.tableHead, ( colData, y ) => {			
-						
-						let value = '';
-						if (typeof rowData[colData.field] !== 'undefined') {
-							value = rowData[colData.field];
-						}
-						
-						td_0[y] = { // object td
-								'tagId': tagId,
-								'row': seq,
-								'col': y,
-								'type': colData.type,
-								'width': 0, //width, //colData.width,
-								'height': getObj.tdHeight,
-								'align': colData.align,
-								'value': value,
-									'valueConverter': colData.valueConverter,
-									'otherParam': []
-							};
-							
-						// extend obj td
-						if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
-							file_path = rowData['col_file_path'];
-							td_0[y]['otherParam']['file_path'] = file_path;
-						} // _event_open_file
-						
-					}); // col
-					
-					let tr_0 = {
-						'row' : seq,
-						'objTd': td_0,
-							'action': ''
-						};
-						
-					
-					baseEl_Tb_Box.find("."+ processID).eq(0).append(get_Tr(tr_0));
-					data_numrowpage++;
-					
-						if (data_numrowpage===(max_part)) {
-							set_Num_Row_Page(tagId, data_numrowpage);
-						}
-					}, time); // 5 ms	
-					
-					// update globaldata dataTimer
-					globalData[tagId]['dataTimer']['set_Map_Table'].push(mytimer);
-				} // hasOwnProperty
-			} // for row 
+	for(let i=data_current_page; i<=data_max_page; i++) { // show ke table per 100 baris
+		let max_part = (i*data_display_row);
+		for(let x=data_start_row; x<max_part; x++) {
+			if (dataTable.hasOwnProperty(x)) {
 			
-		data_start_row	  = (i*data_display_row);
-		data_current_page = i;
-		} // for data_current_page
-	} // mobile
-	
-	function _dekstop() {
-		
-		const data_numrow 		= dataTable.length;
-		let data_numrowpage		= 0;
-		let data_display_row	= data_numrow;
-		let data_start_row		= 0;
-		let data_max_page		= 1;
-		let data_current_page	= 1;
-		
-		if (data_numrow >= 200) {
-			data_display_row	= 100;
-			data_start_row		= 0;
-			data_max_page		= (data_numrow/data_display_row);
-			data_current_page	= 1;
-		}
-		
-		for(let i=data_current_page; i<=data_max_page; i++) { // show ke table per 100 baris
-			let max_part = (i*data_display_row);
-			for(let x=data_start_row; x<max_part; x++) {
-				if (dataTable.hasOwnProperty(x)) {
-				
-				let time = 0.1;
-				if (i > 1) {
-					time = 0.5;
-				}
-				
-				let mytimer = setTimeout(() => {
-					let rowData = dataTable[x];
-					
-					let file_path = '';
-					var seq  = rowData.seq;
-					let td_0 = [];
-					let td_1 = [];		
-					$.map(getObj.tableHead, ( colData, y ) => {			
-						if (x === 0) {
-							const th_0 = baseEl_Th_Box.find(".my-thead").eq(0).find(".my-th").eq(y).find(".my-th-input");
-								th_0.css("color", "#414444");
-							if (typeof dataFilter[colData.field] !== 'undefined') {
-								if (Object.keys(dataFilter[colData.field].data).length > 0) {
-									th_0.css("color", "#4AEB6C");
-								} // value filter
-							} // col filter
-							
-							const th_1 = baseEl_Th_Box.find(".my-thead").eq(1).find(".my-th").eq(y).find(".my-th-input");
-								th_1.css("color", "#414444");
-							if (typeof dataFilter[colData.field] !== 'undefined') {
-								if (Object.keys(dataFilter[colData.field].data).length > 0) {
-									th_1.css("color", "#4AEB6C");
-								} // value filter
-							} // col filter
-						} // row 
-						
-						let width = globalData[tagId]['tableProperty']['tdWidth'][y];
-						
-						let value = '';
-						if (typeof rowData[colData.field] !== 'undefined') {
-							value = rowData[colData.field];
-						}
-						
-						if (y <= globalData[tagId]['tableProperty']['tableFreeze']) {
-							
-							td_0[y] = { // object td
-									'tagId': tagId,
-									'row': seq,
-									'col': y,
-									'type': colData.type,
-									'width': width, //colData.width,
-									'height': getObj.tdHeight,
-									'align': colData.align,
-									'value': value,
-										'valueConverter': colData.valueConverter,
-										'otherParam': []
-								};
-							// tdFreeze_Bottom
-							td_1[y] = { // object td
-									'tagId': tagId,
-									'row': seq,
-									'col': y,
-									'type': 'tdFreeze_Bottom', //colData.type,
-									'width': width, //colData.width,
-									'height': getObj.tdHeight,
-									'align': colData.align,
-									'value': value,
-										'valueConverter': colData.valueConverter,
-										'otherParam': []
-								};	
-							
-							// extend obj td
-							if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
-								file_path = rowData['col_file_path'];
-								td_0[y]['otherParam']['file_path'] = file_path;
-								td_1[y]['otherParam']['file_path'] = file_path;
-							} // _event_open_file
-							
-						} // tableFreeze
-						else {
-							td_1[y] = { // object td
-									'tagId': tagId,
-									'row': seq,
-									'col': y,
-									'type': colData.type,
-									'width': width, //colData.width,
-									'height': getObj.tdHeight,
-									'align': colData.align,
-									'value': value,
-										'valueConverter': colData.valueConverter,
-										'otherParam': []
-								};
-							
-							// extend obj td
-							if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
-								file_path = rowData['col_file_path'];
-								td_1[y]['otherParam']['file_path'] = file_path;
-							} // _event_open_file
-							
-						} // tableFreeze
-						
-					}); // col
-					
-					let tr_0 = {
-						'row' : seq,
-						'objTd': td_0,
-							'action': ''
-						};
-						
-					let tr_1 = {
-						'row' : seq,
-						'objTd': td_1,
-							'action': ''
-						};
-						
-					baseEl_Tb_Box.find("."+ processID).eq(0).append(get_Tr(tr_0));
-					baseEl_Tb_Box.find("."+ processID).eq(1).append(get_Tr(tr_1));
-					
-					data_numrowpage++;
-					
-						if (data_numrowpage===(max_part)) {
-							set_Num_Row_Page(tagId, data_numrowpage);
-						}
-					}, time); // 1/5 ms	
-					
-					// update globaldata dataTimer
-					globalData[tagId]['dataTimer']['set_Map_Table'].push(mytimer);
-					
-				} // hasOwnProperty
-			} // for row 
+			let time = 0.1;
+			if (i > 1) {
+				time = 0.5;
+			}
 			
-		data_start_row	  = (i*data_display_row);
-		data_current_page = i;
-		} // for data_current_page
+			let mytimer = setTimeout(() => {
+					_set_Map_Table_Excute({
+									'mapTableType': 'append',
+									'tagId': tagId,
+									'tableHead': getObj.tableHead,
+									'tdHeight': getObj.tdHeight,
+									'rowData': dataTable[x]
+								}),
+					data_numrowpage++;
+					if (data_numrowpage===(max_part)) {
+						set_Num_Row_Page(tagId, data_numrowpage);
+					}
+				}, time); // 1/5 ms	
+				
+				// update globaldata dataTimer
+				globalData[tagId]['dataTimer']['set_Map_Table'].push(mytimer);
+				
+			} // hasOwnProperty
+		} // for row 
 		
-	} // dekstop
+	data_start_row	  = (i*data_display_row);
+	data_current_page = i;
+	} // for data_current_page
+		
 } // set_Map_Table
+
 function set_Map_Table_After_Add(getObj) {
 	
 	const tagId 		= getObj.tagId;
 	const baseLevel 	= $("#level-"+ tagId);
 	const baseEl_Th_Box = baseLevel.find(".my-table-head-box").eq(0);
 	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
-	
 	const dataTable		= getObj.dataTable;
-	const dataFilter	= globalData[tagId].dataFilter;
 	
-	if (deviceType === 'mobile') {
-		_mobile();
-	} else {
-		_dekstop();
-	}
-	
-	function _mobile() {
-		$.map(dataTable, ( rowData, x ) => {
-			let file_path = '';
-			var seq  = rowData.seq;
-			let td_0 = [];	
-			$.map(getObj.tableHead, ( colData, y ) => {			
-				
-				let value = '';
-				if (typeof rowData[colData.field] !== 'undefined') {
-					value = rowData[colData.field];
-				}
-				
-				td_0[y] = { // object td
+	$.map(dataTable, ( rowData, x ) => {
+		_set_Map_Table_Excute({
+						'mapTableType': 'append',
 						'tagId': tagId,
-						'row': seq,
-						'col': y,
-						'type': colData.type,
-						'width': 0, //width, //colData.width,
-						'height': getObj.tdHeight,
-						'align': colData.align,
-						'value': value,
-							'valueConverter': colData.valueConverter,
-							'otherParam': []
-					};
-					
-				// extend obj td
-				if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
-					file_path = rowData['col_file_path'];
-					td_0[y]['otherParam']['file_path'] = file_path;
-				} // _event_open_file
-				
-			}); // col
-			
-			let tr_0 = {
-				'row' : seq,
-				'objTd': td_0,
-					'action': ''
-				};
-				
-			
-			baseEl_Tb_Box.find(".my-tbody").eq(0).append(get_Tr(tr_0));
-			
-		}); // row 	
-	} // mobile
+						'tableHead': getObj.tableHead,
+						'tdHeight': getObj.tdHeight,
+						'rowData': dataTable[x]
+					});
+	}); // row 	
 	
-	function _dekstop() {
-		$.map(dataTable, ( rowData, x ) => {
-			let file_path = '';
-			var seq  = rowData.seq;
-			let td_0 = [];
-			let td_1 = [];		
-			$.map(getObj.tableHead, ( colData, y ) => {			
-				
-				let width = globalData[tagId]['tableProperty']['tdWidth'][y];
-				
-				let value = '';
-				if (typeof rowData[colData.field] !== 'undefined') {
-					value = rowData[colData.field];
-				}
-				
-				if (y <= globalData[tagId]['tableProperty']['tableFreeze']) {
-					
-					td_0[y] = { // object td
-							'tagId': tagId,
-							'row': seq,
-							'col': y,
-							'type': colData.type,
-							'width': width, //colData.width,
-							'height': getObj.tdHeight,
-							'align': colData.align,
-							'value': value,
-								'valueConverter': colData.valueConverter,
-								'otherParam': []
-						};
-					// tdFreeze_Bottom
-					td_1[y] = { // object td
-							'tagId': tagId,
-							'row': seq,
-							'col': y,
-							'type': 'tdFreeze_Bottom', //colData.type,
-							'width': width, //colData.width,
-							'height': getObj.tdHeight,
-							'align': colData.align,
-							'value': value,
-								'valueConverter': colData.valueConverter,
-								'otherParam': []
-						};	
-					
-					// extend obj td
-					if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
-						file_path = rowData['col_file_path'];
-						td_0[y]['otherParam']['file_path'] = file_path;
-						td_1[y]['otherParam']['file_path'] = file_path;
-					} // _event_open_file
-					
-				} // tableFreeze
-				else {
-					td_1[y] = { // object td
-							'tagId': tagId,
-							'row': seq,
-							'col': y,
-							'type': colData.type,
-							'width': width, //colData.width,
-							'height': getObj.tdHeight,
-							'align': colData.align,
-							'value': value,
-								'valueConverter': colData.valueConverter,
-								'otherParam': []
-						};
-					
-					// extend obj td
-					if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
-						file_path = rowData['col_file_path'];
-						td_1[y]['otherParam']['file_path'] = file_path;
-					} // _event_open_file
-					
-				} // tableFreeze
-				
-			}); // col
-			
-			let tr_0 = {
-				'row' : seq,
-				'objTd': td_0,
-					'action': ''
-				};
-				
-			let tr_1 = {
-				'row' : seq,
-				'objTd': td_1,
-					'action': ''
-				};
-				
-			baseEl_Tb_Box.find(".my-tbody").eq(0).append(get_Tr(tr_0));
-			baseEl_Tb_Box.find(".my-tbody").eq(1).append(get_Tr(tr_1));
-			
-		}); // row 	
-	} // dekstop
 } // set_Map_Table_After_Add
 
-function set_Map_Table_Replace_Tr(getObj) {
+function set_Map_Table_After_Edit(getObj) {
 	
 	const tagId 		= getObj.tagId;
 	const baseLevel 	= $("#level-"+ tagId);
 	const baseEl_Th_Box = baseLevel.find(".my-table-head-box").eq(0);
 	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
-	
 	const dataTable		= getObj.dataTable;
+	
+	$.map(dataTable, ( rowData, x ) => {
+		_set_Map_Table_Excute({
+					'mapTableType': 'replace',
+					'tagId': tagId,
+					'tableHead': getObj.tableHead,
+					'tdHeight': getObj.tdHeight,
+					'rowData': dataTable[x]
+				});
+	}); // row 
+}
+
+function _set_Map_Table_Excute(getObj) {
+	/*
+	consumer: 
+		set_Map_Table,
+		set_Map_Table_After_Add,
+		set_Map_Table_After_Edit
+	*/
+	
+	const tagId 		= getObj.tagId;
+	const baseLevel 	= $("#level-"+ tagId);
+	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
+	const rowData		= getObj.rowData;
 	
 	if (deviceType === 'mobile') {
 		_mobile();
@@ -595,30 +287,48 @@ function set_Map_Table_Replace_Tr(getObj) {
 	}
 	
 	function _mobile() {
-		$.map(dataTable, ( rowData, x ) => {
-			var seq   = rowData.seq;
-			let td_0  = [];
-			$.map(getObj.tableHead, ( colData, y ) => {
-				//let width = globalData[tagId]['tableProperty']['tdWidth'][y];
-				td_0[y] = { // object td
-						'tagId': tagId,
-						'row': seq,
-						'col': y,
-						'type': colData.type,
-						'width': 0, //width, //colData.width,
-						'height': getObj.tdHeight,
-						'align': colData.align,
-						'value': rowData[colData.field],
-							'valueConverter': colData.valueConverter
-					};
-			}); // col
+		
+		let file_path = '';
+		var seq  = rowData.seq;
+		let td_0 = [];	
+		$.map(getObj.tableHead, ( colData, y ) => {			
 			
-			let tr_0 = {
-				'row' : seq,
-				'objTd': td_0,
-					'action': ''
+			let value = '';
+			if (typeof rowData[colData.field] !== 'undefined') {
+				value = rowData[colData.field];
+			}
+			
+			td_0[y] = { // object td
+					'tagId': tagId,
+					'row': seq,
+					'col': y,
+					'type': colData.type,
+					'width': 0, //width, //colData.width,
+					'height': getObj.tdHeight,
+					'align': colData.align,
+					'value': value,
+						'valueConverter': colData.valueConverter,
+						'otherParam': []
 				};
 				
+			// extend obj td
+			if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
+				file_path = rowData['col_file_path'];
+				td_0[y]['otherParam']['file_path'] = file_path;
+			} // _event_open_file
+			
+		}); // col
+		
+		let tr_0 = {
+			'row' : seq,
+			'objTd': td_0,
+				'action': ''
+			};
+			
+		// result
+		if (getObj.mapTableType === 'append') {
+			baseEl_Tb_Box.find(".my-tbody").eq(0).append(get_Tr(tr_0));
+		} else if (getObj.mapTableType === 'replace') {
 			// replace tr
 			baseEl_Tb_Box.find(".my-tbody").eq(0)
 				.find(".my-tr").eq(rowData.indexTr)
@@ -633,71 +343,101 @@ function set_Map_Table_Replace_Tr(getObj) {
 			baseEl_Tb_Box.find(".my-tbody").eq(0)
 				.find(".my-tr .my-td-cb-col-0")
 					.eq(rowData.indexTr).prop("checked", true);	
-			
-		}); // row 	
+		} // replace
 	} // mobile
 	
 	function _dekstop() {
-		$.map(dataTable, ( rowData, x ) => {
-			var seq   = rowData.seq;
-			let td_0  = [];
-			let td_1  = [];
-			$.map(getObj.tableHead, ( colData, y ) => {
-				let width = globalData[tagId]['tableProperty']['tdWidth'][y];
-				
-				if (y <= globalData[tagId]['tableProperty']['tableFreeze']) {
-						td_0[y] = { // object td
-								'tagId': tagId,
-								'row': seq,
-								'col': y,
-								'type': colData.type,
-								'width': width, //colData.width,
-								'height': getObj.tdHeight,
-								'align': colData.align,
-								'value': rowData[colData.field],
-									'valueConverter': colData.valueConverter
-							};
-						// tdFreeze_Bottom
-						td_1[y] = { // object td
-								'tagId': tagId,
-								'row': seq,
-								'col': y,
-								'type': 'tdFreeze_Bottom', //colData.type,
-								'width': width, //colData.width,
-								'height': getObj.tdHeight,
-								'align': colData.align,
-								'value': rowData[colData.field],
-									'valueConverter': colData.valueConverter
-							};
-				} // tableFreeze
-				else {
-					td_1[y] = { // object td
-							'tagId': tagId,
-							'row': seq,
-							'col': y,
-							'type': colData.type,
-							'width': width, //colData.width,
-							'height': getObj.tdHeight,
-							'align': colData.align,
-							'value': rowData[colData.field],
-								'valueConverter': colData.valueConverter
-						};
-				} // tableFreeze
-				
-			}); // col
+		
+		let file_path = '';
+		var seq  = rowData.seq;
+		let td_0 = [];
+		let td_1 = [];		
+		$.map(getObj.tableHead, ( colData, y ) => {			
 			
-			let tr_0 = {
-				'row' : seq,
-				'objTd': td_0,
-					'action': ''
-				};
-				
-			let tr_1 = {
-				'row' : seq,
-				'objTd': td_1,
-					'action': ''
-				};
+			let width = globalData[tagId]['tableProperty']['tdWidth'][y];
 			
+			let value = '';
+			if (typeof rowData[colData.field] !== 'undefined') {
+				value = rowData[colData.field];
+			}
+			
+			if (y <= globalData[tagId]['tableProperty']['tableFreeze']) {
+				
+				td_0[y] = { // object td
+						'tagId': tagId,
+						'row': seq,
+						'col': y,
+						'type': colData.type,
+						'width': width, //colData.width,
+						'height': getObj.tdHeight,
+						'align': colData.align,
+						'value': value,
+							'valueConverter': colData.valueConverter,
+							'otherParam': []
+					};
+				// tdFreeze_Bottom
+				td_1[y] = { // object td
+						'tagId': tagId,
+						'row': seq,
+						'col': y,
+						'type': 'tdFreeze_Bottom', //colData.type,
+						'width': width, //colData.width,
+						'height': getObj.tdHeight,
+						'align': colData.align,
+						'value': value,
+							'valueConverter': colData.valueConverter,
+							'otherParam': []
+					};	
+				
+				// extend obj td
+				if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
+					file_path = rowData['col_file_path'];
+					td_0[y]['otherParam']['file_path'] = file_path;
+					td_1[y]['otherParam']['file_path'] = file_path;
+				} // _event_open_file
+				
+			} // tableFreeze
+			else {
+				td_1[y] = { // object td
+						'tagId': tagId,
+						'row': seq,
+						'col': y,
+						'type': colData.type,
+						'width': width, //colData.width,
+						'height': getObj.tdHeight,
+						'align': colData.align,
+						'value': value,
+							'valueConverter': colData.valueConverter,
+							'otherParam': []
+					};
+				
+				// extend obj td
+				if ($.inArray('_event_open_file', colData.valueConverter) !== -1) {
+					file_path = rowData['col_file_path'];
+					td_1[y]['otherParam']['file_path'] = file_path;
+				} // _event_open_file
+				
+			} // tableFreeze
+			
+		}); // col
+		
+		let tr_0 = {
+			'row' : seq,
+			'objTd': td_0,
+				'action': ''
+			};
+			
+		let tr_1 = {
+			'row' : seq,
+			'objTd': td_1,
+				'action': ''
+			};
+		
+		// result 
+		if (getObj.mapTableType === 'append') {
+			baseEl_Tb_Box.find(".my-tbody").eq(0).append(get_Tr(tr_0));
+			baseEl_Tb_Box.find(".my-tbody").eq(1).append(get_Tr(tr_1));
+		} else if (getObj.mapTableType === 'replace') {
 			// replace tr
 			baseEl_Tb_Box.find(".my-tbody").eq(0)
 				.find(".my-tr").eq(rowData.indexTr)
@@ -718,10 +458,9 @@ function set_Map_Table_Replace_Tr(getObj) {
 			baseEl_Tb_Box.find(".my-tbody").eq(0)
 				.find(".my-tr .my-td-cb-col-0")
 					.eq(rowData.indexTr).prop("checked", true);	
-			
-		}); // row 	
+		} // replace
 	} // dekstop
-}
+} // set_Map_Table_Append
 
 function set_Table_Body(tagId, value) {
 	

@@ -1,5 +1,5 @@
 //> modify module
-function Parameter_Leave_Type(getObj) {
+function Parameter_Relationship(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -121,7 +121,7 @@ function Parameter_Leave_Type(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['pCategory'] = 'leave_type';
+		globalData[tagId]['dataRules']['pCategory'] = 'relationship';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -187,7 +187,7 @@ function Parameter_Leave_Type(getObj) {
             'require': 1
             });
 			
-		tdWidth    = 30;
+		tdWidth    = 15;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
             'label': 'Parameter',
@@ -214,7 +214,7 @@ function Parameter_Leave_Type(getObj) {
             'field_value_default': '',
             'require': 0
             });
-			
+		
 		tdWidth    = 8;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 5
@@ -228,7 +228,7 @@ function Parameter_Leave_Type(getObj) {
             'field_value_default': '',
             'require': 0
             });
-			
+				
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -566,19 +566,19 @@ function Parameter_Leave_Type(getObj) {
                         set_Right_Panel_Bottom({
                             'tagId': tagId,
                             'btnDetail': permission.btn_read, 
-                                'eventDetail': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `detail`)"',
                             'btnAdd': permission.btn_create, 
-                                'eventAdd': 'onclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
                             'btnEdit': permission.btn_update,
-                                'eventEdit': 'onclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
                             'btnExport': permission.btn_export,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Leave_Type_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Leave_Type_Event`)"',
+                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)"',
                             'btnImport': permission.btn_import,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
                             'btnDelete': permission.btn_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Leave_Type_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Leave_Type_Event`)"',
+                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -907,8 +907,8 @@ function Parameter_Leave_Type(getObj) {
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ tableHead[col].type + ' max(100)',
+						'maxlength': 15,
+						'placeholder': 'input-'+ tableHead[col].type + ' max(15)',
 						'readonly': ''
 					});
 					
@@ -926,7 +926,7 @@ function Parameter_Leave_Type(getObj) {
 						'placeholder': 'input-'+ tableHead[col].type,
 						'readonly': ''
 					});
-					
+						
 			col = (col+1); // 5
 			fieldForm.push({
                         'input_Type': 'get_Input',
@@ -974,9 +974,9 @@ function Parameter_Leave_Type(getObj) {
         set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Parameter_Leave_Type_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="Parameter_Relationship_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
+            'eventNewForm': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `add`)"',
+			'eventReload_All': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `reload`)"'
         });
         
         // button focus
@@ -1061,7 +1061,7 @@ function Parameter_Leave_Type(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Parameter_Leave_Type_Event(`Form`, tagId, `edit`)
+						Parameter_Relationship_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1605,7 +1605,7 @@ function Parameter_Leave_Type(getObj) {
 }
 
 //> modify module
-function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1613,7 +1613,7 @@ function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param
 			const exportType = $("#my-confirm").find("input[name='export_type']:checked").val();
 			const exportPage = $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Relationship({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1621,20 +1621,20 @@ function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param
 			});
 		break;
 		case 'Delete': 
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Relationship({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Relationship({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Relationship({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2

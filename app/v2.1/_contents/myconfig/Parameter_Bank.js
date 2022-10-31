@@ -1,5 +1,5 @@
 //> modify module
-function Parameter_Leave_Type(getObj) {
+function Parameter_Bank(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -121,7 +121,7 @@ function Parameter_Leave_Type(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['pCategory'] = 'leave_type';
+		globalData[tagId]['dataRules']['pCategory'] = 'bank';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -187,7 +187,7 @@ function Parameter_Leave_Type(getObj) {
             'require': 1
             });
 			
-		tdWidth    = 30;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
             'label': 'Parameter',
@@ -204,6 +204,20 @@ function Parameter_Leave_Type(getObj) {
 		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 4
+            'label': 'Detail',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_parameter_detail',
+            'field_value_default': '',
+            'require': 0
+            });
+		
+		tdWidth    = 30;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 5
             'label': 'Description',
             'width': (tdWidth),
             'short': true,
@@ -214,10 +228,10 @@ function Parameter_Leave_Type(getObj) {
             'field_value_default': '',
             'require': 0
             });
-			
+				
 		tdWidth    = 8;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
+        tableHead.push({ // 6
             'label': 'Seq',
             'width': (tdWidth),
             'short': true,
@@ -247,6 +261,10 @@ function Parameter_Leave_Type(getObj) {
 				{
                 'label': 'Parameter',
                 'field': 'col_parameter_name'
+                },
+				{
+                'label': 'Detail',
+                'field': 'col_parameter_detail'
                 },
 				{
                 'label': 'Description',
@@ -566,19 +584,19 @@ function Parameter_Leave_Type(getObj) {
                         set_Right_Panel_Bottom({
                             'tagId': tagId,
                             'btnDetail': permission.btn_read, 
-                                'eventDetail': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `detail`)"',
                             'btnAdd': permission.btn_create, 
-                                'eventAdd': 'onclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
                             'btnEdit': permission.btn_update,
-                                'eventEdit': 'onclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Leave_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
                             'btnExport': permission.btn_export,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Leave_Type_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Leave_Type_Event`)"',
+                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Bank_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Bank_Event`)"',
                             'btnImport': permission.btn_import,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
                             'btnDelete': permission.btn_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Leave_Type_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Leave_Type_Event`)"',
+                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Bank_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Bank_Event`)"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -907,12 +925,27 @@ function Parameter_Leave_Type(getObj) {
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
+						'maxlength': 15,
+						'placeholder': 'input-'+ tableHead[col].type + ' max(15)',
+						'readonly': ''
+					});
+			
+			col = (col+1); // 4
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_parameter_detail
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
 						'maxlength': 100,
 						'placeholder': 'input-'+ tableHead[col].type + ' max(100)',
 						'readonly': ''
 					});
 					
-			col = (col+1); // 4
+			col = (col+1); // 5
 			fieldForm.push({
                         'input_Type': 'get_Input_Textarea',
                         'label': tableHead[col].label, // col_description
@@ -927,7 +960,7 @@ function Parameter_Leave_Type(getObj) {
 						'readonly': ''
 					});
 					
-			col = (col+1); // 5
+			col = (col+1); // 6
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_seq
@@ -941,7 +974,7 @@ function Parameter_Leave_Type(getObj) {
 						'placeholder': 'input-'+ tableHead[col].type + ' max(3)',
 						'readonly': ''
 					});
-							
+								
         return fieldForm;
         
     } // _Form_Field
@@ -974,9 +1007,9 @@ function Parameter_Leave_Type(getObj) {
         set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Parameter_Leave_Type_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Parameter_Leave_Type_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="Parameter_Bank_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
+            'eventNewForm': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `add`)"',
+			'eventReload_All': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `reload`)"'
         });
         
         // button focus
@@ -1061,7 +1094,7 @@ function Parameter_Leave_Type(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Parameter_Leave_Type_Event(`Form`, tagId, `edit`)
+						Parameter_Bank_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1605,7 +1638,7 @@ function Parameter_Leave_Type(getObj) {
 }
 
 //> modify module
-function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Parameter_Bank_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1613,7 +1646,7 @@ function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param
 			const exportType = $("#my-confirm").find("input[name='export_type']:checked").val();
 			const exportPage = $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Bank({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1621,20 +1654,20 @@ function Parameter_Leave_Type_Event(eventParam, param_1, param_2, param_3, param
 			});
 		break;
 		case 'Delete': 
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Bank({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Bank({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Parameter_Leave_Type({
+			eventResult = Parameter_Bank({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2
