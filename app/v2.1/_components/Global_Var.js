@@ -192,8 +192,13 @@ function set_Global_Data(tagId) {
 			globalData[tagId]['dataTimer']['__process_Save_add']	= [];
 			globalData[tagId]['dataTimer']['__process_Save_edit']	= [];
 			globalData[tagId]['dataTimer']['_Form'] 			 	= [];
-			globalData[tagId]['dataTimer']['__process_Form_reload']	= [];
-			
+			globalData[tagId]['dataTimer']['__process_Form_reload']	= [];			
+		}
+		
+		// 	set default dataTaskActive
+		if (globalData[tagId].hasOwnProperty('dataTaskActive') === false) {
+			globalData[tagId]['dataTaskActive'] = {};
+			globalData[tagId]['dataTaskActive']['formChange'] = '';
 		}
 		
 	} // check tagId

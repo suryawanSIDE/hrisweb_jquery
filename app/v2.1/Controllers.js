@@ -367,7 +367,4 @@ function Route_Content(getObj) {
 			_screen_Adjust(tagId);
 	} // switchcase
 	
-	// global
-	//_screen_Adjust(tagId);
-
 }

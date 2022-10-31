@@ -56,6 +56,12 @@ function set_Form_Title(tagId, titleBar) {
 		.find(".my-form-header .my-form-header-left").html("Form "+ titleBar);
 }
 
+function get_Form_Title(tagId) {
+	const baseLevel = $("#level-"+ tagId);
+	const result	= baseLevel.find(".my-content-form").eq(0).find(".my-form-header .my-form-header-left").html();
+	return result;
+}
+
 function set_Form_Button(getObj) {
 	
 	const tagId 	 = getObj.tagId;
@@ -84,6 +90,7 @@ function set_Form_Button(getObj) {
 	}
 
 	const result = `<div class="btn-group" role="toolbar">
+					<div class="form-divider btn btn-default btn-sm btn-group">&nbsp;</div>
 					${btn_new_form}
 					${btn_save_all}
 					${btn_refresh}
@@ -91,7 +98,8 @@ function set_Form_Button(getObj) {
 						<button onclick="_hide_Form('${tagId}')" class="btn btn-default btn-sm form-action-close">
 							<span class="glyphicon glyphicon-remove"></span><span class="dekstop-label"> Close</span>
 						</button>							
-					</div>			
+					</div>
+					<div class="form-divider btn btn-default btn-sm btn-group">&nbsp;</div>
 				</div>`;
 			
 	const baseLevel = $("#level-"+ tagId);
@@ -115,14 +123,19 @@ function content_Form_Append(tagId, value) {
 
 function _hide_Form(tagId) {
 	
-	const baseLevel 	 = $("#level-"+ tagId);
-	const baseEl_Content = baseLevel.find(".my-content-form").eq(0);
-	const formStatus     = baseEl_Content.hasClass("my-hide");
-	
-	if (formStatus === false) {
-		baseEl_Content.removeClass("my-block");
-		baseEl_Content.addClass("my-hide");
-		baseEl_Content.find(".my-form-body").html("");
+	const dataTaskActive = globalData[tagId]['dataTaskActive']['formChange'];
+	if (dataTaskActive === '') {
+		const baseLevel 	 = $("#level-"+ tagId);
+		const baseEl_Content = baseLevel.find(".my-content-form").eq(0);
+		const formStatus     = baseEl_Content.hasClass("my-hide");
+		
+		if (formStatus === false) {
+			baseEl_Content.removeClass("my-block");
+			baseEl_Content.addClass("my-hide");
+			baseEl_Content.find(".my-form-body").html("");
+		}
+	} else {
+		Confirm_Form(tagId, 'task_active', '_clear_TaskActive(`'+ tagId +'`, `_hide_Form`)');
 	}
 	
 }
@@ -384,15 +397,17 @@ function get_Input(getObj) {
 	
 	const value = replaceNull(getObj.value);
 	
+	const eventList = 'onkeyup="_validate_Input(this, `'+ tagId +'`, `'+ classXY +'`)"'+
+					  'onkeypress="_press_Input(event, `'+ tagId +'`)"'+
+					  eventInput; // onclick & ondblclick
+					  
 	const result  = `<div class="item-data-col">
 					${labelCol}
 					${labelRequire}
 					<input 
 						${maxlength} 
 						style="${inputStyle}" 
-						onkeyup="_validate_Input(this, '${tagId}', '${classXY}')" 
-						onkeypress="_press_Input(event, '${tagId}')" 
-						${eventInput} 
+						${eventList} 
 						data-input="input" 
 						data-require="${getObj.require}"
 						type="${getObj.type}" 
@@ -445,14 +460,16 @@ function get_Input_Select(getObj) {
 	
 	const value = replaceNull(getObj.value);
 	
+	const eventList = 'onkeyup="_validate_Input(this, `'+ tagId +'`, `'+ classXY +'`)"'+
+					  'onkeypress="_press_Input(event, `'+ tagId +'`)"'+
+					  eventInput; // onclick & ondblclick
+					  
 	const result  = `<div class="item-data-col">
 					${labelCol}
 					${labelRequire}
 					<input 
 						style="${inputStyle}" 
-						onchange="_validate_Input(this, '${tagId}', '${classXY}')" 
-						onkeypress="_press_Input(event, '${tagId}')" 
-						${eventInput} 
+						${eventList} 
 						data-input="input" 
 						data-require="${getObj.require}"
 						type="${getObj.type}" 
@@ -489,12 +506,14 @@ function get_Input_Textarea(getObj) {
 	
 	const value = replaceNull(getObj.value);
 	
+	const eventList = 'onkeyup="_validate_Input(this, `'+ tagId +'`, `'+ classXY +'`)"';
+					  
 	const result  = `<div class="item-data-col">
 					${labelCol}
 					${labelRequire}
 					<textarea 
 						style="${inputBorder}" 
-						onkeyup="_validate_Input(this, '${tagId}', '${classXY}')" 
+						${eventList} 
 						data-input="input" 
 						data-require="${getObj.require}"
 						class="col-data col-data-${classXY} form-control input-sm" 
@@ -594,10 +613,25 @@ function _press_Input(e, tagId) {
 
 function _validate_Input(thisTarget, tagId, classXY) {
 	
+	const baseLevel 	= $("#level-"+ tagId);
 	const inputValue 	= $(thisTarget).val();
 	const inputType	 	= $(thisTarget).attr("type");
 	const requireStatus	= $(thisTarget).attr("data-require");
 	
+	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
+	const btn_new_hide  = contentForm.find(".my-form-header .form-action-new-form").hasClass(".my-hide");
+	const btn_re_hide  = contentForm.find(".my-form-header .form-action-reload").hasClass(".my-hide");
+	
+	if (btn_new_hide === false) {
+		contentForm.find(".my-form-header .form-action-new-form").addClass("my-hide");
+	}
+	if (btn_re_hide === false) {
+		contentForm.find(".my-form-header .form-action-reload").addClass("my-hide");
+	}
+	
+	let title_form  = get_Form_Title(tagId);
+	globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+
 	if (requireStatus === '1') {
 		
 		const baseEl_Item  = $(thisTarget).closest(".item-data-col");

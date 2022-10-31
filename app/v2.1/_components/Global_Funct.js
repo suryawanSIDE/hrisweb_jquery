@@ -128,6 +128,20 @@ function _pick_Date(targetThis) {
 	});
 }
 
+function _clear_TaskActive(tagId, taskType, event){
+	
+	const dataTaskActive = globalData[tagId]['dataTaskActive'];
+	
+	switch(taskType) {
+		case '_hide_Form':
+			dataTaskActive['formChange'] = '';
+			_hide_Confirm();
+			_hide_Form(tagId);
+		break;
+		default:
+	}
+}
+
 function get_List_Result(getObj) {
 	/*
 	consumer: 

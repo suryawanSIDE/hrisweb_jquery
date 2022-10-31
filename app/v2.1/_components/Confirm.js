@@ -25,7 +25,7 @@ function Confirm_Form(tagId, action, nextFunction) {
 			baseLevel.find(".my-tbody").eq(0)
 				.find(".my-td-cb-col-0").each(function(i) {
 					if (this.checked) {
-						body = body +'<span class="btn btn-default btn-xs btn-group confirm-item">'+ dataTable[i].col_text_alert +'</span>';
+						body += '<span class="btn btn-default btn-xs btn-group confirm-item">'+ dataTable[i].col_text_alert +'</span>';
 					}
 			});
 			
@@ -84,6 +84,29 @@ function Confirm_Form(tagId, action, nextFunction) {
 				
 			set_Confirm({
 				'title': 'Export',
+				'body': body, 
+				'footer': footer
+			});
+			
+			// button focus
+			$("#my-confirm").find(".confirm-action-submit").focus();
+			
+		break;
+		case 'task_active':	
+			
+			footer = '<div style="text-align: right">'+
+					'<hr class="my-hr">'+						
+					'<button onclick="'+ nextFunction +'" ondbclick="'+ nextFunction +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Ok</button>'+
+					'<button onclick="_hide_Confirm()" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
+					'</div>';
+				
+			const dataTaskActive = globalData[tagId]['dataTaskActive'];
+			$.map(dataTaskActive, ( val, x ) => {
+				body += '<span class="btn btn-default btn-xs btn-group confirm-item">'+ val +'</span>';
+			});
+			
+			set_Confirm({
+				'title': 'You have not saved data',
 				'body': body, 
 				'footer': footer
 			});

@@ -236,6 +236,9 @@ function set_Map_Table_After_Add(getObj) {
 	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
 	const dataTable		= getObj.dataTable;
 	
+	// reset globalData dataTaskActive formChange
+	globalData[tagId]['dataTaskActive']['formChange'] = '';
+	
 	$.map(dataTable, ( rowData, x ) => {
 		_set_Map_Table_Execute({
 						'mapTableType': 'append',
@@ -255,6 +258,13 @@ function set_Map_Table_After_Edit(getObj) {
 	const baseEl_Th_Box = baseLevel.find(".my-table-head-box").eq(0);
 	const baseEl_Tb_Box = baseLevel.find(".my-table-data-box").eq(0);
 	const dataTable		= getObj.dataTable;
+	
+	// reset globalData dataTaskActive formChange
+	globalData[tagId]['dataTaskActive']['formChange'] = '';
+	
+	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
+	contentForm.find(".my-form-header .form-action-new-form").removeClass("my-hide");
+	contentForm.find(".my-form-header .form-action-reload").removeClass("my-hide");
 	
 	$.map(dataTable, ( rowData, x ) => {
 		_set_Map_Table_Execute({
