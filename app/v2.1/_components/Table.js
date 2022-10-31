@@ -613,19 +613,12 @@ function get_Td(getObj, action) {
 				value = replaceNull(getObj.value); // global
 				$.map(getObj.valueConverter, ( valueConverter ) => {
 					
-					let objOther = {};
-					switch(valueConverter) {
-						case '_event_open_file':
-							const file_path = getObj['otherParam'].file_path;
-							objOther = {
-								'tagId': tagId,
-								'file_path': baseUrl_Upload + file_path
-							};
-						break;
-						default:
-							objOther = {};
-					} // switch valueConverter
-					
+					// global_funct
+					let objOther = get_Td_objOther({
+										'tagId': tagId,
+										'valueConverter': valueConverter,
+										'file_path': getObj['otherParam'].file_path
+									});
 					convert = get_Value_Converter(valueConverter, value, objOther);
 					value 	= convert;
 				});
@@ -726,19 +719,12 @@ function get_Td(getObj, action) {
 				value = replaceNull(getObj.value); // global
 				$.map(getObj.valueConverter, ( valueConverter ) => {
 					
-					let objOther = {};
-					switch(valueConverter) {
-						case '_event_open_file':
-							const file_path = getObj['otherParam'].file_path;
-							objOther = {
-								'tagId': tagId,
-								'file_path': baseUrl_Upload + file_path
-							};
-						break;
-						default:
-							objOther = {};
-					} // switch valueConverter
-					
+					// global_funct
+					let objOther = get_Td_objOther({
+										'tagId': tagId,
+										'valueConverter': valueConverter,
+										'file_path': getObj['otherParam'].file_path
+									});
 					convert = get_Value_Converter(valueConverter, value, objOther);
 					value = convert;
 				});

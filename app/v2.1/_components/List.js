@@ -1,4 +1,4 @@
-function List_Autofill_Status_Active(tagId, colId) {
+function List_Fixed_Status_Active(tagId, colId) {
   	
 	const baseLevel 		= $("#level-"+ tagId);
 	const formType 			= globalData[tagId].formType;
@@ -32,8 +32,8 @@ function List_Autofill_Status_Active(tagId, colId) {
 
 			const result = '<div class="select-content">'+
 								'<div class="select-content-body">'+
-									'<a class="'+ a_Selected +' list-item" onclick="_select_List_Autofill(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ a_Value +'</a>'+
-									'<a class="'+ b_Selected +' list-item" onclick="_select_List_Autofill(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ b_Value +'</a>'+
+									'<a class="'+ a_Selected +' list-item" onclick="_select_List_Fixed(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ a_Value +'</a>'+
+									'<a class="'+ b_Selected +' list-item" onclick="_select_List_Fixed(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ b_Value +'</a>'+
 								'</div>'+
 							'</div>';
 							
@@ -47,9 +47,9 @@ function List_Autofill_Status_Active(tagId, colId) {
 		_hide_List_Autofill(tagId, colId);
 	}
 
-} // List_Autofill_Status_Active
+} // List_Fixed_Status_Active
 
-function List_Autofill_Currency(tagId, colId) {
+function List_Fixed_Currency(tagId, colId) {
   	
 	const baseLevel 		= $("#level-"+ tagId);
 	const formType 			= globalData[tagId].formType;
@@ -83,8 +83,8 @@ function List_Autofill_Currency(tagId, colId) {
 
 			const result = '<div class="select-content">'+
 								'<div class="select-content-body">'+
-									'<a class="'+ a_Selected +' list-item" onclick="_select_List_Autofill(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ a_Value +'</a>'+
-									'<a class="'+ b_Selected +' list-item" onclick="_select_List_Autofill(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ b_Value +'</a>'+
+									'<a class="'+ a_Selected +' list-item" onclick="_select_List_Fixed(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ a_Value +'</a>'+
+									'<a class="'+ b_Selected +' list-item" onclick="_select_List_Fixed(`'+ tagId +'`, `'+ colId +'`, this)" href="#" >'+ b_Value +'</a>'+
 								'</div>'+
 							'</div>';
 							
@@ -98,9 +98,9 @@ function List_Autofill_Currency(tagId, colId) {
 		_hide_List_Autofill(tagId, colId);
 	}
 
-} // List_Autofill_Currency
+} // List_Fixed_Currency
 
-function _select_List_Autofill(tagId, colId, targetThis) {
+function _select_List_Fixed(tagId, colId, targetThis) {
 	
 	const baseLevel 		= $("#level-"+ tagId);
 	const formType 			= globalData[tagId].formType;
@@ -230,12 +230,10 @@ function Reset_List_Autofill(tagId, colId) {
 function _List_Fetch(getObj) {
 	
 	const tagId 			= getObj.tagId;
-	const dataAutofill		= globalData[tagId]['dataAutofill'][getObj.colId];
+	const colId				= getObj.colId;
+	const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
 	const dataTable_Index 	= dataAutofill.dataTable_Index;
     const listRequest 	 	= dataAutofill.listRequest;
-	const listFormat	 	= dataAutofill.listFormat;
-	const selectedFunction  = dataAutofill.selectedFunction;
-	const eventParam  		= dataAutofill.eventParam;
 	
 	const baseLevel 		= $("#level-"+ tagId);
 	const formType 			= globalData[tagId].formType;
@@ -247,12 +245,12 @@ function _List_Fetch(getObj) {
 		baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
 	}
 	
-	const currentValue 	 	= baseEl_Item.find(".col-data-"+ getObj.colId).val();
-	const search 		 	= baseEl_Item.find(".select-container-"+ getObj.colId +" .select-content-header .input-serach-list").val();
+	const currentValue 	 	= baseEl_Item.find(".col-data-"+ colId).val();
+	const search 		 	= baseEl_Item.find(".select-container-"+ colId +" .select-content-header .input-serach-list").val();
 	
 	const loader = get_Loader(); // components/loader	
 	
-	baseEl_Item.find(".select-container-"+ getObj.colId 
+	baseEl_Item.find(".select-container-"+ colId 
 		+" .select-content-body").html('<center>'+ loader +'</center>'); // elements
 
 	// async load data tr 
@@ -273,173 +271,18 @@ function _List_Fetch(getObj) {
 			const dataDb = myObj.response_data.data;	
 
 			if (myObj.status === 'success') {
-
-				let result = '';
-				if (listFormat === 'table') {
-					
-					switch(listRequest) {
-						case 'myto_project_number':
-							result += '<table width="100%" class="table-bordered table-condensed">'+
-										'<tr>'+
-										'<th></th>'+
-										'<th><center>Project</center></th>'+
-										'<th><center>Client</center></th>'+
-										'<th><center>PM</center></th>'+
-										'</tr>';
-						break;
-						case 'employee_ein':
-							result += '<table width="100%" class="table-bordered">'+
-									  '<tr><th></th><th><center>Name</center></th></tr>';
-						break;
-						default:
-							result += '<table width="100%" class="table-bordered">'+
-									 '<tr><th></th><th><center>Label</center></th></tr>';
-					} // switchcase
-				}
-				$.map(dataDb, ( rowData, x ) => {
-					
-					let label 	 	= rowData['col_display'];
-					let label_index = _label_Index(label);
-					let selected 	= '';
-					
-					//> modify module
-					switch(listRequest) {
-						// myto
-						case 'myto_project_number':
-							// update global dataAutofill
-							dataAutofill['dataTable'][label_index] = {
-											'col_display': rowData['col_display'], 
-											'col_project_number': rowData['col_project_number'], 
-											'col_client_name': rowData['col_client_name'], 
-											'col_project_manager': rowData['col_project_manager']
-											};
-							
-							if (currentValue === rowData['col_display']) {
-								selected = 'a-item-active';
-							}
-							
-							if (listFormat === 'table') {
-								result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
-											'<td valign="top">'+ label +'</td>'+
-											'<td valign="top">'+ rowData['col_client_name'] +'</td>'+
-											'<td valign="top">'+ rowData['col_project_manager'] +'</td>'+
-											'</tr>';
-							} else {
-								result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-							}
-							
-						break;
-						// myto
-						
-						case 'employee_ein':
-							// update global dataAutofill
-							dataAutofill['dataTable'][label_index] = {
-											'col_display': rowData['col_display'], 
-											'col_ein': rowData['col_ein'], 
-											'col_name': rowData['col_name'],
-											'col_id_employee': rowData['col_id_employee'],
-											'col_department': rowData['col_department']
-											};
-							
-							if (currentValue === rowData['col_ein']) {
-								selected = 'a-item-active';
-							}
-							
-							if (listFormat === 'table') {
-								result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
-												'<td valign="top">'+ label +'</td>'+
-												'</tr>';
-							} else {
-								result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-							}
-							
-						break;
-						case 'reason_category':
-							// update global dataAutofill
-							dataAutofill['dataTable'][label_index] = {
-											'col_display': rowData['col_display'], 
-											'col_id_reason_category': rowData['col_id_reason_category']
-											};
-							
-							if (currentValue === rowData['col_display']) {
-								selected = 'a-item-active';
-							}
-							
-							if (listFormat === 'table') {
-								result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
-												'<td valign="top">'+ label +'</td>'+
-												'</tr>';
-							} else {
-								result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-							}
-							
-						break;
-						case 'tax_ppn_rbf':
-							// update global dataAutofill
-							dataAutofill['dataTable'][label_index] = {
-											'col_display': rowData['col_display'], 
-											'col_id_parameter': rowData['col_id_parameter'],
-											'col_value_tax': rowData['col_value_tax']
-											};
-							
-							if (currentValue === rowData['col_display']) {
-								selected = 'a-item-active';
-							}
-							
-							if (listFormat === 'table') {
-								result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
-												'<td valign="top">'+ label +'</td>'+
-												'</tr>';
-							} else {
-								result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-							}
-						break;
-						case 'tax_pph_rbf':
-							// update global dataAutofill
-							dataAutofill['dataTable'][label_index] = {
-											'col_display': rowData['col_display'], 
-											'col_id_parameter': rowData['col_id_parameter'],
-											'col_value_tax': rowData['col_value_tax']
-											};
-							
-							if (currentValue === rowData['col_display']) {
-								selected = 'a-item-active';
-							}
-							
-							if (listFormat === 'table') {
-								result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
-												'<td valign="top">'+ label +'</td>'+
-												'</tr>';
-							} else {
-								result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-							}
-						break;
-						default:
-							dataAutofill['dataTable'][label_index] = {
-											'col_display': rowData['col_display']
-											};
-							if (currentValue === rowData['col_display']) {
-								selected = 'a-item-active';
-							}
-							
-							if (listFormat === 'table') {
-								result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
-												'<td valign="top">'+ label +'</td>'+
-												'</tr>';
-							} else {
-								result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ getObj.colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-							}
-					} // switchcase listRequest				
-					
-				}); // map
-				
-				if (listFormat === 'table') {
-					result += '</table>';
-				}
 				
 				// apply result
-				baseEl_Item.find(".select-container-"+ getObj.colId 
-					+" .select-content-body").html(result);
+				baseEl_Item.find(".select-container-"+ colId 
+					+" .select-content-body").html(
+									// global_funct
+									get_List_Result({
+										'tagId': tagId,
+										'colId': colId,
+										'currentValue': currentValue,
+										'dataDb': dataDb
+									})
+								);
 
 			} else if (myObj.status === 'reject') {
 
@@ -452,7 +295,7 @@ function _List_Fetch(getObj) {
 			} else {
 				
 				// reset body
-				baseEl_Item.find(".select-container-"+ getObj.colId 
+				baseEl_Item.find(".select-container-"+ colId 
 					+" .select-content-body").html("");
 
 				// components
@@ -466,7 +309,7 @@ function _List_Fetch(getObj) {
 		error: (xhr) => {
 			
 			// reset body
-			baseEl_Item.find(".select-container-"+ getObj.colId 
+			baseEl_Item.find(".select-container-"+ colId 
 					+" .select-content-body").html("");
 			
 			// components
@@ -479,7 +322,7 @@ function _List_Fetch(getObj) {
 	}); // ajax
 }
 
-function _select_List_Autofill_Dynamic(eventParam, tagId, colId, indexData, targetThis) {
+function _select_List_Autofill(eventParam, tagId, colId, indexData, targetThis) {
 	
 	const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
 	const dataTable_Index 	= dataAutofill.dataTable_Index;

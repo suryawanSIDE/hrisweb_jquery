@@ -190,7 +190,7 @@ function Parameter_Religion(getObj) {
 		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Parameter',
+            'label': 'Nama',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
@@ -204,7 +204,7 @@ function Parameter_Religion(getObj) {
 		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 4
-            'label': 'Description',
+            'label': 'Deskrisi',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
@@ -218,7 +218,7 @@ function Parameter_Religion(getObj) {
 		tdWidth    = 8;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 5
-            'label': 'Seq',
+            'label': 'Urutan',
             'width': (tdWidth),
             'short': true,
             'type': 'number',
@@ -245,11 +245,11 @@ function Parameter_Religion(getObj) {
 
         const field = [
 				{
-                'label': 'Parameter',
+                'label': 'Nama',
                 'field': 'col_parameter_name'
                 },
 				{
-                'label': 'Description',
+                'label': 'Deskrisi',
                 'field': 'col_description'
                 }
             ];
@@ -885,8 +885,8 @@ function Parameter_Religion(getObj) {
 						'placeholder': 'select-item',
 						'readonly': '',
 							'eventObject': {
-											'eventInput': 'List_Autofill_Status_Active',
-											'searchInput': 1, // search 1/0
+											'eventInput': 'List_Fixed_Status_Active',
+											'searchInput': 0, // search 1/0
 											'col': col
 										}
 					});

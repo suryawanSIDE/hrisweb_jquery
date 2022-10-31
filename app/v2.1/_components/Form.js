@@ -310,37 +310,6 @@ function get_Map_Form_Input(getObj) {
 	return result;
 }
 
-function get_eventListener(getObj) {
-	
-	const tagId  = getObj.tagId;
-	let result   = '';
-	let classXY  = getObj.row +'-'+ getObj.col;
-	switch (getObj.eventInput) {
-		case 'List_Autofill_Status_Active':
-			result = 'onclick="List_Autofill_Status_Active(`'+ tagId +'`, `'+ classXY +'`)"';
-		break;
-		case 'List_Autofill_Currency':
-			result = 'onclick="List_Autofill_Currency(`'+ tagId +'`, `'+ classXY +'`)"';
-		break;
-		case 'List_Autofill_Purpose':
-			result = 'onclick="List_Autofill_Purpose(`'+ tagId +'`, `'+ classXY +'`)"';
-		break;
-		case 'List_Autofill_Map_Type':
-			result = 'onclick="List_Autofill_Map_Type(`'+ tagId +'`, `'+ classXY +'`)"';
-		break;
-		case 'List_Autofill':
-			result = 'onclick="List_Autofill(`'+ tagId +'`, `'+ classXY +'`, '+ getObj.searchInput +')"';
-		break;
-		case 'Pick_Date':
-			result = 'onmouseover="_pick_Date(this)"';
-		break;
-		default: 
-			result = '';
-	}
-	
-	return result;
-}
-
 function get_Form_Notif(getObj) {
 	
 	let result = '';

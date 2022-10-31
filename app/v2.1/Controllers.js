@@ -256,9 +256,10 @@ function Route_Content(getObj) {
 	const level 		= dataLevelRow;
 	const randId  		= get_RandomKey();
 	const key 			= (appId + randId);
+	const markLevel		= '-'+ dataLevelRow +'-'+ dataLevelCol;
 	
 	switch(tagId) {
-		case (key +'home-'+ dataLevelRow +'-'+ dataLevelCol) :
+		case (key +'home'+ markLevel) :
 			globalData[tagId]['moduleId'] = tagModule_Default;
 			Home({
 				'setFunction': 'Main',
@@ -270,7 +271,7 @@ function Route_Content(getObj) {
 		break;
 		
 		// myhris/employee
-		case (key +'emp-'+ dataLevelRow +'-'+ dataLevelCol) :
+		case (key +'emp'+ markLevel) :
 			globalData[tagId]['moduleId'] = 'emp';
 			Employee_Profile({
 				'setFunction': 'Main',
@@ -283,7 +284,7 @@ function Route_Content(getObj) {
 		// myhris/employee 
 		
 		// myhris/parameter
-		case (key +'prm-lv-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-lv'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-lv';
 			Parameter_Leave_Type({
 				'setFunction': 'Main',
@@ -293,7 +294,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		case (key +'prm-hdy-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-hdy'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-hdy';
 			Parameter_Holiday_Type({
 				'setFunction': 'Main',
@@ -303,7 +304,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		case (key +'prm-edu-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-edu'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-edu';
 			Parameter_Educational_Stage({
 				'setFunction': 'Main',
@@ -313,7 +314,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		case (key +'prm-mjr_sbj-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-mjr_sbj'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-mjr_sbj';
 			Parameter_Major_Subject({
 				'setFunction': 'Main',
@@ -323,7 +324,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		case (key +'prm-rlg-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-rlg'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-rlg';
 			Parameter_Religion({
 				'setFunction': 'Main',
@@ -333,7 +334,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		case (key +'prm-rel-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-rel'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-rel';
 			Parameter_Relationship({
 				'setFunction': 'Main',
@@ -343,7 +344,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		case (key +'prm-bk-'+ dataLevelRow +'-'+ dataLevelCol) : 
+		case (key +'prm-bk'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-bk';
 			Parameter_Bank({
 				'setFunction': 'Main',
