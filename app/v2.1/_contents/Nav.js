@@ -45,7 +45,7 @@ function navFetch() {
 			} else if (myObj.status === 'reject') {
 
 				// components/key
-				unset_LoginKey("loginKey");
+				unset_LoginKey();
 				// controllers
 				Load_Redirect();
 

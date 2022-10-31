@@ -203,7 +203,7 @@ function set_Map_Table(getObj) {
 			}
 			
 			let mytimer = setTimeout(() => {
-					_set_Map_Table_Excute({
+					_set_Map_Table_Execute({
 									'mapTableType': 'append',
 									'tagId': tagId,
 									'tableHead': getObj.tableHead,
@@ -237,7 +237,7 @@ function set_Map_Table_After_Add(getObj) {
 	const dataTable		= getObj.dataTable;
 	
 	$.map(dataTable, ( rowData, x ) => {
-		_set_Map_Table_Excute({
+		_set_Map_Table_Execute({
 						'mapTableType': 'append',
 						'tagId': tagId,
 						'tableHead': getObj.tableHead,
@@ -257,7 +257,7 @@ function set_Map_Table_After_Edit(getObj) {
 	const dataTable		= getObj.dataTable;
 	
 	$.map(dataTable, ( rowData, x ) => {
-		_set_Map_Table_Excute({
+		_set_Map_Table_Execute({
 					'mapTableType': 'replace',
 					'tagId': tagId,
 					'tableHead': getObj.tableHead,
@@ -267,7 +267,7 @@ function set_Map_Table_After_Edit(getObj) {
 	}); // row 
 }
 
-function _set_Map_Table_Excute(getObj) {
+function _set_Map_Table_Execute(getObj) {
 	/*
 	consumer: 
 		set_Map_Table,

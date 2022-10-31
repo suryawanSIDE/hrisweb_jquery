@@ -620,7 +620,7 @@ function Parameter_Educational_Stage(getObj) {
                 } else if (myObj.status === 'reject') {
 
                     // components/key
-                    unset_LoginKey("loginKey");
+                    unset_LoginKey();
 
                     // controllers
                     Load_Redirect();
@@ -818,7 +818,7 @@ function Parameter_Educational_Stage(getObj) {
                 } else if (myObj.status === 'reject') {
 
                     // components/key
-                    unset_LoginKey("loginKey");
+                    unset_LoginKey();
 
                     // controllers
                     Load_Redirect();
