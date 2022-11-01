@@ -263,8 +263,12 @@ function set_Map_Table_After_Edit(getObj) {
 	globalData[tagId]['dataTaskActive']['formChange'] = '';
 	
 	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
-	contentForm.find(".my-form-header .form-action-new-form").removeClass("my-hide");
-	contentForm.find(".my-form-header .form-action-reload").removeClass("my-hide");
+	if (contentForm.find(".my-form-header .form-action-new_form").prop("disabled") === true) {
+		contentForm.find(".my-form-header .form-action-new_form").prop("disabled", false); 
+	}
+	if (contentForm.find(".my-form-header .form-action-reload").prop("disabled") === true) {
+		contentForm.find(".my-form-header .form-action-reload").prop("disabled", false); 
+	}
 	
 	$.map(dataTable, ( rowData, x ) => {
 		_set_Map_Table_Execute({

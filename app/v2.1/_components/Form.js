@@ -70,7 +70,7 @@ function set_Form_Button(getObj) {
 	let btn_refresh	 = '';
 	if (getObj.action === 'add' || getObj.action === 'edit') {
 		btn_new_form = `<div class="btn-group">
-							<button ${getObj.eventNewForm} class="btn btn-default btn-sm form-action-new-form">
+							<button ${getObj.eventNewForm} class="btn btn-default btn-sm form-action-new_form">
 								<span class="glyphicon glyphicon-plus"></span><span class="dekstop-label"> New</span>
 							</button>	
 						</div>`;
@@ -619,14 +619,11 @@ function _validate_Input(thisTarget, tagId, classXY) {
 	const requireStatus	= $(thisTarget).attr("data-require");
 	
 	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
-	const btn_new_hide  = contentForm.find(".my-form-header .form-action-new-form").hasClass(".my-hide");
-	const btn_re_hide  = contentForm.find(".my-form-header .form-action-reload").hasClass(".my-hide");
-	
-	if (btn_new_hide === false) {
-		contentForm.find(".my-form-header .form-action-new-form").addClass("my-hide");
+	if (contentForm.find(".my-form-header .form-action-new_form").prop("disabled") === false) {
+		contentForm.find(".my-form-header .form-action-new_form").prop("disabled", true); 
 	}
-	if (btn_re_hide === false) {
-		contentForm.find(".my-form-header .form-action-reload").addClass("my-hide");
+	if (contentForm.find(".my-form-header .form-action-reload").prop("disabled") === false) {
+		contentForm.find(".my-form-header .form-action-reload").prop("disabled", true); 
 	}
 	
 	let title_form  = get_Form_Title(tagId);
