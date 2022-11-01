@@ -1046,18 +1046,7 @@ function _table_Height(getObj) {
 		
 		if (dataLevelRow == 0) {
 			baseEl_Tb_Box.css("height", tableBoxHeight +"px");
-		} else {
-			/*
-			let fix_tableBoxHeight = 0
-			if (tableHeight < tableBoxHeight) {
-				fix_tableBoxHeight = (tableHeight+7);
-			} else {
-				fix_tableBoxHeight = tableBoxHeight;
-			}	
-			
-			baseEl_Tb_Box.css("height", fix_tableBoxHeight +"px");
-			*/
-		}
+		} 
 		
 		// scroll position bottom
 		/*

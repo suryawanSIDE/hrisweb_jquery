@@ -107,8 +107,8 @@ function _select_List_Fixed(tagId, colId, targetThis) {
 	const dataTable_Index 	= globalData[tagId]['dataAutofill'][colId].dataTable_Index;
 	let baseEl_Item			= '';
 	
-	let title_form  = get_Form_Title(tagId);
-	globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+	// content/Form
+	set_TaskActive(tagId);
 	
 	if (formType === 'Form') {
 		baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
@@ -197,8 +197,8 @@ function _press_Input_List(e, tagId, dataTable_Index, colId) {
 			+" .autofill-action-search").click();
 	} else {
 		
-		let title_form  = get_Form_Title(tagId);
-		globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+		// content/Form
+		set_TaskActive(tagId);
 		
 	}
 }
@@ -340,8 +340,8 @@ function _select_List_Autofill(eventParam, tagId, colId, indexData, targetThis) 
 	const formType 			= globalData[tagId].formType;
 	let baseEl_Item			= '';
 	
-	let title_form  = get_Form_Title(tagId);
-	globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+	// content/Form
+	set_TaskActive(tagId);
 	
 	if (formType === 'Form') {
 		baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);

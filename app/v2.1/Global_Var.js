@@ -159,6 +159,10 @@ function set_Global_Data(tagId) {
 		if (globalData[tagId].hasOwnProperty('dataExportType') === false) {
 			globalData[tagId]['dataExportType'] = [];
 		}
+		// 	set default dataExportDecSep
+		if (globalData[tagId].hasOwnProperty('dataExportDecSep') === false) {
+			globalData[tagId]['dataExportDecSep'] = ['Dot (.)', 'Coma (,)'];
+		}
 		
 		// 	set default dataPermission
 		if (globalData[tagId].hasOwnProperty('dataPermission') === false) {

@@ -342,7 +342,8 @@ function Parameter_Religion(getObj) {
             'loadMethode': getObj.loadMethode,
             'reqAction': 'export',
 			'exportType': getObj.exportType,
-			'exportPage': getObj.exportPage
+			'exportPage': getObj.exportPage,
+            'exportDecSep': getObj.exportDecSep // export_decimal_separator
             });
 
     } // Export_Table
@@ -365,10 +366,12 @@ function Parameter_Religion(getObj) {
         const current_page  = dataPaging.current_page;
         let start_row       = (parseInt(display_row) * (parseInt(current_page)-1))
         
-		let exportType = '';
+		let exportType 	 = '';
+		let exportDecSep = '';
 		if (getObj.reqAction === 'export') {
 			
-			exportType = getObj.exportType;
+			exportType 	 = getObj.exportType;
+			exportDecSep = getObj.exportDecSep;
 			
 			if (getObj.exportPage === 'all_page') {
 				start_row	= 0;
@@ -432,6 +435,7 @@ function Parameter_Religion(getObj) {
                         'dataSort': dataSort,
                         'dataRules': globalData[tagId]['dataRules'],
 						'exportType': exportType,
+						'exportDecSep': exportDecSep, // export_decimal_separator
 						'selectedCb': selectedCb,
 						'selectedData': selectedData
                     }
@@ -1533,7 +1537,7 @@ function Parameter_Religion(getObj) {
                         } else if (myObj.status === 'reject') {
 
                             // components/key
-                            unset_LoginKey("sesUser");
+                            unset_LoginKey();
 
                             // controllers
                             Load_Redirect();
@@ -1610,14 +1614,16 @@ function Parameter_Religion_Event(eventParam, param_1, param_2, param_3, param_4
 	let eventResult= '';
     switch (eventParam) {
 		case 'Export_Table': 
-			const exportType = $("#my-confirm").find("input[name='export_type']:checked").val();
-			const exportPage = $("#my-confirm").find("input[name='export_page']:checked").val();
+			const exportType 	= $("#my-confirm").find("input[name='export_type']:checked").val();
+			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
+			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Parameter_Religion({
+			eventResult = Parameter_Bank({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
-				'exportPage': exportPage
+				'exportPage': exportPage,
+				'exportDecSep': exportDecSep 
 			});
 		break;
 		case 'Delete': 

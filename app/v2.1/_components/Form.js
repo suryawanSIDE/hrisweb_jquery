@@ -618,16 +618,7 @@ function _validate_Input(thisTarget, tagId, classXY) {
 	const inputType	 	= $(thisTarget).attr("type");
 	const requireStatus	= $(thisTarget).attr("data-require");
 	
-	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
-	if (contentForm.find(".my-form-header .form-action-new_form").prop("disabled") === false) {
-		contentForm.find(".my-form-header .form-action-new_form").prop("disabled", true); 
-	}
-	if (contentForm.find(".my-form-header .form-action-reload").prop("disabled") === false) {
-		contentForm.find(".my-form-header .form-action-reload").prop("disabled", true); 
-	}
-	
-	let title_form  = get_Form_Title(tagId);
-	globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+	set_TaskActive(tagId);
 
 	if (requireStatus === '1') {
 		
@@ -735,4 +726,19 @@ function _validate_Input_Submit(getObj) {
 	} // switchcase
 	
 	return alertField;
+}
+
+
+function set_TaskActive(tagId) {
+	const baseLevel 	= $("#level-"+ tagId);
+	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
+	if (contentForm.find(".my-form-header .form-action-new_form").prop("disabled") === false) {
+		contentForm.find(".my-form-header .form-action-new_form").prop("disabled", true); 
+	}
+	if (contentForm.find(".my-form-header .form-action-reload").prop("disabled") === false) {
+		contentForm.find(".my-form-header .form-action-reload").prop("disabled", true); 
+	}
+	
+	let title_form  = get_Form_Title(tagId);
+	globalData[tagId]['dataTaskActive']['formChange'] = title_form;
 }

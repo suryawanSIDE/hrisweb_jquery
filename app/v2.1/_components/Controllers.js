@@ -22,7 +22,7 @@ function Load_Module(targetThis, tagModule) {
 	set_Root({
 		'tagId': tagId
 		});
-	// this
+	// routes
 	Route_Content({
 		'tagId': tagId,
 		'loadMethode': 1, // note in global
@@ -41,7 +41,7 @@ function Load_Module_Replace(getObj) {
 	set_Root({
 		'tagId': getObj.tagId
 		});
-	// this
+	// routes
 	Route_Content({
 		'tagId': getObj.tagId,
 		'loadMethode': 1, // note in global
@@ -51,7 +51,7 @@ function Load_Module_Replace(getObj) {
 
 function Load_Module_Child(getObj) {
 		
-		// this
+		// routes
 		Route_Content( {
 			'tagId': getObj.tagId,
 			'loadMethode': 1 // note in global
@@ -66,7 +66,7 @@ function Reload_Content(tagId, loadMethod) {
 	// components/loader
 	_hide_Loader();
 
-	// this
+	// routes
 	Route_Content({
 		'tagId': tagId,
 		'loadMethode': loadMethod // note in global
@@ -94,7 +94,7 @@ function Refresh_Content(tagId) {
 	_hide_ShowRow(tagId);
 	_hide_FreezeCol(tagId);
 	
-	// this
+	// routes
 	Reload_Content(tagId, 2); 
 }
 
@@ -106,7 +106,7 @@ function Load_Paging(tagId, page) {
 	// components/paging
 	_page_Active(tagId, page)
 
-	// this
+	// routes
 	Reload_Content(tagId, 3); 
 }
 
@@ -142,7 +142,7 @@ function Arrow_Paging(tagId, next_page, action) {
 	// components/paging
 	_page_Active(tagId, action);
 
-	// this
+	// routes
 	Reload_Content(tagId, 4); 
 }
 
@@ -164,7 +164,7 @@ function Load_Filter(tagId, filterMethode) {
 	// update global data
 	set_Global_Data_Filter(tagId);
 
-	// this
+	// routes
 	Reload_Content(tagId, 6); 
 }
 
@@ -173,7 +173,7 @@ function Load_Sort(tagId, field) {
 	// components/table
 	_th_Sort(tagId, field);
 
-	// this
+	// routes
 	Reload_Content(tagId, 5); 
 }
 
@@ -195,7 +195,7 @@ function Load_Search(tagId, srcMethode) {
 	// update global data
 	set_Global_Data_Search(tagId);
 
-	// this
+	// routes
 	Reload_Content(tagId, 6); 
 }
 
@@ -209,7 +209,7 @@ function Load_Display_Row(tagId, new_display_row) {
 	// components/topbar
 	_set_active_DisplayRow(tagId, new_display_row);
 
-	// this
+	// routes
 	Reload_Content(tagId, 7); 
 }
 
@@ -221,7 +221,7 @@ function Load_Freeze_Col(tagId, new_freezecol) {
 	// components/topbar
 	_set_active_Freeze_Col(tagId, new_freezecol);
 
-	// this
+	// routes
 	Reload_Content(tagId, 8); 
 }
 
@@ -246,125 +246,3 @@ function Load_Redirect() {
 	_clear_Body();
 }
 
-function Route_Content(getObj) {
-	
-	const tagId	    	= getObj.tagId;
-	const dataLevelRow	= globalData[tagId].dataLevelRow;
-	const dataLevelCol	= globalData[tagId].dataLevelCol;
-	
-	const loadMethode 	= getObj.loadMethode;
-	const level 		= dataLevelRow;
-	const randId  		= get_RandomKey();
-	const key 			= (appId + randId);
-	const markLevel		= '-'+ dataLevelRow +'-'+ dataLevelCol;
-	
-	switch(tagId) {
-		case (key +'home'+ markLevel) :
-			globalData[tagId]['moduleId'] = tagModule_Default;
-			Home({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);	
-		break;
-		
-		// myhris/employee
-		case (key +'emp'+ markLevel) :
-			globalData[tagId]['moduleId'] = 'emp';
-			Employee_Profile({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		// myhris/employee 
-		
-		// myhris/parameter
-		case (key +'prm-lv'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-lv';
-			Parameter_Leave_Type({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		case (key +'prm-hdy'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-hdy';
-			Parameter_Holiday_Type({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		case (key +'prm-edu'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-edu';
-			Parameter_Educational_Stage({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		case (key +'prm-mjr_sbj'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-mjr_sbj';
-			Parameter_Major_Subject({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		case (key +'prm-rlg'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-rlg';
-			Parameter_Religion({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		case (key +'prm-rel'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-rel';
-			Parameter_Relationship({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		case (key +'prm-bk'+ markLevel) : 
-			globalData[tagId]['moduleId'] = 'prm-bk';
-			Parameter_Bank({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-		break;
-		// myhris/parameter
-		
-		default:		
-			globalData[tagId]['moduleId'] = tagModule_Default;
-			Home({
-				'setFunction': 'Main',
-				'tagId': tagId,
-				'loadMethode': loadMethode,
-				'level': level
-				});
-			_screen_Adjust(tagId);
-	} // switchcase
-	
-}

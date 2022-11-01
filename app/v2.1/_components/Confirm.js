@@ -64,12 +64,30 @@ function Confirm_Form(tagId, action, nextFunction) {
 				}
 				export_type += '<input type="radio" name="export_type" value="'+val+'" '+active+'> '+val+'<br>';
 			});
+			
+			const dataExportDecSep = globalData[tagId]['dataExportDecSep'];
+			let export_decimal_separator = '';
+			$.map(dataExportDecSep, (val, x) => {
+				let active = '';
+				if (val === 'Dot (.)') {
+					active = 'checked';
+				} else {
+					active = '';
+				}
+				export_decimal_separator += '<input type="radio" name="export_decimal_separator" value="'+val+'" '+active+'> '+val+'<br>';
+			});
+			
+			
 			body = '<div class="container-fluid"><div class="row">'+
-					   '<div class="col-sm-6">'+
+					   '<div class="col-sm-4">'+
 						'<b>Export Type:</b><br>'+
 							export_type +
 					   '</div>'+
-					   '<div class="col-sm-6">'+
+					   '<div class="col-sm-4">'+
+					   '<b>Decimal Separator:</b><br>'+
+							export_decimal_separator +
+					   '</div>'+
+					   '<div class="col-sm-4">'+
 					   '<b>Export Page:</b><br>'+
 					   '<input type="radio" name="export_page" value="current_page" checked> Current Page<br>'+
 					   '<input type="radio" name="export_page" value="all_page"> ('+ get_Num_Row(tagId) +' rows)'+
