@@ -5,7 +5,7 @@ function set_Nav() {
 	const result = '<div id="my-navbox" class="my-navbox my-hide">'+ 
 					'<div class="my-navbox-inner">'+
 						'<div class="my-navbox-title">'+
-							'<a onclick="_navBar_Toggle()" class="btn btn-sm btn-default btn-sm" >'+
+							'<a onclick="_handle_Navbar()" class="btn btn-sm btn-default btn-sm" >'+
 									'<span class="glyphicon glyphicon-menu-left"></span></a>&nbsp;&nbsp;'+
 							'<span class="my-navtitle">'+ appName +'</span>'+
 						'</div>'+

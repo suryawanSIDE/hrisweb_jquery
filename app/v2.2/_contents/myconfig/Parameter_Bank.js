@@ -539,7 +539,7 @@ function Parameter_Bank(getObj) {
                             if (loadMethode === 1) { // first load
                                 // handling topbar right panel button filter and search (jika rightpanel === 1)
                                 // components/topbar
-                                _top_Right_Panel_Btn_Handler({
+                                _handler_btn_Filter_DataTable({
                                     'tagId': tagId,
                                     'btnFilter': 1, //> modify module
                                     'btnSearch': 1 //> modify module
@@ -585,7 +585,7 @@ function Parameter_Bank(getObj) {
                         set_Form_Title(tagId, titleBar);
                             
                         const formType = globalData[tagId].formType;
-                        set_Right_Panel_Bottom({
+                        set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': permission.btn_read, 
                                 'eventDetail': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `detail`)"',
@@ -1495,7 +1495,7 @@ function Parameter_Bank(getObj) {
 									// components/form
 									_reset_Form_Body(tagId),
 									//components/table
-									_bottom_Right_Panel_Btn_Handler(tagId, 1),
+									_handler_btn_Action_DataTable(tagId, 1),
 									// update form
 									_Form({
 										'tagId': tagId, 

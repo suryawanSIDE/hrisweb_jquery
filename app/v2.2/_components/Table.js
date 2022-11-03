@@ -1132,7 +1132,7 @@ function _reset_Cb_All(tagId) {
 	// enable/disable button edit & delete
 	const num_selected = parseInt(get_Num_Selected(tagId));
 	//components/table 
-	_bottom_Right_Panel_Btn_Handler(tagId, num_selected);
+	_handler_btn_Action_DataTable(tagId, num_selected);
 }
 
 function _select_Cb_All(tagId) {
@@ -1158,7 +1158,7 @@ function _select_Cb_All(tagId) {
 	// enable/disable button edit & delete
 	const num_selected = parseInt(get_Num_Selected(tagId)); // components/topbar
 	//components/table
-	_bottom_Right_Panel_Btn_Handler(tagId, num_selected);
+	_handler_btn_Action_DataTable(tagId, num_selected);
 }
 
 function _select_Cb(targetThis, tagId) {
@@ -1209,7 +1209,7 @@ function _select_Cb(targetThis, tagId) {
 		// components/topbar
 		set_Num_Selected(tagId, newSelectCount);
 		//components/table
-		_bottom_Right_Panel_Btn_Handler(tagId, newSelectCount);
+		_handler_btn_Action_DataTable(tagId, newSelectCount);
 	} // mobile
 	
 	function _dekstop() {
@@ -1259,7 +1259,7 @@ function _select_Cb(targetThis, tagId) {
 		// components/topbar
 		set_Num_Selected(tagId, newSelectCount);
 		//components/table
-		_bottom_Right_Panel_Btn_Handler(tagId, newSelectCount);
+		_handler_btn_Action_DataTable(tagId, newSelectCount);
 	} // dekstop
 }
 
@@ -1305,7 +1305,7 @@ function _select_Tr(targetThis, tagId) {
 		// components/topbar
 		set_Num_Selected(tagId, newSelectCount);
 		//components/table
-		_bottom_Right_Panel_Btn_Handler(tagId, newSelectCount);
+		_handler_btn_Action_DataTable(tagId, newSelectCount);
 	} // mobile
 	
 	function _dekstop() {
@@ -1354,7 +1354,7 @@ function _select_Tr(targetThis, tagId) {
 		// components/topbar
 		set_Num_Selected(tagId, newSelectCount);
 		//components/table
-		_bottom_Right_Panel_Btn_Handler(tagId, newSelectCount);
+		_handler_btn_Action_DataTable(tagId, newSelectCount);
 	} // dekstop
 }
 function _select_Tr_After_Add(getObj) {
@@ -1374,162 +1374,6 @@ function _select_Tr_After_Add(getObj) {
 		baseLevel.find(".my-tbody").eq(1).find(".my-tr")
 			.eq(indexTr).addClass("my-tr-active");
 	}
-}
-
-function set_Right_Panel_Bottom(getObj) {
-
-	let class_detail 	= 'my-hide';
-	let event_detail	= '';
-	let class_add		= 'my-hide';
-	let event_add		= '';
-	let class_edit		= 'my-hide';
-	let event_edit		= '';
-	let class_export	= 'my-hide';
-	let event_export	= '';
-	let class_import	= 'my-hide';
-	let event_import	= '';
-	let class_import_f	= 'my-hide';
-	let event_import_f	= '';
-	let class_delete	= 'my-hide';
-	let event_delete	= '';
-
-	if (getObj.btnDetail === 1) {
-		class_detail 	= 'my-block';
-		event_detail	= getObj.eventDetail;
-	}
-	if (getObj.btnAdd === 1) {
-		class_add		= 'my-block';
-		event_add		= getObj.eventAdd;
-	}
-	if (getObj.btnEdit === 1) {
-		class_edit		= 'my-block';
-		event_edit		= getObj.eventEdit;
-	}
-	if (getObj.btnExport === 1) {
-		class_export	= 'my-block';
-		event_export	= getObj.eventExport;
-	}
-	if (getObj.btnImport === 1) {
-		class_import	= 'my-block';
-		event_import	= getObj.eventImport;
-	}
-	if (getObj.btnImport_Format === 1) {
-		class_import_f	= 'my-block';
-		event_import_f	= getObj.eventImport_Format;
-	}
-	if (getObj.btnDelete === 1) {
-		class_delete	= 'my-block';
-		event_delete	= getObj.eventDelete;
-	}
-	
-	let btn_status = '';
-	if (
-	class_detail === 'my-hide' && 
-	class_add === 'my-hide' && 
-	class_edit === 'my-hide' && 
-	class_export === 'my-hide' && 
-	class_import === 'my-hide' && 
-	class_import_f === 'my-hide' && 
-	class_delete === 'my-hide'
-	) {
-		btn_status = 'my-hide';
-	}
-	
-	/*
-	mark-bottom-toolbar
-		parameter append button add formTr & action status 
-	*/
-	const result ='<div class="my-footer-action-box '+ btn_status +'">'+
-				'<span class="btn-group" role="toolbar">'+
-				
-					'<div class="toolbar-divider btn btn-default btn-sm btn-group">&nbsp;</div>'+ // pembatas
-					
-					// button save formTr
-					'<div class="btn-group formtr-button-box my-hide">'+
-						'<button '+getObj.eventSave_All+' class="btn btn-default btn-sm bottom-action-add-tr" disable>'+
-							'<span class="glyphicon glyphicon-floppy-disk"></span><span class="dekstop-label"> Save</span>'+
-						'</button>'+
-					'</div>'+
-					
-					'<div class="btn-group '+ class_detail +'">'+
-						'<button '+ event_detail +' class="btn btn-default btn-sm bottom-action-detail" disabled>'+
-							'<span class="glyphicon glyphicon-list-alt"></span><span class="dekstop-label"> Detail</span>'+
-						'</button>'+
-					'</div>'+
-					'<div class="btn-group '+ class_add +'">'+
-						'<button '+ event_add +' class="btn btn-default btn-sm bottom-action-add">'+
-							'<span class="glyphicon glyphicon-plus"></span><span class="dekstop-label"> Add</span>'+
-						'</button>'+													
-					'</div>'+
-					'<div class="btn-group '+ class_edit +'">'+
-						'<button '+ event_edit +' onclick="" class="btn btn-default btn-sm bottom-action-edit" disabled>'+
-							'<span class="glyphicon glyphicon-pencil"></span><span class="dekstop-label"> Edit</span>'+
-						'</button>'+							
-					'</div>'+
-					'<div class="btn-group '+ class_export +'">'+
-						'<button '+ event_export +' onclick="" class="btn btn-default btn-sm bottom-action-export">'+
-							'<span class="glyphicon glyphicon-download"></span><span class="dekstop-label"> Export</span>'+
-						'</button>'+							
-					'</div>'+
-					'<div class="btn-group '+ class_import +'">'+
-						'<button '+ event_import +' onclick="" class="btn btn-default btn-sm bottom-action-import">'+
-							'<span class="glyphicon glyphicon-upload"></span><span class="dekstop-label"> Import</span>'+
-						'</button>'+							
-					'</div>'+
-					'<div class="btn-group '+ class_import_f +'">'+
-						'<button '+ event_import_f +' onclick="" class="btn btn-default btn-sm bottom-action-import_format">'+
-							'<span class="glyphicon glyphicon-download"></span><span class="dekstop-label"> Format</span>'+
-						'</button>'+							
-					'</div>'+
-					'<div class="btn-group '+ class_delete +'">'+
-						'<button '+ event_delete +' class="btn btn-default btn-sm bottom-action-delete" disabled>'+
-							'<span class="glyphicon glyphicon-trash"></span><span class="dekstop-label"> Delete</span>'+
-						'</button>'+
-					'</div>'+					
-					'<div class="toolbar-divider btn btn-default btn-sm btn-group">&nbsp;</div>'+ // pembatas
-				'</span>'+
-				'</div>';
-				
-	const baseLevel 	= $("#level-"+ getObj.tagId);
-	baseLevel.find(".my-footer").eq(0)
-		.find(".panel-bottom-right").html(result);
-}
-
-function _bottom_Right_Panel_Btn_Handler(tagId, selectedCount) {
-
-	const baseLevel 	= $("#level-"+ tagId);
-	const baseEl 		= baseLevel.find(".my-footer").eq(0);
-	
-	// enable/disable button edit & delete
-	if (selectedCount > 0) {
-		if (baseEl.find(".bottom-action-detail").prop("disabled") === true) {
-			baseEl.find(".bottom-action-detail").prop("disabled", false); 
-		}
-		if (baseEl.find(".bottom-action-edit").prop("disabled") === true) {
-			baseEl.find(".bottom-action-edit").prop("disabled", false); 
-		}
-		if (baseEl.find(".bottom-action-delete").prop("disabled") === true) {
-			baseEl.find(".bottom-action-delete").prop("disabled", false); 
-		}
-	} else {
-		if (baseEl.find(".bottom-action-detail").prop("disabled") === false) {
-			baseEl.find(".bottom-action-detail").prop("disabled", true); 
-		}
-		if (baseEl.find(".bottom-action-edit").prop("disabled") === false) {
-			baseEl.find(".bottom-action-edit").prop("disabled", true); 
-		}
-		if (baseEl.find(".bottom-action-delete").prop("disabled") === false) {
-			baseEl.find(".bottom-action-delete").prop("disabled", true); 
-		}
-	}
-}
-
-function _show_FormTr_Button(tagId) {
-	const baseLevel 	= $("#level-"+ tagId);
-	const baseEl 		= baseLevel.find(".my-footer").eq(0);
-	
-	baseEl.find(".formtr-button-box").removeClass("my-hide");
-	baseEl.find(".bottom-action-add-tr").prop("disabled", true); 
 }
 
 

@@ -4,7 +4,7 @@ function set_TopBar(getObj) {
 	
 	if (getObj.level === 0 && getObj.loadMethode === 1) {  // note in global
 		if (globalData[tagId]['prevMark'] === 0) {
-			_navBar_Toggle(tagId);
+			_handle_Navbar(tagId);
 			_set_active_NavBar(tagId);
 		}
 	}
@@ -26,7 +26,7 @@ function get_TopBar(getObj) {
 	let freezeButton = '';
 	if (deviceType === 'dekstop') {
 		freezeButton = '<div class="btn-group">'+
-							'<button onclick="set_Panel_FreezeCol(`'+ tagId +'`)" class="btn btn-default btn-sm">'+
+							'<button onclick="set_Popup_FreezeCol(`'+ tagId +'`)" class="btn btn-default btn-xs">'+
 								'<span class="glyphicon glyphicon-indent-left"></span>&nbsp;<span class="dekstop-label">Freeze: </span><span class="my-value-freezecol dynamic-label">'+ globalData[tagId]['tableProperty']['tableFreeze'] +'</span>'+
 							'</button>'+
 							'<div class="my-container-freezecol my-hide"></div>'+
@@ -34,11 +34,17 @@ function get_TopBar(getObj) {
 	} 
 	
 	let toggle 		= '';
+	let toggle_tools= '';
 	let panel_right = '';
+	let panel_tools = '';
 	
 	if (getObj.loadMethode === 1 && getObj.level === 0 ) {
 		// hanya di load pada parent 1 kali
-		toggle	= '<button onclick="_navBar_Toggle(`'+ tagId +'`)" class="my-navtoogle btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-tasks"></span></button>';
+		toggle = '<button onclick="_handle_Navbar(`'+ tagId +'`)" class="my-navtoogle btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="Open navigate"><span class="glyphicon glyphicon-tasks"></span></button>';
+	}
+	
+	if (deviceType === 'dekstop' && getObj.rightPanel === 1) {
+		toggle_tools = '<button onclick="_handle_Topbar_Panel(`'+ tagId +'`, this)" class="my-btn-topbar-panel-toogle btn btn-default btn-sm btn-group" data-toggle="tooltip" data-placement="bottom" title="Open tools"><span class="my-toggle-icon glyphicon glyphicon-menu-up"></span></button></button>';
 	}
 	
 	if (getObj.loadMethode === 1 && getObj.rightPanel === 1) {
@@ -46,62 +52,93 @@ function get_TopBar(getObj) {
 				'<div class="my-topbar-right-inner">'+
 					'<span class="btn-group">'+
 						'<div class="toolbar-divider btn btn-default btn-sm btn-group">&nbsp;</div>'+ // pembatas
-						'<div class="btn-filter-box btn-group my-hide">'+
-							'<button onclick="set_Panel_Filter(`'+ tagId +'`)" class="btn-filter btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="Show panel filter">'+
-								'<span class="glyphicon glyphicon-filter"></span>'+
-							'</button>'+													
-						'</div>'+
-						'<div class="btn-search-box btn-group my-hide">'+
-							'<button onclick="set_Panel_Search(`'+ tagId +'`)" class="btn-search btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="Show panel search">'+
-								'<span class="glyphicon glyphicon-search"></span>'+
-							'</button>'+							
-						'</div>'+
-						
-						freezeButton+
 						
 						'<div class="btn-group">'+
-							'<button onclick="set_Panel_ShowRow(`'+ tagId +'`)" class="btn btn-default btn-sm">'+
-								'<span class="glyphicon glyphicon-resize-vertical"></span>&nbsp;<span class="dekstop-label">Show: </span><span class="my-value-showrow dynamic-label">'+ displayRow +'</span>'+
-							'</button>'+
-							'<div class="my-container-showrow my-hide"></div>'+
-						'</div>'+
-						'<div class="btn-group">'+
-							'<button class="btn btn-default btn-sm">'+
-								'<span class="dekstop-label">All: </span><span class="my-value-numrow dynamic-label">0</span>&nbsp;|&nbsp;'+
-								'<span class="dekstop-label">/Pg: </span><span class="my-value-numrowpage dynamic-label">0</span>&nbsp;|&nbsp;'+
-								'<span class="dekstop-label">Selected: </span><span class="my-value-numselected dynamic-label">0</span>'+
-							'</button>'+
+							'<span class="btn-info-table-data-dekstop btn btn-default btn-sm">'+
+								'<span class="">All: </span><span class="my-value-numrow dynamic-label">0</span>&nbsp;|&nbsp;'+
+								'<span class="">/Pg: </span><span class="my-value-numrowpage dynamic-label">0</span>&nbsp;|&nbsp;'+
+								'<span class="">Selected: </span><span class="my-value-numselected dynamic-label">0</span>'+
+							'</span>'+
 						'</div>'+
 						
 						'<button onclick="Refresh_Content(`'+ tagId +'`)" class="my-btn-refresh btn btn-default btn-sm btn-group" data-toggle="tooltip" data-placement="bottom" title="Reload content"><span class="glyphicon glyphicon-repeat"></span></button></button>'+
 						'<div class="toolbar-divider btn btn-default btn-sm btn-group">&nbsp;</div>'+ // pembatas
 					'</span>' + // btn-toolbar
 				'</div>' + // my-topbar-right-inner
-
-				'<button onclick="set_Right_Panel_Mob(`'+ tagId +'`)" class="btn btn-default btn-sm my-panel-right-toggle"><span class="glyphicon glyphicon-cog"></span></button>'; // toogle panel right
 				
+				// mobile toogle
+				'<button onclick="set_Topbar_Tool_Mob(`'+ tagId +'`, this)" class="btn btn-default btn-sm my-panel-right-toggle"><span class="my-toggle-icon-mob glyphicon glyphicon-cog toggle-inactive"></span></button>'; // toogle panel right
+				
+		panel_tools = 
+					'<div class="my-container-toolbar-collapse-inner my-hide">'+	
+					
+					'<span class="btn-group toolbar-group btn-action-table-data">'+
+						// disini akan terisi btn action
+					'</span>'+
+					
+					'<span class="btn-group toolbar-group btn-filter-table-data">'+
+						'<div class="toolbar-divider btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
+							
+							'<div class="btn-filter-box btn-group my-hide">'+
+								'<button onclick="set_Panel_Filter(`'+ tagId +'`)" class="btn-filter btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="Show panel filter">'+
+									'<span class="glyphicon glyphicon-filter"></span>'+
+								'</button>'+													
+							'</div>'+
+							
+							'<div class="btn-search-box btn-group my-hide">'+
+								'<button onclick="set_Popup_Search(`'+ tagId +'`)" class="btn-search btn btn-default btn-xs" data-toggle="tooltip" data-placement="bottom" title="Show panel search">'+
+									'<span class="glyphicon glyphicon-search"></span>'+
+								'</button>'+							
+							'</div>'+
+							
+							freezeButton+
+							
+							'<div class="btn-group">'+
+								'<button onclick="set_Popup_ShowRow(`'+ tagId +'`)" class="btn btn-default btn-xs">'+
+									'<span class="glyphicon glyphicon-resize-vertical"></span>&nbsp;<span class="dekstop-label">Show: </span><span class="my-value-showrow dynamic-label">'+ displayRow +'</span>'+
+								'</button>'+
+								'<div class="my-container-showrow my-hide"></div>'+
+							'</div>'+
+						
+						'<div class="toolbar-divider btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
+					'</span>'+
+					
+					'<span class="btn-group toolbar-group btn-paging-table-data">'+
+						// disini akan terisi paging
+					'</span>'+
+					
+					'<span class="toolbar-group btn-info-table-data-mobile my-hide">'+
+						// disini akan terisi btn info pada versi mobile
+					'</span>'+
+					
+				 '</div>'; // my-container-toolbar-collapse-inner
+				 
 	}
 	
 	const result = '<div class="my-topbar-inner">'+		
 				 	'<div class="my-topbar-left">'+
-						toggle + 
+						toggle + toggle_tools +
 						'<span class="my-titlebar">'+ getObj.titleBar +'</span>'+
 					'</div>'+  // my-topbar-left
-						'<div class="my-topbar-right">'+ 
-							panel_right +		
-						'</div>'+
 						
-					// hide container
+					'<div class="my-topbar-right">'+ 
+						panel_right +		
+					'</div>'+
+						
+					// hidden container
 					// dekstop
 					'<div class="my-container-search"></div>'+
-					'<div class="my-container-filter"></div>'+	
-					// mobile
-					'<div class="my-container-mobrightpanel"></div>'+
-				 '</div>'; // my-topbar
-	
+					'<div class="my-container-filter"></div>'+
+				'</div>'+ // my-topbar-inner
+				 
+				 '<div class="my-container-toolbar-collapse">'+
+					panel_tools
+				 '</div>';
+				
 	return result;
 }
-function _navBar_Toggle(tagId) {
+
+function _handle_Navbar(tagId) {
 	
 	const navStatus = $("#my-navbox").hasClass("my-block");
 	if (navStatus === false) {
@@ -118,6 +155,151 @@ function _set_active_NavBar(tagId) {
 	
 	$(".my-navli-a").removeClass("my-navli-a-active");
 	$("#nav-li-a-"+ tagId).addClass("my-navli-a-active");
+}
+
+function _handle_Topbar_Panel(tagId, targetThis) {
+	
+	const baseLevel  = $("#level-"+ tagId);
+	const icon 		 = $(targetThis).find(".my-toggle-icon");
+	const btn_status = icon.hasClass("glyphicon-menu-up");
+	
+	if (btn_status === true) {
+		$(targetThis).find(".my-toggle-icon").removeClass("glyphicon-menu-up");
+		$(targetThis).find(".my-toggle-icon").addClass("glyphicon-menu-down");
+		
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").removeClass("my-hide");
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").addClass("my-block");
+			
+	} else {
+		$(targetThis).find(".my-toggle-icon").removeClass("glyphicon-menu-down");
+		$(targetThis).find(".my-toggle-icon").addClass("glyphicon-menu-up");
+		
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").removeClass("my-block");
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").addClass("my-hide");
+	}
+}
+
+function set_Btn_Action_DataTable(getObj) {
+
+	let class_detail 	= 'my-hide';
+	let event_detail	= '';
+	let class_add		= 'my-hide';
+	let event_add		= '';
+	let class_edit		= 'my-hide';
+	let event_edit		= '';
+	let class_export	= 'my-hide';
+	let event_export	= '';
+	let class_import	= 'my-hide';
+	let event_import	= '';
+	let class_import_f	= 'my-hide';
+	let event_import_f	= '';
+	let class_delete	= 'my-hide';
+	let event_delete	= '';
+
+	if (getObj.btnDetail === 1) {
+		class_detail 	= 'my-block';
+		event_detail	= getObj.eventDetail;
+	}
+	if (getObj.btnAdd === 1) {
+		class_add		= 'my-block';
+		event_add		= getObj.eventAdd;
+	}
+	if (getObj.btnEdit === 1) {
+		class_edit		= 'my-block';
+		event_edit		= getObj.eventEdit;
+	}
+	if (getObj.btnExport === 1) {
+		class_export	= 'my-block';
+		event_export	= getObj.eventExport;
+	}
+	if (getObj.btnImport === 1) {
+		class_import	= 'my-block';
+		event_import	= getObj.eventImport;
+	}
+	if (getObj.btnImport_Format === 1) {
+		class_import_f	= 'my-block';
+		event_import_f	= getObj.eventImport_Format;
+	}
+	if (getObj.btnDelete === 1) {
+		class_delete	= 'my-block';
+		event_delete	= getObj.eventDelete;
+	}
+	
+	let btn_status = '';
+	if (
+	class_detail === 'my-hide' && 
+	class_add === 'my-hide' && 
+	class_edit === 'my-hide' && 
+	class_export === 'my-hide' && 
+	class_import === 'my-hide' && 
+	class_import_f === 'my-hide' && 
+	class_delete === 'my-hide'
+	) {
+		btn_status = 'my-hide';
+	}
+	
+	/*
+	mark-bottom-toolbar
+		parameter append button add formTr & action status 
+	*/
+	const result ='<div class="my-footer-action-box '+ btn_status +'">'+
+				'<span class="btn-group" role="toolbar">'+
+				
+					'<div class="toolbar-divider btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
+					
+					// button save formTr
+					'<div class="btn-group formtr-button-box my-hide">'+
+						'<button '+getObj.eventSave_All+' class="btn btn-default btn-xs bottom-action-add-tr" disable>'+
+							'<span class="glyphicon glyphicon-floppy-disk"></span><span class="dekstop-label"> Save</span>'+
+						'</button>'+
+					'</div>'+
+					
+					'<div class="btn-group '+ class_detail +'">'+
+						'<button '+ event_detail +' class="btn btn-default btn-xs bottom-action-detail" disabled>'+
+							'<span class="glyphicon glyphicon-list-alt"></span><span class="dekstop-label"> Detail</span>'+
+						'</button>'+
+					'</div>'+
+					'<div class="btn-group '+ class_add +'">'+
+						'<button '+ event_add +' class="btn btn-default btn-xs bottom-action-add">'+
+							'<span class="glyphicon glyphicon-plus"></span><span class="dekstop-label"> Add</span>'+
+						'</button>'+													
+					'</div>'+
+					'<div class="btn-group '+ class_edit +'">'+
+						'<button '+ event_edit +' onclick="" class="btn btn-default btn-xs bottom-action-edit" disabled>'+
+							'<span class="glyphicon glyphicon-pencil"></span><span class="dekstop-label"> Edit</span>'+
+						'</button>'+							
+					'</div>'+
+					'<div class="btn-group '+ class_export +'">'+
+						'<button '+ event_export +' onclick="" class="btn btn-default btn-xs bottom-action-export">'+
+							'<span class="glyphicon glyphicon-download"></span><span class="dekstop-label"> Export</span>'+
+						'</button>'+							
+					'</div>'+
+					'<div class="btn-group '+ class_import +'">'+
+						'<button '+ event_import +' onclick="" class="btn btn-default btn-xs bottom-action-import">'+
+							'<span class="glyphicon glyphicon-upload"></span><span class="dekstop-label"> Import</span>'+
+						'</button>'+							
+					'</div>'+
+					'<div class="btn-group '+ class_import_f +'">'+
+						'<button '+ event_import_f +' onclick="" class="btn btn-default btn-xs bottom-action-import_format">'+
+							'<span class="glyphicon glyphicon-download"></span><span class="dekstop-label"> Format</span>'+
+						'</button>'+							
+					'</div>'+
+					'<div class="btn-group '+ class_delete +'">'+
+						'<button '+ event_delete +' class="btn btn-default btn-xs bottom-action-delete" disabled>'+
+							'<span class="glyphicon glyphicon-trash"></span><span class="dekstop-label"> Delete</span>'+
+						'</button>'+
+					'</div>'+					
+					'<div class="toolbar-divider btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
+				'</span>'+
+				'</div>';
+				
+	const baseLevel = $("#level-"+ getObj.tagId);
+	baseLevel.find(".my-topbar").eq(0)
+		.find(".btn-action-table-data").html(result);
 }
 
 function set_TitleBar(tagId, titleBar) {
@@ -184,7 +366,7 @@ function get_Num_Row_Page(tagId) {
 	return result;
 }
 
-function set_Panel_ShowRow(tagId) {
+function set_Popup_ShowRow(tagId) {
 	
 	const baseLevel   = $("#level-"+ tagId);
 	const baseEl	  = baseLevel.find(".my-topbar").eq(0);
@@ -245,7 +427,7 @@ function set_Panel_ShowRow(tagId) {
 	
 }
 
-function set_Panel_FreezeCol(tagId) {
+function set_Popup_FreezeCol(tagId) {
 	
 	const baseLevel     = $("#level-"+ tagId);
 	const baseEl	    = baseLevel.find(".my-topbar").eq(0);
@@ -287,7 +469,7 @@ function set_Panel_FreezeCol(tagId) {
 	
 }
 
-function set_Panel_Search(tagId) {
+function set_Popup_Search(tagId) {
 	
 	const fieldSearch 	= globalData[tagId].fieldSearch;
 	
@@ -314,7 +496,7 @@ function set_Panel_Search(tagId) {
 							<span class="btn-group" role="toolbar">
 								<button onclick="Load_Search('${tagId}', 1)" class="btn btn-sm btn-default btn-group search-action-apply">Apply</button>&nbsp;
 								<button onclick="Load_Search('${tagId}', 2)" class="btn btn-sm btn-default btn-group search-action-clear">Clear</button>&nbsp;
-								<button onclick="_hide_Right_Panel_Popup('${tagId}', 'search')" class="btn btn-sm btn-default btn-group search-action-close">Close</button>
+								<button onclick="_hide_Topbar_Popup('${tagId}', 'search')" class="btn btn-sm btn-default btn-group search-action-close">Close</button>
 							</span>
 							</div>
 						</div>
@@ -396,7 +578,7 @@ function set_Panel_Filter(tagId) {
 							<span class="btn-group" role="toolbar">
 								<button onclick="Load_Filter('${tagId}', 1)" class="btn btn-sm btn-default btn-group">Apply</button>&nbsp;
 								<button onclick="Load_Filter('${tagId}', 2)" class="btn btn-sm btn-default btn-group">Clear</button>&nbsp;
-								<button onclick="_hide_Right_Panel_Popup('${tagId}', 'filter')" class="btn btn-sm btn-default btn-group">Close</button>
+								<button onclick="_hide_Topbar_Popup('${tagId}', 'filter')" class="btn btn-sm btn-default btn-group">Close</button>
 							</span>
 							</div>
 						</div>
@@ -443,7 +625,7 @@ function unset_Filter(tagId) {
 	set_Global_Data_Filter(tagId);
 }
 
-function _hide_Right_Panel_Popup(tagId, targetEl) {
+function _hide_Topbar_Popup(tagId, targetEl) {
 		
 	const baseLevel    = $("#level-"+ tagId);
 	const baseEl 	   = baseLevel.find(".my-topbar").eq(0);
@@ -495,14 +677,13 @@ function _set_active_Freeze_Col(tagId, new_display_row) {
 
 function _hide_FreezeCol(tagId) {
 		
-	
 	const baseLevel = $("#level-"+ tagId);
 	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
 	
 	baseEl.find(".my-container-freezecol").removeClass("my-block");
 	baseEl.find(".my-container-freezecol").addClass("my-hide");
 }
-function _top_Right_Panel_Btn_Handler(getObj) {
+function _handler_btn_Filter_DataTable(getObj) {
 		
 	const tagId 	= getObj.tagId;
 	const baseLevel = $("#level-"+ tagId);
@@ -537,24 +718,55 @@ function _top_Right_Panel_Btn_Handler(getObj) {
 	}
 }
 
-function set_Right_Panel_Mob(tagId) {
+function set_Topbar_Tool_Mob(tagId, targetThis) {
 	
-	const baseLevel   = $("#level-"+ tagId);
+	const baseLevel  = $("#level-"+ tagId);
+	const icon 		 = $(targetThis).find(".my-toggle-icon-mob");
+	const btn_status = icon.hasClass("toggle-active");
+	
 	const baseEl 	  = baseLevel.find(".my-topbar").eq(0);
-	const contentBody = baseEl.find(".my-topbar-right-inner").html();
-	const newBody	  = contentBody.replaceAll('btn-sm', 'btn-xs');
-	const result = `<div class="mob-right-panel my-move-tobottom">
-					<div class="mob-right-panel-body">${newBody}</div>
-					<div class="mob-right-panel-footer">
-						<hr class="my-hr">
-						<div style="text-align: right"><button onclick="_hide_Panel_Mob('${tagId}')" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-remove"></span> Close</button></div>
-					</div>
-				</div>`;	
-							
-	baseEl.find(".my-container-mobrightpanel").html(result);
-
-	// delete topbar dekstop
-	baseEl.find(".my-topbar-right-inner").html("");
+	const contentBody = baseEl.find(".btn-info-table-data-dekstop").html();
+	const status_mob  = baseEl.find(".btn-info-table-data-mobile").html();
+	
+	if (btn_status === false) {
+		$(targetThis).find(".my-toggle-icon-mob").removeClass("toggle-inactive");
+		$(targetThis).find(".my-toggle-icon-mob").addClass("toggle-active");
+		
+		if (status_mob === '') {
+			baseEl.find(".btn-info-table-data-mobile").html(contentBody);
+			
+			baseEl.find(".btn-info-table-data-mobile").removeClass("my-hide");
+			baseEl.find(".btn-info-table-data-mobile").addClass("my-block");
+			
+			// delete topbar dekstop
+			baseEl.find(".btn-info-table-data-dekstop").html("");
+		}
+			
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").removeClass("my-hide");
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").addClass("my-block");
+		
+	} else {
+		$(targetThis).find(".my-toggle-icon-mob").removeClass("toggle-active");
+		$(targetThis).find(".my-toggle-icon-mob").addClass("toggle-inactive");
+		
+		if (status_mob === '') {
+			baseEl.find(".btn-info-table-data-dekstop").html(contentBody);
+			
+			baseEl.find(".btn-info-table-data-mobile").removeClass("my-block");
+			baseEl.find(".btn-info-table-data-mobile").addClass("my-hide");
+			
+			// delete topbar mobile
+			baseEl.find(".btn-info-table-data-mobile").html("");
+		}
+		
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").removeClass("my-block");
+		baseLevel.find(".my-topbar").eq(0)
+			.find(".my-container-toolbar-collapse-inner").addClass("my-hide");
+		
+	}
 	
 }
 
@@ -567,4 +779,41 @@ function _hide_Panel_Mob(tagId) {
 
 	// delete topbar mobile
 	baseEl.find(".my-container-mobrightpanel").html("");
+}
+
+function _handler_btn_Action_DataTable(tagId, selectedCount) {
+
+	const baseLevel 	= $("#level-"+ tagId);
+	const baseEl 		= baseLevel.find(".my-topbar").eq(0);
+	
+	// enable/disable button edit & delete
+	if (selectedCount > 0) {
+		if (baseEl.find(".bottom-action-detail").prop("disabled") === true) {
+			baseEl.find(".bottom-action-detail").prop("disabled", false); 
+		}
+		if (baseEl.find(".bottom-action-edit").prop("disabled") === true) {
+			baseEl.find(".bottom-action-edit").prop("disabled", false); 
+		}
+		if (baseEl.find(".bottom-action-delete").prop("disabled") === true) {
+			baseEl.find(".bottom-action-delete").prop("disabled", false); 
+		}
+	} else {
+		if (baseEl.find(".bottom-action-detail").prop("disabled") === false) {
+			baseEl.find(".bottom-action-detail").prop("disabled", true); 
+		}
+		if (baseEl.find(".bottom-action-edit").prop("disabled") === false) {
+			baseEl.find(".bottom-action-edit").prop("disabled", true); 
+		}
+		if (baseEl.find(".bottom-action-delete").prop("disabled") === false) {
+			baseEl.find(".bottom-action-delete").prop("disabled", true); 
+		}
+	}
+}
+
+function _show_FormTr_Button(tagId) {
+	const baseLevel = $("#level-"+ tagId);
+	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
+	
+	baseEl.find(".formtr-button-box").removeClass("my-hide");
+	baseEl.find(".bottom-action-add-tr").prop("disabled", true); 
 }

@@ -12,7 +12,7 @@ function set_Paging(tagId) {
 	let result 	= '';
 	if (numrow > 0 && numrow > numrowpage) {
 
-		result = '<div class="my-footer-page-box"><ul class="pagination pagination-sm">';
+		result = '<span class="page-box"><ul class="pagination pagination-sm">';
 			
 			if (next_page > 1) {
 				result += '<li><a onclick="Arrow_Paging(`'+ tagId +'`, 1, `backward`)" class="nav-li-a nav-li-a-backward" href="#"><span class="glyphicon glyphicon-step-backward"></span></a></li>';
@@ -31,12 +31,12 @@ function set_Paging(tagId) {
 						  '<li><a onclick="Arrow_Paging(`'+ tagId +'`, '+ (max_group) +', `forward`)" class="nav-li-a nav-li-a-forward" href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>';
 			}
 
-		result += '</ul></div>'; // my-footer-page-box
+		result += '</ul></span>'; // page-box
 	}
 	
 	const baseLevel 	= $("#level-"+ tagId);
-	baseLevel.find(".my-footer").eq(0)
-		.find(".panel-bottom-left").html(result);
+	baseLevel.find(".my-topbar").eq(0)
+		.find(".btn-paging-table-data").html(result);
 }
 
 function unset_Paging(tagId) {
@@ -57,7 +57,7 @@ function unset_Paging(tagId) {
 function _page_Active(tagId, current_page) {
 	
 	const baseLevel 	= $("#level-"+ tagId);
-	const baseEl 		= baseLevel.find(".my-footer").eq(0);
+	const baseEl 		= baseLevel.find(".my-topbar").eq(0);
 	
     // reset     
 	baseEl.find(".nav-li-a").removeClass("my-page-active");

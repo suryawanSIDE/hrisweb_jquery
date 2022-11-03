@@ -89,8 +89,8 @@ function Refresh_Content(tagId) {
 	// components/confirm
 	_hide_Confirm();
 	// components/topbar
-	_hide_Right_Panel_Popup(tagId, 'search');
-	_hide_Right_Panel_Popup(tagId, 'filter');
+	_hide_Topbar_Popup(tagId, 'search');
+	_hide_Topbar_Popup(tagId, 'filter');
 	_hide_ShowRow(tagId);
 	_hide_FreezeCol(tagId);
 	

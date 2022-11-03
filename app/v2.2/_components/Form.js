@@ -16,8 +16,8 @@ function set_Containter_Form(tagId) {
 	const result = `<div style="${contentFormStyle}" class="my-content-form my-hide">
 					<div style="${formStyle}" class="my-form">
 						<div class="my-form-header">
-							<div class="my-form-header-left"></div>
-							<div class="my-form-header-right"></div>
+							<span class="my-form-header-action"></span>
+							<span class="my-form-header-title"></span>
 						</div>
 						<div class="container-fluid">
 							<div class="my-form-body row" style="height: ${(wHeight-40)}px;"></div>
@@ -53,12 +53,12 @@ function set_Containter_Form_Float(tagId) {
 function set_Form_Title(tagId, titleBar) {
 	const baseLevel = $("#level-"+ tagId);
 	baseLevel.find(".my-content-form").eq(0)
-		.find(".my-form-header .my-form-header-left").html("Form "+ titleBar);
+		.find(".my-form-header .my-form-header-title").html("Form "+ titleBar);
 }
 
 function get_Form_Title(tagId) {
 	const baseLevel = $("#level-"+ tagId);
-	const result	= baseLevel.find(".my-content-form").eq(0).find(".my-form-header .my-form-header-left").html();
+	const result	= baseLevel.find(".my-content-form").eq(0).find(".my-form-header .my-form-header-title").html();
 	return result;
 }
 
@@ -104,7 +104,7 @@ function set_Form_Button(getObj) {
 			
 	const baseLevel = $("#level-"+ tagId);
 	baseLevel.find(".my-content-form").eq(0)
-		.find(".my-form-header .my-form-header-right").html(result);
+		.find(".my-form-header .my-form-header-action").html(result);
 }
 
 function set_Content_Form(tagId, value) {
@@ -624,7 +624,7 @@ function _validate_Input(thisTarget, tagId, classXY) {
 			break;
 			default:
 				if (inputValue === '') {
-					if (notif === '') {
+					if (notif === '') {						
 						baseEl_Notif.html(get_Notif_Input());
 					} // notif
 				} else {

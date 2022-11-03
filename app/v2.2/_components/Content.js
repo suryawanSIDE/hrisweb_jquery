@@ -12,10 +12,7 @@ function set_Root(getObj) {
 					<div class="my-topbar my-topbar-parent"></div>
 					<div class="my-container"></div>
                     <div class="my-footer my-footer-parent">
-						<div class="row">
-							<div class="panel-bottom-left col-sm-6"></div>
-							<div class="panel-bottom-right col-sm-6"></div>
-						</div>
+						&nbsp;
 					</div>
 				   </div>`;
 
@@ -58,7 +55,7 @@ function _screen_Adjust(tagId) {
 		childMethod = globalData[tagId]['childMethod'];
 	}
 
-	_conten_Height(tagId);
+	_content_Height(tagId);
 
 	if (dataLevelRow > 0 && childMethod === 'default') {
 		// footer
@@ -73,7 +70,7 @@ function _screen_Adjust(tagId) {
 	} // dataLevelRow > 0
 }
 
-function _conten_Height(tagId) {
+function _content_Height(tagId) {
 	
 	const dataLevelRow   = parseInt(globalData[tagId].dataLevelRow);
 	const baseLevel 	 = $("#level-"+ tagId);
@@ -97,13 +94,7 @@ function _conten_Height(tagId) {
 	}
 
 	let boxHeight 	= (wHeight-otherBoxHeight-baseEl_Tobar.height()-baseEl_Footer.height());
-	/*
-	if (deviceType === 'mobile') { // mobile
-		boxHeight 	= (wHeight-otherBoxHeight-130); // 178 = tinggi (toolbar 50, footer 80)
-	} else {
-		boxHeight 	= (wHeight-otherBoxHeight-100); // 148 = tinggi (toolbar 50 footer 50)
-	}*/
-
+	
 	if (dataLevelRow === 0) {
 		baseEl_Content.css({
 			"height": boxHeight +"px",
@@ -129,10 +120,7 @@ function get_Container_Child(getObj) {
                         <div class="my-topbar my-topbar-child"></div>
                         <div class="my-container"></div>
 						<div class="my-footer my-footer-child">
-							<div class="row">
-								<div class="panel-bottom-left col-sm-6"></div>
-								<div class="panel-bottom-right col-sm-6"></div>
-							</div>
+							&nbsp;
 						</div>
                     </div>
                   </div>`;
