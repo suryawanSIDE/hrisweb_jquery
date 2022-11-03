@@ -94,6 +94,14 @@ function Refresh_Content(tagId) {
 	_hide_ShowRow(tagId);
 	_hide_FreezeCol(tagId);
 	
+	const baseLevel = $("#level-"+ tagId);
+	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
+	
+	baseEl.find(".btn-filter").removeClass("btn-info");
+	baseEl.find(".btn-filter").addClass("btn-default");
+	baseEl.find(".btn-search").removeClass("btn-info");
+	baseEl.find(".btn-search").addClass("btn-default");
+	
 	// routes
 	Reload_Content(tagId, 2); 
 }
@@ -153,11 +161,21 @@ function Load_Filter(tagId, filterMethode) {
 	globalData[tagId]['dataPaging'].numrowpage 		= 0;
 	globalData[tagId]['dataPaging'].current_page 	= dataPagingDefault.current_page;
 	globalData[tagId]['dataPaging'].next_page 		= dataPagingDefault.next_page;
-
-
+	
+	const baseLevel = $("#level-"+ tagId);
+	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
+		
+	if (filterMethode === 1) {
+		baseEl.find(".btn-filter").removeClass("btn-default");
+		baseEl.find(".btn-filter").addClass("btn-info");
+	}
+	
 	if (filterMethode === 2) { // reset global data filter
 		// components
 		unset_Filter(tagId); 
+		
+		baseEl.find(".btn-filter").removeClass("btn-info");
+		baseEl.find(".btn-filter").addClass("btn-default");
 	}
 
 	// components/topbar
@@ -184,11 +202,21 @@ function Load_Search(tagId, srcMethode) {
 	globalData[tagId]['dataPaging'].numrowpage 		= 0;
 	globalData[tagId]['dataPaging'].current_page 	= dataPagingDefault.current_page;
 	globalData[tagId]['dataPaging'].next_page 		= dataPagingDefault.next_page;
-
-
+	
+	const baseLevel = $("#level-"+ tagId);
+	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
+		
+	if (srcMethode === 1) {
+		baseEl.find(".btn-search").removeClass("btn-default");
+		baseEl.find(".btn-search").addClass("btn-info");
+	}
+	
 	if (srcMethode === 2) { // reset global data search
 		// components/topbar
 		unset_Search(tagId); 
+		
+		baseEl.find(".btn-search").removeClass("btn-info");
+		baseEl.find(".btn-search").addClass("btn-default");
 	}
 
 	// components/topbar

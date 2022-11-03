@@ -1610,6 +1610,9 @@ function Area_City(getObj) {
 		const clasForm_Index	= arrClass[1];
 		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
 			
+		// content/Form
+		set_TaskActive(tagId);
+		
 		let baseEl_Item			= '';
 		
 		let title_form  = get_Form_Title(tagId);
