@@ -18,9 +18,9 @@ function List_Fixed_Status_Active(tagId, colId) {
 		if (statusInnerEl === '') {
 			const currentValue 	 = baseEl_Item.find(".col-data-"+ colId).val();
 			
-			const a_Value	= 'Active';
+			const a_Value	= 'Aktif';
 			let a_Selected	= '';
-			const b_Value	= 'Inactive';
+			const b_Value	= 'Nonaktif';
 			let b_Selected	= '';
 
 			if (currentValue === a_Value) {

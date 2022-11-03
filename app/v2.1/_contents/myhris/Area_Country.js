@@ -1,5 +1,5 @@
 //> modify module
-function Parameter_Relationship(getObj) {
+function Area_Country(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function Parameter_Relationship(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Area_Country/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function Parameter_Relationship(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['pCategory'] = 'relationship';
+		globalData[tagId]['dataRules']['AreaLevel'] = 0;
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -183,52 +183,24 @@ function Parameter_Relationship(getObj) {
             'align': '',
                 'valueConverter': [],
             'field': 'col_status_sw_active',
-            'field_value_default': 'Active',
+            'field_value_default': 'Aktif',
             'require': 1
             });
 			
-		tdWidth    = 15;
+		tdWidth    = 20;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Nama',
+            'label': 'Negara',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_parameter_name',
+            'field': 'col_area',
             'field_value_default': '',
             'require': 1
             });
 			
-		tdWidth    = 30;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 4
-            'label': 'Deskrisi',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_description',
-            'field_value_default': '',
-            'require': 0
-            });
-		
-		tdWidth    = 8;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'Urutan',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'number',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_seq',
-            'field_value_default': '',
-            'require': 0
-            });
-				
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -245,12 +217,8 @@ function Parameter_Relationship(getObj) {
 
         const field = [
 				{
-                'label': 'Nama',
-                'field': 'col_parameter_name'
-                },
-				{
-                'label': 'Deskrisi',
-                'field': 'col_description'
+                'label': 'Negara',
+                'field': 'col_area'
                 }
             ];
 
@@ -343,7 +311,7 @@ function Parameter_Relationship(getObj) {
             'reqAction': 'export',
 			'exportType': getObj.exportType,
 			'exportPage': getObj.exportPage,
-            'exportDecSep': getObj.exportDecSep // export_decimal_separator
+			'exportDecSep': getObj.exportDecSep // export_decimal_separator
             });
 
     } // Export_Table
@@ -366,12 +334,12 @@ function Parameter_Relationship(getObj) {
         const current_page  = dataPaging.current_page;
         let start_row       = (parseInt(display_row) * (parseInt(current_page)-1))
         
-		let exportType 	 = '';
-		let exportDecSep = '';
+		let exportType 	  = '';
+		let exportDecSep  = '';
 		if (getObj.reqAction === 'export') {
 			
-			exportType 	 = getObj.exportType;
-			exportDecSep = getObj.exportDecSep;
+			exportType 	  = getObj.exportType;
+			exportDecSep  = getObj.exportDecSep;
 			
 			if (getObj.exportPage === 'all_page') {
 				start_row	= 0;
@@ -508,7 +476,7 @@ function Parameter_Relationship(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+                                    dataTable_Col['col_text_alert'] = rowData.col_area;
 									// additional field here 
 									
                                 dataTable_Row.push(dataTable_Col);
@@ -570,19 +538,19 @@ function Parameter_Relationship(getObj) {
                         set_Right_Panel_Bottom({
                             'tagId': tagId,
                             'btnDetail': permission.btn_read, 
-                                'eventDetail': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `detail`)"',
                             'btnAdd': permission.btn_create, 
-                                'eventAdd': 'onclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
                             'btnEdit': permission.btn_update,
-                                'eventEdit': 'onclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
                             'btnExport': permission.btn_export,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)"',
+                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)"',
                             'btnImport': permission.btn_import,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
                             'btnDelete': permission.btn_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)"',
+                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -606,7 +574,7 @@ function Parameter_Relationship(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_parameter_name;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
 								
@@ -731,7 +699,7 @@ function Parameter_Relationship(getObj) {
                     // update globalData 
                     globalData[tagId]['dataPaging'].numrow      = numrow;
                     globalData[tagId]['dataPaging'].numrowpage  = numrowpage;               
-                        // delete data globalData selected
+                        // delete globalData data selected
                         dataTable = dataTable.filter(function(val, i) {
                             return arrDeleteIndex.indexOf(i) == -1;                     
                         });
@@ -904,48 +872,18 @@ function Parameter_Relationship(getObj) {
 			col = (col+1); // 3
 			fieldForm.push({
                         'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_parameter_name
+                        'label': tableHead[col].label, // col_area
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-'+ tableHead[col].type + ' max(15)',
+						'maxlength': 200,
+						'placeholder': 'input-'+ tableHead[col].type + ' max(200)',
 						'readonly': ''
 					});
-					
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input_Textarea',
-                        'label': tableHead[col].label, // col_description
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'input-'+ tableHead[col].type,
-						'readonly': ''
-					});
-						
-			col = (col+1); // 5
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_seq
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 3,
-						'placeholder': 'input-'+ tableHead[col].type + ' max(3)',
-						'readonly': ''
-					});
-							
+			
         return fieldForm;
         
     } // _Form_Field
@@ -978,9 +916,9 @@ function Parameter_Relationship(getObj) {
         set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Parameter_Relationship_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="Area_Country_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
+            'eventNewForm': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `add`)"',
+			'eventReload_All': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `reload`)"'
         });
         
         // button focus
@@ -1065,7 +1003,7 @@ function Parameter_Relationship(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Parameter_Relationship_Event(`Form`, tagId, `edit`)
+						Area_Country_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1432,12 +1370,12 @@ function Parameter_Relationship(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+                                        dataTable_Col['col_text_alert'] = rowData.col_area;
 										// additional field
 										
                                     dataTable_Row.push(dataTable_Col);
                                     
-                                    // replace data global dataTable
+                                    // replace globalData dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
                                 }); // map row
@@ -1497,7 +1435,7 @@ function Parameter_Relationship(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_parameter_name;
+                                        currentData[x]['col_text_alert'] = rowData.col_area;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
 										
@@ -1618,7 +1556,7 @@ function Parameter_Relationship(getObj) {
 }
 
 //> modify module
-function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Area_Country_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1627,7 +1565,7 @@ function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, par
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Parameter_Bank({
+			eventResult = Area_Country({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1636,20 +1574,20 @@ function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, par
 			});
 		break;
 		case 'Delete': 
-			eventResult = Parameter_Relationship({
+			eventResult = Area_Country({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Parameter_Relationship({
+			eventResult = Area_Country({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Parameter_Relationship({
+			eventResult = Area_Country({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2

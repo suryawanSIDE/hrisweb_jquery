@@ -1,7 +1,7 @@
 const wWidth 				= $(window).width();
 const wHeight 				= $(window).height();
 
-var globalData 				= {};
+var globalData 				= [];
 var globalUser 				= [];
 const currentUrl 			= window.location.href;
 const splitUrl 				= currentUrl.split("/");
@@ -32,12 +32,6 @@ if (wWidth <= 767) {
 }
 
 function set_Global_Data(tagId) {
-	
-	// set global data randId
-	const randId = get_RandomKey();
-	if (globalData.hasOwnProperty(randId) === false) {
-		globalData[randId] = [];
-	} 
 	
 	// set global data 
 	if (globalData.hasOwnProperty(tagId) === false) {
@@ -259,30 +253,46 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 						next..
 					},
 				dataRules: {}, // to db
+				dataShowRow: [25, 50, next..],
 				
 				dataLevelRow: 0,
 				dataLevelCol: 0,
 				dataLevel_Id: 0,
+				styleModel: 'default',
 				tableProperty: [
+					tableFreeze: 2,
+					containerWidth: 0,
 					tableWidth: 0,
+					thLength: 0,
 					tdWidth: [td_width, ...],
 					tdParamWidth: [textarea_width, ...]
 					],
-				formType: Form/FormTr
 				dataTable: [
 						{col_td_1: value_td_1, col_td_2: value_td_2, next..},			
 						{col_td_1: value_td_1, col_td_2: value_td_2, next..},			
 						next..
 					],
+				eventSelectedTr: true/false,
+				prevMark: 0, 0/1
+				dataExportType: ['Excel', 'CSV'],
+				dataExportDecSep: ['Dot (.)', 'Coma (,)'];
 				dataPermission: {
 						create: 1
 						read: 1
 						next..
 					},
+				formType: Form/FormTr,
 				dataForm: [
 						{td_1, td_2, next..},
 						{td_1, td_2, next..},
 						next..
+					],
+				dataAutofill_Param: [
+						col: col,
+						listRequest: myios_project_number,
+						listFormat': list/table
+						selectedFunction: Inspection_Plan_Event,
+						eventParam: _selected_Project
 					],
 				dataAutofill: {
 					row-col: {
@@ -293,9 +303,20 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 								{data_1, data_2, next..},
 							]
 						}
-					}
-					
+					},
+				dataTimer: {
+						__Fetch_Data: [setTimeout ID],
+						set_Map_Table: [setTimeout ID],
+						_Save_Data: [setTimeout ID],
+						__process_Save_add: [setTimeout ID],
+						__process_Save_edit: [setTimeout ID],
+						_Form: [setTimeout ID],
+						__process_Form_reload: [setTimeout ID],
+					},
+				dataTaskActive: {
+					formChange: 'title form'
 				},
+			},
 	tagId_next: {}
 	}
 

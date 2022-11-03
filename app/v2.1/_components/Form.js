@@ -173,6 +173,15 @@ function _text_Pwd() {
 	}
 }
 
+function add_Class_Row(contentForm) {
+	/*
+	jika 
+	components/Form/___Form_Item
+	ingin ditampilkan perbaris maka bungkus result dengan ini
+	*/
+	return `<div class="col-sm-12"><div class="row">${contentForm}</div></div>`;
+}
+
 function get_Form_Item_Tab(getObj) {
 	
 	let li_tabNav = '';
@@ -244,77 +253,34 @@ function get_Map_Form_Input(getObj) {
 		break;
 		default:
 			$.map(getObj.fieldForm, ( colData, x ) => {
+				
+				// add new obj
+				colData['tagId'] 		= tagId;
+				colData['value'] 		= get_Value_Converter_Form(colData.valueConverter, data[colData.field]);
+				colData['row']   		= row;
+				colData['form_Index'] 	= getObj.form_Index;
+				colData['formType'] 	= getObj.formType;
+				
+				if (typeof colData['eventObject'] !== 'undefined') {
+					// add new obj
+						colData['eventObject']['tagId'] = tagId;
+						colData['eventObject']['row']   = row;
+						colData['eventInput']  = get_eventListener_Form(colData['eventObject']);
+				}
+				// clean 
+				colData['eventObject'] = ''; // clear eventObject
+						
 				switch (colData.input_Type) {
 					case 'get_Input_Select':
-						// add new obj
-						colData['tagId'] = tagId;
-						colData['value'] = get_Value_Converter_Form(colData.valueConverter, data[colData.field]);
-						colData['row']   = row;
-						colData['formType'] = getObj.formType;
-						
-						if (typeof colData['eventObject'] !== 'undefined') {
-							// add new obj
-								colData['eventObject']['tagId'] = tagId;
-								colData['eventObject']['row']   = row;
-							colData['eventInput']  = get_eventListener(colData['eventObject']);
-						}
-						// clean 
-						colData['eventObject'] = ''; // clear eventObject
-						
 						result.push(get_Input_Select(colData));
 					break;
 					case 'get_Input_Textarea':
-						// add new obj
-						colData['tagId'] = tagId;
-						colData['value'] = get_Value_Converter_Form(colData.valueConverter, data[colData.field]);
-						colData['row']   = row;
-						colData['formType'] = getObj.formType;
-						
-						if (typeof colData['eventObject'] !== 'undefined') {
-							// add new obj
-								colData['eventObject']['tagId'] = tagId;
-								colData['eventObject']['row']   = row;
-							colData['eventInput']  = get_eventListener(colData['eventObject']);
-						}
-						// clean 
-						colData['eventObject'] = ''; // clear eventObject
-						
 						result.push(get_Input_Textarea(colData));
 					break;
 					case 'get_Input_File':
-						// add new obj
-						colData['tagId'] = tagId;
-						colData['value'] = get_Value_Converter_Form(colData.valueConverter, data[colData.field]);
-						colData['row']   = row;
-						colData['formType'] = getObj.formType;
-						
-						if (typeof colData['eventObject'] !== 'undefined') {
-							// add new obj
-								colData['eventObject']['tagId'] = tagId;
-								colData['eventObject']['row']   = row;
-							colData['eventInput']  = get_eventListener(colData['eventObject']);
-						}
-						// clean 
-						colData['eventObject'] = ''; // clear eventObject
-						
 						result.push(get_Input_File(colData));
 					break;
 					default: // get_Input
-						// add new obj
-						colData['tagId'] = tagId;
-						colData['value'] = get_Value_Converter_Form(colData.valueConverter, data[colData.field]);
-						colData['row']   = row;
-						colData['formType'] = getObj.formType;
-						
-						if (typeof colData['eventObject'] !== 'undefined') {
-							// add new obj
-								colData['eventObject']['tagId'] = tagId;
-								colData['eventObject']['row']   = row;
-							colData['eventInput']  = get_eventListener(colData['eventObject']);
-						}
-						// clean 
-						colData['eventObject'] = ''; // clear eventObject
-						
 						result.push(get_Input(colData));
 				} // switchcase input type
 			});

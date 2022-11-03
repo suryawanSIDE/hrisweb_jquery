@@ -1,5 +1,5 @@
 //> modify module
-function Parameter_Relationship(getObj) {
+function Area_City(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function Parameter_Relationship(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Area_Sub/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function Parameter_Relationship(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['pCategory'] = 'relationship';
+		globalData[tagId]['dataRules']['AreaLevel'] = 2;
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -183,52 +183,38 @@ function Parameter_Relationship(getObj) {
             'align': '',
                 'valueConverter': [],
             'field': 'col_status_sw_active',
-            'field_value_default': 'Active',
+            'field_value_default': 'Aktif',
             'require': 1
             });
 			
-		tdWidth    = 15;
+		tdWidth    = 20;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Nama',
+            'label': 'Provinsi',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_parameter_name',
+            'field': 'col_parent_area',
             'field_value_default': '',
             'require': 1
             });
 			
-		tdWidth    = 30;
+		tdWidth    = 20;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 4
-            'label': 'Deskrisi',
+        tableHead.push({ // 3
+            'label': 'Kab/Kota',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_description',
+            'field': 'col_area',
             'field_value_default': '',
-            'require': 0
+            'require': 1
             });
-		
-		tdWidth    = 8;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'Urutan',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'number',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_seq',
-            'field_value_default': '',
-            'require': 0
-            });
-				
+			
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -245,12 +231,12 @@ function Parameter_Relationship(getObj) {
 
         const field = [
 				{
-                'label': 'Nama',
-                'field': 'col_parameter_name'
+                'label': 'Provinsi',
+                'field': 'col_parent_area'
                 },
 				{
-                'label': 'Deskrisi',
-                'field': 'col_description'
+                'label': 'Kab/Kota',
+                'field': 'col_area'
                 }
             ];
 
@@ -270,6 +256,13 @@ function Parameter_Relationship(getObj) {
 				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Provinsi',
+				'field': 'col_parent_area',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 1,
 				'defaultFilter': []
 				}
 			];
@@ -343,7 +336,7 @@ function Parameter_Relationship(getObj) {
             'reqAction': 'export',
 			'exportType': getObj.exportType,
 			'exportPage': getObj.exportPage,
-            'exportDecSep': getObj.exportDecSep // export_decimal_separator
+			'exportDecSep': getObj.exportDecSep // export_decimal_separator
             });
 
     } // Export_Table
@@ -366,12 +359,12 @@ function Parameter_Relationship(getObj) {
         const current_page  = dataPaging.current_page;
         let start_row       = (parseInt(display_row) * (parseInt(current_page)-1))
         
-		let exportType 	 = '';
-		let exportDecSep = '';
+		let exportType 	  = '';
+		let exportDecSep  = '';
 		if (getObj.reqAction === 'export') {
 			
-			exportType 	 = getObj.exportType;
-			exportDecSep = getObj.exportDecSep;
+			exportType 	  = getObj.exportType;
+			exportDecSep  = getObj.exportDecSep;
 			
 			if (getObj.exportPage === 'all_page') {
 				start_row	= 0;
@@ -508,9 +501,11 @@ function Parameter_Relationship(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+                                    dataTable_Col['col_text_alert'] = rowData.col_area;
 									// additional field here 
-									
+									dataTable_Col['col_parent_code']	 = rowData.col_parent_code;
+                                    dataTable_Col['col_parent_code_old'] = rowData.col_parent_code_old;
+                                   
                                 dataTable_Row.push(dataTable_Col);
 
                             }); // map row
@@ -570,19 +565,19 @@ function Parameter_Relationship(getObj) {
                         set_Right_Panel_Bottom({
                             'tagId': tagId,
                             'btnDetail': permission.btn_read, 
-                                'eventDetail': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="Area_City_Event(`Form`, `'+ tagId +'`, `detail`)"',
                             'btnAdd': permission.btn_create, 
-                                'eventAdd': 'onclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
                             'btnEdit': permission.btn_update,
-                                'eventEdit': 'onclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
                             'btnExport': permission.btn_export,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)"',
+                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_City_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_City_Event`)"',
                             'btnImport': permission.btn_import,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
                             'btnDelete': permission.btn_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)"',
+                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_City_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_City_Event`)"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -606,10 +601,12 @@ function Parameter_Relationship(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_parameter_name;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								
+								currentData[selectedCb_Index]['col_parent_code']	= rowData.col_parent_code;
+								currentData[selectedCb_Index]['col_parent_code_old']= rowData.col_parent_code_old;
+								  
 						}); // map row
 						
 						// update global dataTable
@@ -731,7 +728,7 @@ function Parameter_Relationship(getObj) {
                     // update globalData 
                     globalData[tagId]['dataPaging'].numrow      = numrow;
                     globalData[tagId]['dataPaging'].numrowpage  = numrowpage;               
-                        // delete data globalData selected
+                        // delete globalData data selected
                         dataTable = dataTable.filter(function(val, i) {
                             return arrDeleteIndex.indexOf(i) == -1;                     
                         });
@@ -900,26 +897,11 @@ function Parameter_Relationship(getObj) {
 						'col': col
 						});	
 					}
-					
-			col = (col+1); // 3
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_parameter_name
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-'+ tableHead[col].type + ' max(15)',
-						'readonly': ''
-					});
-					
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input_Textarea',
-                        'label': tableHead[col].label, // col_description
+			
+			col = (col+1); 
+			fieldForm.push({ // 3
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_parent_area
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -927,25 +909,40 @@ function Parameter_Relationship(getObj) {
 						'require': tableHead[col].require,
 						'col': col,
 						'maxlength': -1,
-						'placeholder': 'input-'+ tableHead[col].type,
-						'readonly': ''
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 1, // search 1/0
+											'col': col
+										}
 					});
-						
-			col = (col+1); // 5
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'province',
+						'listFormat': 'list', // list/table
+						'selectedFunction': 'Area_City_Event',
+						'eventParam': '_selected_Province'
+						});	
+					}
+					
+			col = (col+1); // 4
 			fieldForm.push({
                         'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_seq
+                        'label': tableHead[col].label, // col_area
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 3,
-						'placeholder': 'input-'+ tableHead[col].type + ' max(3)',
+						'maxlength': 200,
+						'placeholder': 'input-'+ tableHead[col].type + ' max(200)',
 						'readonly': ''
 					});
-							
+			
         return fieldForm;
         
     } // _Form_Field
@@ -978,9 +975,9 @@ function Parameter_Relationship(getObj) {
         set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Parameter_Relationship_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="Area_City_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
+            'eventNewForm': 'onclick="Area_City_Event(`Form`, `'+ tagId +'`, `add`)"',
+			'eventReload_All': 'onclick="Area_City_Event(`Form`, `'+ tagId +'`, `reload`)"'
         });
         
         // button focus
@@ -1029,7 +1026,9 @@ function Parameter_Relationship(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    
+                    dataTable['col_parent_code']	= '';
+                    dataTable['col_parent_code_old']= '';
+                                
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
@@ -1065,7 +1064,7 @@ function Parameter_Relationship(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Parameter_Relationship_Event(`Form`, tagId, `edit`)
+						Area_City_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1165,7 +1164,7 @@ function Parameter_Relationship(getObj) {
                         'fieldForm': fieldForm,
                         'data': getObj.data,
                         'row': row,
-                        'form_Index': getObj.form_Index,
+						'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
 
@@ -1209,6 +1208,9 @@ function Parameter_Relationship(getObj) {
 			'tableSeq': row,
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
+				// additional field form here
+				'col_parent_code': data['col_parent_code'],
+				'col_parent_code_old': data['col_parent_code_old'],
 			'arrChild': []
 			});
 		
@@ -1332,9 +1334,12 @@ function Parameter_Relationship(getObj) {
                     dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
-                
-				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
-                dataFormRow[x]	  = dataFormCol;
+					// additional field form here 
+					dataFormCol['col_parent_code']  	= globalData[tagId]['dataForm'][x].col_parent_code;
+					dataFormCol['col_parent_code_old']  = globalData[tagId]['dataForm'][x].col_parent_code_old;
+					 
+                dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
+                dataFormRow[x] 	  = dataFormCol;
                 
                 // alert text
                 if (alertField !== '') {
@@ -1432,16 +1437,18 @@ function Parameter_Relationship(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+                                        dataTable_Col['col_text_alert'] = rowData.col_area;
 										// additional field
-										
+										dataTable_Col['col_parent_code']	= rowData.col_parent_code;
+                                    	dataTable_Col['col_parent_code_old']= rowData.col_parent_code_old;
+                                       
                                     dataTable_Row.push(dataTable_Col);
                                     
-                                    // replace data global dataTable
+                                    // replace globalData dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
                                 }); // map row
-                                
+                                 
 								const mytimer = setTimeout(() => {
 									// components/table
 									// add new data to table
@@ -1497,17 +1504,20 @@ function Parameter_Relationship(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_parameter_name;
+                                        currentData[x]['col_text_alert'] = rowData.col_area;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										
+										currentData[x]['col_parent_code']	 = rowData.col_parent_code;
+                                        currentData[x]['col_parent_code_old']= rowData.col_parent_code_old;
+                                        
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
-									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
+									let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									// (sample) globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
-									
+									globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
+									globalData[tagId]['dataForm'][form_Index]['col_parent_code_old'] = rowData.col_parent_code_old;
+								
                                 }); // map row
                                 
                                 // update global dataTable
@@ -1581,6 +1591,51 @@ function Parameter_Relationship(getObj) {
             } // alertText
         } // setSave
     } // _Save_Data
+	
+	function __selected_Province(getObj) {
+		
+		const tagId 			= getObj.tagId;
+		const colId 			= getObj.colId;
+		const listIndex 		= getObj.listIndex;
+		const targetThis 		= getObj.targetThis;
+		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
+		const dataTable_Index 	= dataAutofill.dataTable_Index;
+		const dataTable 		= dataAutofill.dataTable;
+		
+		const baseLevel 		= $("#level-"+ tagId);
+		const formType 			= globalData[tagId]['formType'];
+		
+		const getClass			= $(targetThis).parents(".form-item").attr("class");
+		const arrClass			= getClass.split(" ");
+		const clasForm_Index	= arrClass[1];
+		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
+			
+		let baseEl_Item			= '';
+		
+		let title_form  = get_Form_Title(tagId);
+		globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+		
+		if (formType === 'Form') {
+			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
+		} else {
+			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
+		}
+		
+		// this input
+		baseEl_Item.find(".item-data-col .col-data").eq(1)
+			.val(dataTable[listIndex].col_area);
+		
+		// update globalData dataForm
+		globalData[tagId]['dataForm'][form_Index]['col_parent_code'] = dataTable[listIndex].col_code_area;
+	
+		
+		baseEl_Item.find(".select-container-"+ colId 
+			+" .list-item").removeClass("a-item-active");
+			
+		$(targetThis).addClass('a-item-active');
+		
+		_hide_List_Autofill(tagId, colId);
+	}
 // ======== FORM
 
     //> modify module
@@ -1606,7 +1661,10 @@ function Parameter_Relationship(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        default:
+        case '_selected_Province': 
+			functionResult = __selected_Province(getObj);
+		break;
+		default:
             functionResult = set_Alert({
                                 'type': 'danger', 
                                 'body': 'Undefined (setFunction)', 
@@ -1618,7 +1676,7 @@ function Parameter_Relationship(getObj) {
 }
 
 //> modify module
-function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Area_City_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1627,7 +1685,7 @@ function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, par
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Parameter_Bank({
+			eventResult = Area_City({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1636,26 +1694,35 @@ function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, par
 			});
 		break;
 		case 'Delete': 
-			eventResult = Parameter_Relationship({
+			eventResult = Area_City({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Parameter_Relationship({
+			eventResult = Area_City({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Parameter_Relationship({
+			eventResult = Area_City({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2
             });
         break;
-        default:
+        case '_selected_Province': 
+			eventResult = Area_City({
+				'setFunction': eventParam,
+				'tagId': param_1,
+				'colId': param_2,
+				'listIndex': param_3,
+				'targetThis': param_4
+			});
+		break;
+		default:
             eventResult = set_Alert({
                             'type': 'danger', 
                             'body': 'Undefined (eventParam)', 

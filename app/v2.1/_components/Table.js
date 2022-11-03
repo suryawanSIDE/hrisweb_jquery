@@ -628,7 +628,7 @@ function get_Td(getObj, action) {
 				$.map(getObj.valueConverter, ( valueConverter ) => {
 					
 					// global_funct
-					let objOther = get_Td_objOther({
+					let objOther = get_ObjOther_Td({
 										'tagId': tagId,
 										'valueConverter': valueConverter,
 										'file_path': getObj['otherParam'].file_path
@@ -734,7 +734,7 @@ function get_Td(getObj, action) {
 				$.map(getObj.valueConverter, ( valueConverter ) => {
 					
 					// global_funct
-					let objOther = get_Td_objOther({
+					let objOther = get_ObjOther_Td({
 										'tagId': tagId,
 										'valueConverter': valueConverter,
 										'file_path': getObj['otherParam'].file_path

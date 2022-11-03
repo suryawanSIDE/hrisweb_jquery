@@ -36,7 +36,40 @@ function Route_Content(getObj) {
 		break;
 		// myhris/employee 
 		
-		// myhris/parameter
+		// myhris/area 
+		case (key +'ar-cou'+ markLevel) :
+			globalData[tagId]['moduleId'] = 'ar-cou';
+			Area_Country({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'ar-pv'+ markLevel) :
+			globalData[tagId]['moduleId'] = 'ar-pv';
+			Area_Province({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'ar-cit'+ markLevel) :
+			globalData[tagId]['moduleId'] = 'ar-cit';
+			Area_City({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		// myhris/area 
+		
+		// myconfig/parameter
 		case (key +'prm-lv'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-lv';
 			Parameter_Leave_Type({

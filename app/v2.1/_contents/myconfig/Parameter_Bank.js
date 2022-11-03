@@ -13,7 +13,7 @@ function Parameter_Bank(getObj) {
                         }
                       
         if (loadMethode === 1) {  // note in global
-            // default global data
+            // default globalData
             // global
             set_Global_Data(tagId);  
 			
@@ -40,7 +40,7 @@ function Parameter_Bank(getObj) {
             set_Containter_Form(tagId);
         }
         if (loadMethode === 2) {
-            // default global data
+            // default globalData
             // global
             set_Global_Data(tagId);
 			
@@ -746,14 +746,14 @@ function Parameter_Bank(getObj) {
                     const current_page  = parseInt(globalData[tagId]['dataPaging'].current_page);
                     const next_page     = parseInt(globalData[tagId]['dataPaging'].next_page);
 
-                    // update global data 
+                    // update globalData 
                     globalData[tagId]['dataPaging'].numrow      = numrow;
                     globalData[tagId]['dataPaging'].numrowpage  = numrowpage;               
-                        // delete data global data selected
+                        // delete data globalData selected
                         dataTable = dataTable.filter(function(val, i) {
                             return arrDeleteIndex.indexOf(i) == -1;                     
                         });
-                        // update global data 
+                        // update globalData 
                     globalData[tagId]['dataTable'] = dataTable;
                     
                     // components/confirm 
@@ -1069,8 +1069,8 @@ function Parameter_Bank(getObj) {
                             'action': action,
                             'dataTable_Index': get_Num_Row_Page(tagId)+1,
                             'data': dataTable,
+							'form_Index': 0
                                // child =>  'levelRow_Child': levelRow_Child,
-                               // child =>  'form_Index': 0,
                             }));
                             
                     // components/loader
@@ -1118,8 +1118,8 @@ function Parameter_Bank(getObj) {
                                 'action': action,
                                 'dataTable_Index': i,
                                 'data': dataTable[i],
+								'form_Index': form_Index
                                     // child => 'levelRow_Child': levelRow_Child,
-                                    // child => 'form_Index': form_Index
                                 }));
                                 
                         form_Index++;
@@ -1198,6 +1198,7 @@ function Parameter_Bank(getObj) {
                         'fieldForm': fieldForm,
                         'data': getObj.data,
                         'row': row,
+                        'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
 
@@ -1233,7 +1234,7 @@ function Parameter_Bank(getObj) {
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
-			objForm = objForm + val;
+			objForm += val;
 		});
 		
 		// update global dataForm 
@@ -1260,7 +1261,7 @@ function Parameter_Bank(getObj) {
         } // formBody
         
         const result = `<div class="col-sm-6">
-                    <div class="form-item form-item-${dataTable_Index}">
+                    <div class="form-item form-index-${getObj.form_Index} form-item-${dataTable_Index}">
                     <div class="form-item-inner">
 
                         <div class="form-item-seq">${number}</div>
@@ -1331,7 +1332,8 @@ function Parameter_Bank(getObj) {
         }
         
         function __process_Save() {
-            let dataFormRow = {};
+            let dataKey_onForm  = []; // untuk menandai col_data_key berada pada index form berapa
+            let dataFormRow 	= {};
             for (let x=0; x<formLength; x++) {
                 let alertField  = '';
                 let formSeq     = baseEl_Form.eq(x).find(".form-item-seq").html();
@@ -1348,7 +1350,7 @@ function Parameter_Bank(getObj) {
                         let alertField_Temp = alertField;
                             alertField = _validate_Input_Submit({
                                     'baseEl_Form': baseEl_Form,
-                                    'formIndex': x,
+                                    'form_Index': x,
                                     'inputIndex': y,
                                     'alertField': alertField_Temp,
                                     'type': fieldForm[y].type,
@@ -1358,12 +1360,14 @@ function Parameter_Bank(getObj) {
                     } // require
                 } // input  
                     
-                    // add hiden value per column
+                    // add hiden value ke form 
                     //> modify module
                     dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
-                dataFormRow[x] = dataFormCol;
+                
+				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
+                dataFormRow[x]	  = dataFormCol;
                 
                 // alert text
                 if (alertField !== '') {
@@ -1532,6 +1536,11 @@ function Parameter_Bank(getObj) {
 										
                                     dataTable_Row.push(currentData[x]);
                                     
+									// apply perubahan ke form hidden value
+									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
+									// update globalData dataForm
+									// (sample) globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
+									
                                 }); // map row
                                 
                                 // update global dataTable

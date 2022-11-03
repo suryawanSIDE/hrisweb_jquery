@@ -32,7 +32,7 @@ function replaceNull(value) {
 	return new_value;
 }
 
-function get_Td_objOther(getObj) {
+function get_ObjOther_Td(getObj) {
 	let objOther = {};
 		switch(getObj.valueConverter) {
 			case '_event_open_file':
@@ -92,7 +92,7 @@ function get_Value_Converter_Form(converter, value) {
 	return result;
 }
 
-function get_eventListener(getObj) {
+function get_eventListener_Form(getObj) {
 	/*
 	consumer: 
 		components/Form
@@ -164,6 +164,7 @@ function get_List_Result(getObj) {
 	if (listFormat === 'table') {
 		
 		switch(listRequest) {
+			// sample
 			case 'myto_project_number':
 				result += '<table width="100%" class="table-bordered table-condensed">'+
 							'<tr>'+
@@ -173,6 +174,7 @@ function get_List_Result(getObj) {
 							'<th><center>PM</center></th>'+
 							'</tr>';
 			break;
+			// sample
 			default:
 				result += '<table width="100%" class="table-bordered">'+
 						 '<tr>'+
@@ -183,44 +185,93 @@ function get_List_Result(getObj) {
 	}
 	$.map(dataDb, ( rowData, x ) => {
 		
-		let label 	 	= rowData['col_display'];
+		let label 	 	= replaceNull(rowData['col_display']);
 		let label_index = label.replaceAll(' ', '_');
 		let selected 	= '';
 		
 		//> modify module
 		switch(listRequest) {
-			// myto
-			case 'myto_project_number':
+			// area
+			case 'country':
 				// update global dataAutofill
 				dataAutofill['dataTable'][label_index] = {
-								'col_display': rowData['col_display'], 
-								'col_project_number': rowData['col_project_number'], 
-								'col_client_name': rowData['col_client_name'], 
-								'col_project_manager': rowData['col_project_manager']
+								'col_display': label, 
+								'col_code_area': replaceNull(rowData['col_code_area']), 
+								'col_area': replaceNull(rowData['col_area'])
 								};
 				
-				if (currentValue === rowData['col_display']) {
+				if (currentValue === label) {
 					selected = 'a-item-active';
 				}
 				
 				if (listFormat === 'table') {
 					result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
 								'<td valign="top">'+ label +'</td>'+
-								'<td valign="top">'+ rowData['col_client_name'] +'</td>'+
-								'<td valign="top">'+ rowData['col_project_manager'] +'</td>'+
+								'<td valign="top">'+ replaceNull(rowData['col_code_area']) +'</td>'+
+								'<td valign="top">'+ replaceNull(rowData['col_area']) +'</td>'+
 								'</tr>';
 				} else {
 					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
 				}
 				
 			break;
-			// myto
+			case 'province':
+				// update global dataAutofill
+				dataAutofill['dataTable'][label_index] = {
+								'col_display': label, 
+								'col_code_area': replaceNull(rowData['col_code_area']), 
+								'col_area': replaceNull(rowData['col_area'])
+								};
+				
+				if (currentValue === label) {
+					selected = 'a-item-active';
+				}
+				
+				if (listFormat === 'table') {
+					result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
+								'<td valign="top">'+ label +'</td>'+
+								'<td valign="top">'+ replaceNull(rowData['col_code_area']) +'</td>'+
+								'<td valign="top">'+ replaceNull(rowData['col_area']) +'</td>'+
+								'</tr>';
+				} else {
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+				}
+				
+			break;
+			// area 
+			
+			// sample
+			case 'myto_project_number':
+				// update global dataAutofill
+				dataAutofill['dataTable'][label_index] = {
+								'col_display': label, 
+								'col_project_number': replaceNull(rowData['col_project_number']), 
+								'col_client_name': replaceNull(rowData['col_client_name']), 
+								'col_project_manager': replaceNull(rowData['col_project_manager'])
+								};
+				
+				if (currentValue === label) {
+					selected = 'a-item-active';
+				}
+				
+				if (listFormat === 'table') {
+					result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
+								'<td valign="top">'+ label +'</td>'+
+								'<td valign="top">'+ replaceNull(rowData['col_client_name']) +'</td>'+
+								'<td valign="top">'+ replaceNull(rowData['col_project_manager']) +'</td>'+
+								'</tr>';
+				} else {
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+				}
+				
+			break;
+			// sample
 			
 			default:
 				dataAutofill['dataTable'][label_index] = {
-								'col_display': rowData['col_display']
+								'col_display': label
 								};
-				if (currentValue === rowData['col_display']) {
+				if (currentValue === label) {
 					selected = 'a-item-active';
 				}
 				
