@@ -8,6 +8,13 @@ function set_Nav() {
 							'<a onclick="_handle_Navbar()" class="btn btn-sm btn-default btn-sm" >'+
 									'<span class="glyphicon glyphicon-menu-left"></span></a>&nbsp;&nbsp;'+
 							'<span class="my-navtitle">'+ appName +'</span>'+
+							
+							'<div class="my-navprofile">'+
+								'<table><tr>'+
+								'<td width="15%" valign="top"><span class="my-navprofile-img"><img class="img-responsive img-circle" src="app/_images/profile.png" alt="profile" /></span></td>'+
+								'<td><span class="my-navprofile-name">'+ globalUser.user_name +'</span></td>'+
+								'</tr></table>'+
+							'</div>'+
 						'</div>'+
 					'<div class="my-navbox-ul">'+
 						'<ul id="my-navul" class="my-navul">'+
@@ -73,7 +80,11 @@ function navFetch() {
 
 
 function set_Nav_Lists(getObj) {
-	
+	/*
+	consumer :
+		this
+	*/
+
 	//$("#nav-loader").remove();
 	$("#my-navul").html("");
 	
@@ -102,20 +113,25 @@ function set_Nav_Lists(getObj) {
 	});
 
 	function _getmap_Nav_Lists(getObj) {    
-	
+	/*
+	consumer: 
+		components
+			set_Nav_Lists(getObj)
+	*/
 		const randId  		= get_RandomKey(); // elements
-		var child_Padding 	= 10;
+		var child_Padding 	= 5;
 		let result 			= '';
 
 		$.map(getObj.objNav, ( valObj, i ) => {
 
-			var tagModule 	 = appId + randId + valObj.module_uniq;
-			var result_child = '';
-
+			let tagModule 	 = appId + randId + valObj.module_uniq;
+			let ul_margin	 = (child_Padding * (parseInt(valObj.nav_level)+1));
+			let result_child = '';
+			
 			result += get_Nav_List({ // elements
 					'tagModule': tagModule,
 					'data': valObj,
-					'padding': (child_Padding * parseInt(valObj.nav_level))
+					'parent_Index': i
 					});
 
 				// child
@@ -123,7 +139,7 @@ function set_Nav_Lists(getObj) {
 					let child_item = _getmap_Nav_Lists({
 						'objNav' : valObj['module_child']
 					});
-					result_child = '<ul id="child-'+ tagModule +'" class="my-navul my-hide">'+ child_item +'</ul>'; 
+					result_child = '<ul id="child-'+ tagModule +'" class="my-navul my-hide" style="margin-left: '+ (ul_margin) +'px; border-left: 2px solid #56B8C6;">'+ child_item +'</ul>'; 
 				}
 			result += result_child;
 			
@@ -135,34 +151,48 @@ function set_Nav_Lists(getObj) {
 
 
 function get_Nav_List(getObj) {
-	
+	/*
+	consumer: 
+		this _getmap_Nav_Lists()
+	*/
 	const tagModule = getObj.tagModule;
 	const data	 	= getObj.data;
-	let li_Click 	= '';	
+	let li_Click 	= '';
+	let li_Icon		= '';
 	
 	if (data.module_method == '1') {
+		li_Icon	 = '<span style="float: right;" class="toogle-nav-li glyphicon glyphicon-menu-right"></span>';
 		li_Click = '_open_Nav_Child(this, `'+ tagModule +'`)';
 	} else if (data.module_method == '2') {
+		li_Icon	 = '';
 		li_Click = 'Load_Module(this, `'+ tagModule +'`)';
 	}
 
-	const li = '<li id="nav-li-'+ tagModule +'" class="my-navli class-module-'+ data.module_method +'" style="margin-left: '+ (getObj.padding) +'px">'+ 
-				'<a onclick="'+ li_Click +'" class="my-navli-a" href="#">'+ data.module_display +'</a>'+
+	const li = '<li id="nav-li-'+ tagModule +'" class="my-navli">'+ 
+				'<a onclick="'+ li_Click +'" class="my-navli-a" href="#">'+ data.module_display + li_Icon + '</a>'+
 			'</li>';
 	
 	return li;
 }
 
 function _open_Nav_Child(targetThis, tagModule) {
+	/*
+	consumer :
+	*/
 	
 	const checkStatus = $("#child-"+ tagModule).hasClass("my-hide");
 	if (checkStatus === true) {		
 		$("#child-"+ tagModule).removeClass("my-hide");
 		$("#child-"+ tagModule).addClass("my-block");
-		$(targetThis).parent().addClass("my-navli-active");
+		
+		$(targetThis).find(".toogle-nav-li").removeClass("glyphicon-menu-right");
+		$(targetThis).find(".toogle-nav-li").addClass("glyphicon-menu-down");
 	} else {
 		$("#child-"+ tagModule).removeClass("my-block");
 		$("#child-"+ tagModule).addClass("my-hide");
+		
+		$(targetThis).find(".toogle-nav-li").removeClass("glyphicon-menu-down");
+		$(targetThis).find(".toogle-nav-li").addClass("glyphicon-menu-right");
 	}
 	
 }

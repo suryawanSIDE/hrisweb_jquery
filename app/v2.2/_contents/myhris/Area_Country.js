@@ -528,6 +528,11 @@ function Area_Country(getObj) {
 							globalData[tagId]['dataTimer']['__Fetch_Data'].push(mytimer);
                         } // check data empty
                         
+						// update globalData info_inTable
+						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
+						// update globalData info_inForm
+						globalData[tagId]['info_inForm']  = myObj.response_data.info_in_form;
+						
                         // components/topbar
                         set_TitleBar(tagId, titleBar);
                         
@@ -537,19 +542,19 @@ function Area_Country(getObj) {
                         const formType = globalData[tagId].formType;
                         set_Btn_Action_DataTable({
                             'tagId': tagId,
-                            'btnDetail': permission.btn_read, 
+                            'btnDetail': 1, 
                                 'eventDetail': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `detail`)"',
-                            'btnAdd': permission.btn_create, 
+                            'btnAdd': permission.act_create, 
                                 'eventAdd': 'onclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
-                            'btnEdit': permission.btn_update,
+                            'btnEdit': permission.act_update,
                                 'eventEdit': 'onclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
-                            'btnExport': permission.btn_export,
+                            'btnExport': 0,
                                 'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)"',
-                            'btnImport': permission.btn_import,
+                            'btnImport': 0,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
-                            'btnDelete': permission.btn_delete,
+                            'btnDelete': permission.act_delete,
                                 'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)"',
                         });
                     } // reqAction view
@@ -906,9 +911,9 @@ function Area_Country(getObj) {
         
         // button blur
         const baseEl = baseLevel.find(".my-footer").eq(0);
-              baseEl.find(".panel-bottom-right .bottom-action-detail").blur();
+              baseEl.find(".panel-bottom-right .btn-action-detail").blur();
               baseEl.find(".panel-bottom-right .bottom-action-add").blur();
-              baseEl.find(".panel-bottom-right .bottom-action-edit").blur();
+              baseEl.find(".panel-bottom-right .btn-action-edit").blur();
         
         // components/form
         _show_Form(tagId);
@@ -927,7 +932,7 @@ function Area_Country(getObj) {
                 .find(".my-form-header .form-action-close").focus();
         } else {
             baseLevel.find(".my-content-form").eq(0)
-                .find(".my-form-header .form-action-save").focus();
+                .find(".my-form-header .btn-form-action-save").focus();
         }
         
         // route 
@@ -1147,6 +1152,7 @@ function Area_Country(getObj) {
 			'tableSeq': row,
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
+				// additional field form here
 			'arrChild': []
 			});
 		
@@ -1207,7 +1213,7 @@ function Area_Country(getObj) {
         
         // button blur
         baseLevel.find(".my-content-form").eq(0)
-            .find(".my-form-header .form-action-save").blur();
+            .find(".my-form-header .btn-form-action-save").blur();
         
         //> modify module
         if (formLength > 300) {
@@ -1336,12 +1342,13 @@ function Area_Country(getObj) {
                                 const start_row     = (parseInt(display_row) * (parseInt(current_page)-1));
                                 
                                 const currentData   = globalData[tagId].dataTable;
-                                const dataLength    = Object.keys(currentData).length;
+                                var dataLength    	= Object.keys(currentData).length;
                                 const dataDb        = myObj.response_data.data; 
                                 
                                 set_Num_Row(tagId, numrow); 
                                 set_Num_Row_Page(tagId, numrowpage);
                                 
+                                var arr_IndexTr   = [];
                                 var dataTable_Row = [];
                                 $.map(dataDb, ( rowData, x ) => {
                                     let dataTable_Col = {};
@@ -1378,6 +1385,8 @@ function Area_Country(getObj) {
                                     // replace globalData dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
+                                arr_IndexTr.push(dataLength);
+								dataLength++;
                                 }); // map row
                                 
 								const mytimer = setTimeout(() => {
@@ -1391,10 +1400,10 @@ function Area_Country(getObj) {
 									}),
 									_select_Tr_After_Add({
 										'tagId': tagId,
-										'indexTr': dataLength
+										'arr_IndexTr': arr_IndexTr
 									}),
 									// components/topbar
-									set_Num_Selected(tagId, 1),                     
+									set_Num_Selected(tagId, num_success),                     
 									// components/form
 									_reset_Form_Body(tagId),
 									//components/table

@@ -4,18 +4,14 @@ function get_Table(getObj) {
 	const tableHead 	= getObj.tableHead;
 	const tableWidth	= 0;
 	
-	let styleModel = '';
 	let tableClass = '';
-	if (typeof globalData[tagId]['styleModel'] === 'undefined') {
-		styleModel = 'default';
+	let styleModel = globalData[tagId]['styleModel'];
+	if (styleModel === 'default') {
 		tableClass = 'table-bordered';
-	} else {
-		styleModel = globalData[tagId]['styleModel'];
-		if (styleModel === 'model_1') {
-			tableClass = 'table-bordered';
-		} else {
-			tableClass = '';
-		}
+	} else if (styleModel === 'model_1') {
+		tableClass = 'table-bordered';
+	} else if (styleModel === 'model_2') {
+		tableClass = '';
 	}
 	
 	if (deviceType === 'mobile') {
@@ -263,11 +259,11 @@ function set_Map_Table_After_Edit(getObj) {
 	globalData[tagId]['dataTaskActive']['formChange'] = '';
 	
 	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
-	if (contentForm.find(".my-form-header .form-action-new_form").prop("disabled") === true) {
-		contentForm.find(".my-form-header .form-action-new_form").prop("disabled", false); 
+	if (contentForm.find(".my-form-header .btn-form-action-new_form").prop("disabled") === true) {
+		contentForm.find(".my-form-header .btn-form-action-new_form").prop("disabled", false); 
 	}
-	if (contentForm.find(".my-form-header .form-action-reload").prop("disabled") === true) {
-		contentForm.find(".my-form-header .form-action-reload").prop("disabled", false); 
+	if (contentForm.find(".my-form-header .btn-form-action-reload").prop("disabled") === true) {
+		contentForm.find(".my-form-header .btn-form-action-reload").prop("disabled", false); 
 	}
 	
 	$.map(dataTable, ( rowData, x ) => {
@@ -1187,7 +1183,7 @@ function _select_Cb(targetThis, tagId) {
 		const baseEl_Tr_0	= baseEl_Tb_Box.find(".my-tbody").eq(0).find("."+ arrClass[1]);
 		
 		const statusCb 		= $(targetThis).prop("checked");
-		const indexCb		= baseEl_Tb_Box.find(".my-tbody").eq(0).indexOf(targetThis);
+		//const allCb 		= baseEl_Tb_Box.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0");
 		
 		if (statusCb === true) {
 			
@@ -1231,7 +1227,7 @@ function _select_Cb(targetThis, tagId) {
 		const baseEl_Tr_1	= baseEl_Tb_Box.find(".my-tbody").eq(1).find("."+ arrClass[1]);
 		
 		const statusCb 		= $(targetThis).prop("checked");
-		const allCb 		= baseEl_Tb_Box.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0");
+		//const allCb 		= baseEl_Tb_Box.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0");
 		
 		if (statusCb === true) {
 			
@@ -1359,24 +1355,26 @@ function _select_Tr(targetThis, tagId) {
 }
 function _select_Tr_After_Add(getObj) {
 	
-	const tagId		= getObj['tagId'];
-	const indexTr 	= getObj['indexTr'];
-	const baseLevel = $("#level-"+ tagId);
+	const tagId			= getObj['tagId'];
+	const arr_IndexTr 	= getObj['arr_IndexTr'];
+	const baseLevel 	= $("#level-"+ tagId);
 	
-    // selected cb                              
-	baseLevel.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0")
-		.eq(indexTr).prop("checked", true);
-	// selected tr
-	baseLevel.find(".my-tbody").eq(0).find(".my-tr")
-		.eq(indexTr).addClass("my-tr-active");
+	const baseEl_Tb_0 = baseLevel.find(".my-tbody").eq(0);
+	const baseEl_Tb_1 = baseLevel.find(".my-tbody").eq(1);
 	
-	if (deviceType === 'dekstop') {
-		baseLevel.find(".my-tbody").eq(1).find(".my-tr")
+	_reset_Cb_All(tagId);
+	
+	$.map(arr_IndexTr, ( indexTr ) => {
+		// selected cb                              
+		baseEl_Tb_0.find(".my-tr .my-td-cb-col-0")
+			.eq(indexTr).prop("checked", true);
+		// selected tr
+		baseEl_Tb_0.find(".my-tr")
 			.eq(indexTr).addClass("my-tr-active");
-	}
+		
+		if (deviceType === 'dekstop') {
+			baseEl_Tb_1.find(".my-tr")
+				.eq(indexTr).addClass("my-tr-active");
+		} // dekstop
+	}); // map 
 }
-
-
-
-
-

@@ -108,7 +108,7 @@ function _select_List_Fixed(tagId, colId, targetThis) {
 	let baseEl_Item			= '';
 	
 	// content/Form
-	set_TaskActive(tagId);
+	set_TaskActive_Form(tagId);
 	
 	if (formType === 'Form') {
 		baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
@@ -174,6 +174,7 @@ function List_Autofill(tagId, colId, searchForm) {
 	}
 }
 
+
 function _press_Input_List(e, tagId, dataTable_Index, colId) {
 	
 	const baseLevel = $("#level-"+ tagId);
@@ -192,13 +193,21 @@ function _press_Input_List(e, tagId, dataTable_Index, colId) {
 		e = window.event;
 		charCode = e.keyCode;
 	}
-	if (charCode === 13) { // enter	
+	
+	if (charCode === 13 && globalData[tagId]['enterPressed'].List === false) { // enter	
 		baseEl_Item.find(".select-container-"+ colId 
 			+" .autofill-action-search").click();
+		
+		globalData[tagId]['enterPressed'].List = true;
+		let mytimer = setTimeout(function(){
+			 globalData[tagId]['enterPressed'].List = false;
+		}, 1000); // 1 detik
+		
+		globalData[tagId]['dataTimer']['_press_Input_List'].push(mytimer);
 	} else {
 		
 		// content/Form
-		set_TaskActive(tagId);
+		set_TaskActive_Form(tagId);
 		
 	}
 }
@@ -341,7 +350,7 @@ function _select_List_Autofill(eventParam, tagId, colId, indexData, targetThis) 
 	let baseEl_Item			= '';
 	
 	// content/Form
-	set_TaskActive(tagId);
+	set_TaskActive_Form(tagId);
 	
 	if (formType === 'Form') {
 		baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);

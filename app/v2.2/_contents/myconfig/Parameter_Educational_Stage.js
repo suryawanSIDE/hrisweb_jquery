@@ -221,7 +221,7 @@ function Parameter_Educational_Stage(getObj) {
             'label': 'Urutan',
             'width': (tdWidth),
             'short': true,
-            'type': 'number',
+            'type': 'mynumber',
             'align': 'right',
                 'valueConverter': [],
             'field': 'col_seq',
@@ -560,6 +560,11 @@ function Parameter_Educational_Stage(getObj) {
 							globalData[tagId]['dataTimer']['__Fetch_Data'].push(mytimer);
                         } // check data empty
                         
+						// update globalData info_inTable
+						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
+						// update globalData info_inForm
+						globalData[tagId]['info_inForm']  = myObj.response_data.info_in_form;
+						
                         // components/topbar
                         set_TitleBar(tagId, titleBar);
                         
@@ -569,19 +574,19 @@ function Parameter_Educational_Stage(getObj) {
                         const formType = globalData[tagId].formType;
                         set_Btn_Action_DataTable({
                             'tagId': tagId,
-                            'btnDetail': permission.btn_read, 
+                            'btnDetail': 1, 
                                 'eventDetail': 'onclick="Parameter_Educational_Stage_Event(`Form`, `'+ tagId +'`, `detail`)"',
-                            'btnAdd': permission.btn_create, 
+                            'btnAdd': permission.act_create, 
                                 'eventAdd': 'onclick="Parameter_Educational_Stage_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Educational_Stage_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
-                            'btnEdit': permission.btn_update,
+                            'btnEdit': permission.act_update,
                                 'eventEdit': 'onclick="Parameter_Educational_Stage_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Educational_Stage_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
-                            'btnExport': permission.btn_export,
+                            'btnExport': 0,
                                 'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Educational_Stage_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Educational_Stage_Event`)"',
-                            'btnImport': permission.btn_import,
+                            'btnImport': 0,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
-                            'btnDelete': permission.btn_delete,
+                            'btnDelete': permission.act_delete,
                                 'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Educational_Stage_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Educational_Stage_Event`)"',
                         });
                     } // reqAction view
@@ -968,9 +973,9 @@ function Parameter_Educational_Stage(getObj) {
         
         // button blur
         const baseEl = baseLevel.find(".my-footer").eq(0);
-              baseEl.find(".panel-bottom-right .bottom-action-detail").blur();
+              baseEl.find(".panel-bottom-right .btn-action-detail").blur();
               baseEl.find(".panel-bottom-right .bottom-action-add").blur();
-              baseEl.find(".panel-bottom-right .bottom-action-edit").blur();
+              baseEl.find(".panel-bottom-right .btn-action-edit").blur();
         
         // components/form
         _show_Form(tagId);
@@ -989,7 +994,7 @@ function Parameter_Educational_Stage(getObj) {
                 .find(".my-form-header .form-action-close").focus();
         } else {
             baseLevel.find(".my-content-form").eq(0)
-                .find(".my-form-header .form-action-save").focus();
+                .find(".my-form-header .btn-form-action-save").focus();
         }
         
         // route 
@@ -1209,6 +1214,8 @@ function Parameter_Educational_Stage(getObj) {
 			'tableSeq': row,
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
+				// additional field form here
+				//'col_sample': data['col_sample'],
 			'arrChild': []
 			});
 		
@@ -1269,7 +1276,7 @@ function Parameter_Educational_Stage(getObj) {
         
         // button blur
         baseLevel.find(".my-content-form").eq(0)
-            .find(".my-form-header .form-action-save").blur();
+            .find(".my-form-header .btn-form-action-save").blur();
         
         //> modify module
         if (formLength > 300) {
@@ -1341,7 +1348,7 @@ function Parameter_Educational_Stage(getObj) {
                 // alert text
                 if (alertField !== '') {
                     let new_alertField = alertField.substring(0, (alertField.length-2));
-                        alertText = alertText + ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
+                        alertText += ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
                 }
             } // form length
                 
@@ -1385,6 +1392,9 @@ function Parameter_Educational_Stage(getObj) {
                         
                         if (myObj.status === 'success') {
                             
+							// global
+							_clear_TaskActive(tagId, '_final_action_Form');
+							
                             if (reqAction === 'add') {
                             
                                 const num_success   = myObj.response_data.num_success;
@@ -1400,12 +1410,13 @@ function Parameter_Educational_Stage(getObj) {
                                 const start_row     = (parseInt(display_row) * (parseInt(current_page)-1));
                                 
                                 const currentData   = globalData[tagId].dataTable;
-                                const dataLength    = Object.keys(currentData).length;
+                                var dataLength    	= Object.keys(currentData).length;
                                 const dataDb        = myObj.response_data.data; 
                                 
                                 set_Num_Row(tagId, numrow); 
                                 set_Num_Row_Page(tagId, numrowpage);
                                 
+                                var arr_IndexTr   = [];
                                 var dataTable_Row = [];
                                 $.map(dataDb, ( rowData, x ) => {
                                     let dataTable_Col = {};
@@ -1442,6 +1453,8 @@ function Parameter_Educational_Stage(getObj) {
                                     // replace data global dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
+                                arr_IndexTr.push(dataLength);
+								dataLength++;
                                 }); // map row
                                 
 								const mytimer = setTimeout(() => {
@@ -1455,10 +1468,10 @@ function Parameter_Educational_Stage(getObj) {
 									}),
 									_select_Tr_After_Add({
 										'tagId': tagId,
-										'indexTr': dataLength
+										'arr_IndexTr': arr_IndexTr
 									}),
 									// components/topbar
-									set_Num_Selected(tagId, 1),                     
+									set_Num_Selected(tagId, num_success),                     
 									// components/form
 									_reset_Form_Body(tagId),
 									//components/table
@@ -1508,7 +1521,7 @@ function Parameter_Educational_Stage(getObj) {
 									// apply perubahan ke form hidden value
 									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									// (sample) globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
+									// (sample) globalData[tagId]['dataForm'][form_Index]['col_sample'] 	= rowData.col_sample;
 									
                                 }); // map row
                                 

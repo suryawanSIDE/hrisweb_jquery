@@ -107,6 +107,16 @@ function set_Global_Data(tagId) {
 			globalData[tagId]['dataShowRow']  = [25];
 		}
 		
+		// 	set default info_inTable
+		if (globalData[tagId].hasOwnProperty('info_inTable') === false) {
+			globalData[tagId]['info_inTable'] = '';
+		}
+		
+		// 	set default info_inForm
+		if (globalData[tagId].hasOwnProperty('info_inForm') === false) {
+			globalData[tagId]['info_inForm'] = '';
+		}
+		
 		// 	set default dataLevelRow
 		if (globalData[tagId].hasOwnProperty('dataLevelRow') === false) {
 			globalData[tagId]['dataLevelRow'] = 0;
@@ -163,6 +173,17 @@ function set_Global_Data(tagId) {
 			globalData[tagId]['dataPermission'] = {};
 		}
 		
+		// 	set default enterPressed
+		if (globalData[tagId].hasOwnProperty('enterPressed') === false) {
+			globalData[tagId]['enterPressed'] = {
+				'Form': false,
+				'List': false,
+				'Search': false,
+				'Filter': false,
+				'Filter_Renge': false
+				};
+		}
+		
 		// 	set default formType
 		if (globalData[tagId].hasOwnProperty('formType') === false) {
 			globalData[tagId]['formType'] = '';
@@ -183,14 +204,20 @@ function set_Global_Data(tagId) {
 		
 		// 	set default dataAutofill
 		if (globalData[tagId].hasOwnProperty('dataTimer') === false) {
-			globalData[tagId]['dataTimer'] = {};
-			globalData[tagId]['dataTimer']['__Fetch_Data'] 	 		= [];
-			globalData[tagId]['dataTimer']['set_Map_Table']			= [];
-			globalData[tagId]['dataTimer']['_Save_Data'] 		 	= [];
-			globalData[tagId]['dataTimer']['__process_Save_add']	= [];
-			globalData[tagId]['dataTimer']['__process_Save_edit']	= [];
-			globalData[tagId]['dataTimer']['_Form'] 			 	= [];
-			globalData[tagId]['dataTimer']['__process_Form_reload']	= [];			
+			globalData[tagId]['dataTimer'] = {
+				'__Fetch_Data': [],
+				'set_Map_Table': [],
+				'_Save_Data': [],
+				'__process_Save_add': [],
+				'__process_Save_edit': [],
+				'_Form': [],
+				'__process_Form_reload': [],
+				'_press_Input': [],
+				'_press_Input_Search': [],
+				'_press_Input_Filter': [],
+				'_press_Input_Filter_Renge': [],
+				'_press_Input_List': []
+				};
 		}
 		
 		// 	set default dataTaskActive
@@ -255,6 +282,8 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 				dataRules: {}, // to db
 				dataShowRow: [25, 50, next..],
 				
+				info_inTable: '',
+				info_inForm: '',
 				dataLevelRow: 0,
 				dataLevelCol: 0,
 				dataLevel_Id: 0,
@@ -280,6 +309,13 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 						create: 1
 						read: 1
 						next..
+					},
+				enterPressed: {
+					'Form': true/false,
+					'List': true/false,
+					'Search': true/false,
+					'Filter': true/false,
+					'Filter_Renge': true/false
 					},
 				formType: Form/FormTr,
 				dataForm: [
@@ -312,6 +348,11 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 						__process_Save_edit: [setTimeout ID],
 						_Form: [setTimeout ID],
 						__process_Form_reload: [setTimeout ID],
+						_press_Input: [setTimeout ID],
+						_press_Input_Search: [setTimeout ID],
+						_press_Input_Filter: [setTimeout ID],
+						_press_Input_Filter_Renge: [setTimeout ID],
+						_press_Input_List: [setTimeout ID]	
 					},
 				dataTaskActive: {
 					formChange: 'title form'

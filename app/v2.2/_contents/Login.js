@@ -1,7 +1,7 @@
 
 function set_LoginForm() {
 	
-		const result = `<form onsubmit="Login_Submit();"><div class="login-block"><div class="login-box">
+		const result = `<div class="login-block"><div class="login-box">
 					<div class="login-box-head">
 						<span class="login-box-icon"></span>
 						<span class="login-box-title"><b>LOGIN</b></span>
@@ -20,7 +20,7 @@ function set_LoginForm() {
 					<div class="login-box-footer">
 						<center><button onclick="Login_Submit()" id="login-action-submit" class="btn btn-sm btn-primary">Submit</button></center>
 					</div>
-				</div></div></form>`;	
+				</div></div>`;	
 					
 	$("#my-confirm").html(result);
 	

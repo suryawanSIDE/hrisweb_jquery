@@ -555,6 +555,11 @@ function Area_City(getObj) {
 							globalData[tagId]['dataTimer']['__Fetch_Data'].push(mytimer);
                         } // check data empty
                         
+						// update globalData info_inTable
+						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
+						// update globalData info_inForm
+						globalData[tagId]['info_inForm']  = myObj.response_data.info_in_form;
+						
                         // components/topbar
                         set_TitleBar(tagId, titleBar);
                         
@@ -564,19 +569,19 @@ function Area_City(getObj) {
                         const formType = globalData[tagId].formType;
                         set_Btn_Action_DataTable({
                             'tagId': tagId,
-                            'btnDetail': permission.btn_read, 
+                            'btnDetail': 1, 
                                 'eventDetail': 'onclick="Area_City_Event(`Form`, `'+ tagId +'`, `detail`)"',
-                            'btnAdd': permission.btn_create, 
+                            'btnAdd': permission.act_create, 
                                 'eventAdd': 'onclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
-                            'btnEdit': permission.btn_update,
+                            'btnEdit': permission.act_update,
                                 'eventEdit': 'onclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
-                            'btnExport': permission.btn_export,
+                            'btnExport': 0,
                                 'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_City_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_City_Event`)"',
-                            'btnImport': permission.btn_import,
+                            'btnImport': 0,
                                 'eventImport': '',
                             'btnImport_Format': permission.format_import,
                                 'eventImport_Format': '',
-                            'btnDelete': permission.btn_delete,
+                            'btnDelete': permission.act_delete,
                                 'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_City_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_City_Event`)"',
                         });
                     } // reqAction view
@@ -924,7 +929,7 @@ function Area_City(getObj) {
 						'listRequest': 'province',
 						'listFormat': 'list', // list/table
 						'selectedFunction': 'Area_City_Event',
-						'eventParam': '_selected_Province'
+						'eventParam': '_select_Province'
 						});	
 					}
 					
@@ -965,9 +970,9 @@ function Area_City(getObj) {
         
         // button blur
         const baseEl = baseLevel.find(".my-footer").eq(0);
-              baseEl.find(".panel-bottom-right .bottom-action-detail").blur();
+              baseEl.find(".panel-bottom-right .btn-action-detail").blur();
               baseEl.find(".panel-bottom-right .bottom-action-add").blur();
-              baseEl.find(".panel-bottom-right .bottom-action-edit").blur();
+              baseEl.find(".panel-bottom-right .btn-action-edit").blur();
         
         // components/form
         _show_Form(tagId);
@@ -986,7 +991,7 @@ function Area_City(getObj) {
                 .find(".my-form-header .form-action-close").focus();
         } else {
             baseLevel.find(".my-content-form").eq(0)
-                .find(".my-form-header .form-action-save").focus();
+                .find(".my-form-header .btn-form-action-save").focus();
         }
         
         // route 
@@ -1271,7 +1276,7 @@ function Area_City(getObj) {
         
         // button blur
         baseLevel.find(".my-content-form").eq(0)
-            .find(".my-form-header .form-action-save").blur();
+            .find(".my-form-header .btn-form-action-save").blur();
         
         //> modify module
         if (formLength > 300) {
@@ -1403,12 +1408,13 @@ function Area_City(getObj) {
                                 const start_row     = (parseInt(display_row) * (parseInt(current_page)-1));
                                 
                                 const currentData   = globalData[tagId].dataTable;
-                                const dataLength    = Object.keys(currentData).length;
+                                var dataLength    	= Object.keys(currentData).length;
                                 const dataDb        = myObj.response_data.data; 
                                 
                                 set_Num_Row(tagId, numrow); 
                                 set_Num_Row_Page(tagId, numrowpage);
                                 
+                                var arr_IndexTr   = [];
                                 var dataTable_Row = [];
                                 $.map(dataDb, ( rowData, x ) => {
                                     let dataTable_Col = {};
@@ -1447,6 +1453,8 @@ function Area_City(getObj) {
                                     // replace globalData dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
+                                arr_IndexTr.push(dataLength);
+								dataLength++;
                                 }); // map row
                                  
 								const mytimer = setTimeout(() => {
@@ -1460,10 +1468,10 @@ function Area_City(getObj) {
 									}),
 									_select_Tr_After_Add({
 										'tagId': tagId,
-										'indexTr': dataLength
+										'arr_IndexTr': arr_IndexTr
 									}),
 									// components/topbar
-									set_Num_Selected(tagId, 1),                     
+									set_Num_Selected(tagId, num_success),                     
 									// components/form
 									_reset_Form_Body(tagId),
 									//components/table
@@ -1592,7 +1600,7 @@ function Area_City(getObj) {
         } // setSave
     } // _Save_Data
 	
-	function __selected_Province(getObj) {
+	function __select_Province(getObj) {
 		
 		const tagId 			= getObj.tagId;
 		const colId 			= getObj.colId;
@@ -1611,12 +1619,9 @@ function Area_City(getObj) {
 		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
 			
 		// content/Form
-		set_TaskActive(tagId);
+		set_TaskActive_Form(tagId);
 		
 		let baseEl_Item			= '';
-		
-		let title_form  = get_Form_Title(tagId);
-		globalData[tagId]['dataTaskActive']['formChange'] = title_form;
 		
 		if (formType === 'Form') {
 			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
@@ -1664,8 +1669,8 @@ function Area_City(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        case '_selected_Province': 
-			functionResult = __selected_Province(getObj);
+        case '_select_Province': 
+			functionResult = __select_Province(getObj);
 		break;
 		default:
             functionResult = set_Alert({
@@ -1716,7 +1721,7 @@ function Area_City_Event(eventParam, param_1, param_2, param_3, param_4) {
                 'action': param_2
             });
         break;
-        case '_selected_Province': 
+        case '_select_Province': 
 			eventResult = Area_City({
 				'setFunction': eventParam,
 				'tagId': param_1,

@@ -68,21 +68,25 @@ function set_Form_Button(getObj) {
 	let btn_save_all = '';
 	let btn_new_form = '';
 	let btn_refresh	 = '';
-	if (getObj.action === 'add' || getObj.action === 'edit') {
+	if (
+	getObj.action === 'add' || 
+	getObj.action === 'edit' || 
+	getObj.action === 'copy'
+	) {
 		btn_new_form = `<div class="btn-group">
-							<button ${getObj.eventNewForm} class="btn btn-default btn-sm form-action-new_form">
+							<button ${getObj.eventNewForm} class="btn btn-default btn-sm btn-form-action-new_form">
 								<span class="glyphicon glyphicon-plus"></span><span class="dekstop-label"> New</span>
 							</button>	
 						</div>`;
 		btn_save_all = `<div class="btn-group">
-							<button ${getObj.eventSave_All} class="btn btn-default btn-sm form-action-save" >
+							<button ${getObj.eventSave_All} class="btn btn-default btn-sm btn-form-action-save" >
 								<span class="glyphicon glyphicon-floppy-disk"></span><span class="dekstop-label"> Save</span>
 							</button>
 						</div>`;
 						
 		if (getObj.action === 'edit') {
 			btn_refresh	  = `<div class="btn-group">
-								<button ${getObj.eventReload_All} class="btn btn-default btn-sm form-action-reload">
+								<button ${getObj.eventReload_All} class="btn btn-default btn-sm btn-form-action-reload">
 									<span class="glyphicon glyphicon-refresh"></span><span class="dekstop-label"> Reload</span>
 								</button>	
 							</div>`;
@@ -277,6 +281,9 @@ function get_Map_Form_Input(getObj) {
 					case 'get_Input_Textarea':
 						result.push(get_Input_Textarea(colData));
 					break;
+					case 'get_Input_Cb':
+						result.push(get_Input_Cb(colData));
+					break;
 					case 'get_Input_File':
 						result.push(get_Input_File(colData));
 					break;
@@ -381,7 +388,7 @@ function get_Input(getObj) {
 						value="${value}" 
 						placeholder="${getObj.placeholder}" 
 						${getObj.readonly} />
-				</div>`;
+					</div>`;
 	return result;
 }
 
@@ -444,7 +451,7 @@ function get_Input_Select(getObj) {
 						placeholder="${getObj.placeholder}" 
 						readonly="readonly" />
 					<span class="select-container select-container-${classXY}"></span>
-				</div>`;
+					</div>`;
 	return result;
 }
 
@@ -485,9 +492,64 @@ function get_Input_Textarea(getObj) {
 						class="col-data col-data-${classXY} form-control input-sm" 
 						placeholder="${getObj.placeholder}" 
 						${getObj.readonly} >${value}</textarea>
-				</div>`;
+					</div>`;
 	return result;
 }
+
+function get_Input_Cb(getObj) {
+	
+	const tagId   = getObj.tagId;
+	const classXY = getObj.row +'-'+ getObj.col;
+	
+	let require = '';
+	if (getObj.require === 1) {
+		require 	= '<span class="my-required"> * </span>';
+	}
+	
+	let labelCol	 = '';
+	if (getObj.formType === 'FormTr') {
+		labelCol     = '';
+		labelRequire = '';
+	} else {
+		labelCol     = `<span class="col-label">${getObj.label + require}:</span>`;
+	}
+	
+	let eventInput = '';
+	if (typeof getObj.eventInput !== 'undefined') {
+		eventInput = getObj.eventInput;
+	}
+	
+	const value = replaceNull(getObj.value);
+	
+	const eventList = 'onclick="_sw_Cb_Value(this, `'+ tagId +'`, `'+ classXY +'`)"';
+	
+	let checked;
+	if (value === '1') {
+		checked = 'checked';
+	} else {
+		checked = '';
+	}
+	
+	let disabled;
+	if (value === '-1') {
+		disabled = 'disabled';
+	} else {
+		disabled = '';
+	}
+	
+	const result  = `<div class="item-data-col">
+					${labelCol}
+					<input 
+						${eventList} 
+						data-input="input" 
+						data-require="${getObj.require}"
+						type="checkbox" 
+						class="col-data col-data-${classXY}" 
+						value="${value}" ${checked} ${disabled} />
+					</div>`;
+	return result;
+}
+
 function get_Input_File(getObj) {
 	
 	const tagId   = getObj.tagId;
@@ -527,7 +589,7 @@ function get_Input_File(getObj) {
 						value="${value}" 
 						placeholder="${getObj.placeholder}" 
 						${getObj.readonly} />
-				</div>`;
+					</div>`;
 	return result;
 }
 
@@ -563,17 +625,35 @@ function get_Input_Detail(getObj) {
 	return result;
 }
 
-function _press_Input(e, tagId) {
+function _press_Input(e, tagId, markProcess) {
 	if (e && e.which){
 		charCode = e.which;
 	} else if (window.event){
 		e = window.event;
 		charCode = e.keyCode;
 	}
-	if (charCode === 13) { // enter		
+	
+	if (charCode === 13 && globalData[tagId].enterPressed === false) { // enter	
 		const baseLevel = $("#level-"+ tagId);
 		baseLevel.find(".my-content-form").eq(0)
-			.find(".my-form-header .form-action-save").click();
+			.find(".my-form-header .btn-form-action-save").click();
+		
+		globalData[tagId]['enterPressed'].Form = true;
+		let mytimer = setTimeout(function(){
+			 globalData[tagId]['enterPressed'].Form = false;
+		}, 1000); // 1 detik
+		
+		globalData[tagId]['dataTimer']['_press_Input'].push(mytimer);
+	}
+}
+
+function _sw_Cb_Value(thisTarget, tagId, classXY) {
+	const cbStatus = $(thisTarget).prop("checked");	
+	
+	if (cbStatus === true) {
+		$(thisTarget).val("1");
+	} else {
+		$(thisTarget).val("0");
 	}
 }
 
@@ -584,7 +664,7 @@ function _validate_Input(thisTarget, tagId, classXY) {
 	const inputType	 	= $(thisTarget).attr("type");
 	const requireStatus	= $(thisTarget).attr("data-require");
 	
-	set_TaskActive(tagId);
+	set_TaskActive_Form(tagId);
 
 	if (requireStatus === '1') {
 		
@@ -695,14 +775,14 @@ function _validate_Input_Submit(getObj) {
 }
 
 
-function set_TaskActive(tagId) {
+function set_TaskActive_Form(tagId) {
 	const baseLevel 	= $("#level-"+ tagId);
 	const contentForm 	= baseLevel.find(".my-content-form").eq(0);
-	if (contentForm.find(".my-form-header .form-action-new_form").prop("disabled") === false) {
-		contentForm.find(".my-form-header .form-action-new_form").prop("disabled", true); 
+	if (contentForm.find(".my-form-header .btn-form-action-new_form").prop("disabled") === false) {
+		contentForm.find(".my-form-header .btn-form-action-new_form").prop("disabled", true); 
 	}
-	if (contentForm.find(".my-form-header .form-action-reload").prop("disabled") === false) {
-		contentForm.find(".my-form-header .form-action-reload").prop("disabled", true); 
+	if (contentForm.find(".my-form-header .btn-form-action-reload").prop("disabled") === false) {
+		contentForm.find(".my-form-header .btn-form-action-reload").prop("disabled", true); 
 	}
 	
 	let title_form  = get_Form_Title(tagId);

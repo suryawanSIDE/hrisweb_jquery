@@ -20,7 +20,7 @@ function Confirm_Form(tagId, action, nextFunction) {
 			
 			// button blur
 			baseLevel.find(".my-footer").eq(0)
-				.find(".panel-bottom-right .bottom-action-delete").blur();
+				.find(".panel-bottom-right .btn-action-delete").blur();
 			
 			baseLevel.find(".my-tbody").eq(0)
 				.find(".my-td-cb-col-0").each(function(i) {

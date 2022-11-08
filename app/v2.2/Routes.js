@@ -69,6 +69,27 @@ function Route_Content(getObj) {
 		break;
 		// myhris/area 
 		
+		// myconfig
+		case (key +'cfg-acct'+ markLevel) : 
+			globalData[tagId]['moduleId'] = 'cfg-acct';
+			User({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		case (key +'cfg-accs'+ markLevel) : 
+			globalData[tagId]['moduleId'] = 'cfg-accs';
+			User_Access({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
 		// myconfig/parameter
 		case (key +'prm-lv'+ markLevel) : 
 			globalData[tagId]['moduleId'] = 'prm-lv';

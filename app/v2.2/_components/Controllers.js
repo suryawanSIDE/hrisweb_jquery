@@ -7,6 +7,7 @@ function Load_Module(targetThis, tagModule) {
 	if (globalData.hasOwnProperty(tagId) === false) {
 		globalData[tagId] = {};
 	} 
+	
 	globalData[tagId]['dataLevelRow']   = dataLevelRow;
 	globalData[tagId]['dataLevelCol']   = dataLevelCol;
 	

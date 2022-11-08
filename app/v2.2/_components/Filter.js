@@ -252,11 +252,19 @@ function _press_Input_Filter(e, tagId, field) {
 		e = window.event;
 		charCode = e.keyCode;
 	}
-	if (charCode === 13) { // enter	
+	
+	if (charCode === 13 && globalData[tagId]['enterPressed'].Filter === false) { // enter	
 		const baseLevel = $("#level-"+ tagId);
 		baseLevel.find(".my-topbar").eq(0)
 			.find(".filter-container-form-"+ field 
 				+" .filter-action-search").click();
+		
+		globalData[tagId]['enterPressed'].Filter = true;
+		let mytimer = setTimeout(function(){
+			 globalData[tagId]['enterPressed'].Filter = false;
+		}, 1000); // 1 detik
+		
+		globalData[tagId]['dataTimer']['_press_Input_Filter'].push(mytimer);
 	}
 }
 
@@ -267,12 +275,20 @@ function _press_Input_Filter_Renge(e, tagId, field) {
 		e = window.event;
 		charCode = e.keyCode;
 	}
-	if (charCode === 13) { // enter	
+	
+	if (charCode === 13 && globalData[tagId]['enterPressed'].Filter_Renge === false) { // enter	
 		const baseLevel = $("#level-"+ tagId);
 		baseLevel.find(".my-topbar").eq(0)
 			.find(".filter-container-form-"+ field 
 				+" .filter-action-date-selected").click();
-				
+		
+		globalData[tagId]['enterPressed'].Filter_Renge = true;
+		let mytimer = setTimeout(function(){
+			 globalData[tagId]['enterPressed'].Filter_Renge = false;
+		}, 1000); // 1 detik
+		
+		globalData[tagId]['dataTimer']['_press_Input_Filter_Renge'].push(mytimer);
+		
 		_hide_Filter_Form(tagId, field)
 	}
 }

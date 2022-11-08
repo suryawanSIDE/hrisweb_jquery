@@ -10,7 +10,8 @@ function set_TopBar(getObj) {
 	}
 	
 	const baseLevel = $("#level-"+ tagId);
-	baseLevel.find(".my-topbar").eq(0).html(get_TopBar(getObj));
+	baseLevel.find(".my-topbar").eq(0)
+		.html(get_TopBar(getObj));
 }
 
 function get_TopBar(getObj) {
@@ -42,9 +43,15 @@ function get_TopBar(getObj) {
 		// hanya di load pada parent 1 kali
 		toggle = '<button onclick="_handle_Navbar(`'+ tagId +'`)" class="my-navtoogle btn btn-default btn-sm" data-toggle="tooltip" data-placement="bottom" title="Open navigate"><span class="glyphicon glyphicon-tasks"></span></button>';
 	}
-	
+	/*
 	if (deviceType === 'dekstop' && getObj.rightPanel === 1) {
 		toggle_tools = '<button onclick="_handle_Topbar_Panel(`'+ tagId +'`, this)" class="my-btn-topbar-panel-toogle btn btn-default btn-sm btn-group" data-toggle="tooltip" data-placement="bottom" title="Open tools"><span class="my-toggle-icon glyphicon glyphicon-menu-up"></span></button></button>';
+	}*/
+	
+	let status_tools_mob = '';
+	if (deviceType === 'mobile') {
+		toggle_tools = '<button onclick="set_Topbar_Tool_Mob(`'+ tagId +'`, this)" class="my-btn-topbar-panel-toogle-mob btn btn-default btn-sm btn-group" data-toggle="tooltip" data-placement="bottom" title="Open tools"><span class="my-toggle-icon-mob glyphicon glyphicon-menu-up"></span></button></button>';
+		status_tools_mob = 'my-hide';
 	}
 	
 	if (getObj.loadMethode === 1 && getObj.rightPanel === 1) {
@@ -64,13 +71,19 @@ function get_TopBar(getObj) {
 						'<button onclick="Refresh_Content(`'+ tagId +'`)" class="my-btn-refresh btn btn-default btn-sm btn-group" data-toggle="tooltip" data-placement="bottom" title="Reload content"><span class="glyphicon glyphicon-repeat"></span></button></button>'+
 						'<div class="toolbar-divider btn btn-default btn-sm btn-group">&nbsp;</div>'+ // pembatas
 					'</span>' + // btn-toolbar
-				'</div>' + // my-topbar-right-inner
+				'</div>'+ // my-topbar-right-inner
 				
-				// mobile toogle
-				'<button onclick="set_Topbar_Tool_Mob(`'+ tagId +'`, this)" class="btn btn-default btn-sm my-panel-right-toggle"><span class="my-toggle-icon-mob glyphicon glyphicon-cog toggle-inactive"></span></button>'; // toogle panel right
+				// mobile refresh
+				'<button onclick="Refresh_Content(`'+ tagId +'`)" class="my-btn-refresh mob-only btn btn-default btn-sm btn-group" data-toggle="tooltip" data-placement="bottom" title="Reload content"><span class="glyphicon glyphicon-repeat"></span></button></button>'; // toogle panel right
 				
 		panel_tools = 
-					'<div class="my-container-toolbar-collapse-inner my-hide">'+	
+					'<div class="my-container-toolbar-collapse-inner '+ status_tools_mob +'">'+	
+					
+					'<span class="btn-group toolbar-group btn-info-module">'+
+						'<button onclick="_open_Info_Table(`'+ tagId +'`)" class="btn btn-default btn-xs">'+
+							'<span class="glyphicon glyphicon-question-sign"></span>'+
+						'</button>'+
+					'</span>'+
 					
 					'<span class="btn-group toolbar-group btn-action-table-data">'+
 						// disini akan terisi btn action
@@ -128,7 +141,7 @@ function get_TopBar(getObj) {
 					// hidden container
 					// dekstop
 					'<div class="my-container-search"></div>'+
-					'<div class="my-container-filter"></div>'+
+					'<div class="my-container-filter"></div>'+					
 				'</div>'+ // my-topbar-inner
 				 
 				 '<div class="my-container-toolbar-collapse">'+
@@ -243,57 +256,65 @@ function set_Btn_Action_DataTable(getObj) {
 	}
 	
 	/*
-	mark-bottom-toolbar
 		parameter append button add formTr & action status 
 	*/
-	const result ='<div class="my-footer-action-box '+ btn_status +'">'+
-				'<span class="btn-group" role="toolbar">'+
+	const result ='<div class="my-topbar-action-box '+ btn_status +'">'+
+				'<span class="my-topbar-action-box-group btn-group" role="toolbar">'+
 				
 					'<div class="toolbar-divider btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
 					
 					// button save formTr
 					'<div class="btn-group formtr-button-box my-hide">'+
-						'<button '+getObj.eventSave_All+' class="btn btn-default btn-xs bottom-action-add-tr" disable>'+
+						'<button '+getObj.eventSave_All+' class="btn btn-default btn-xs btn-action-add-tr" disable>'+
 							'<span class="glyphicon glyphicon-floppy-disk"></span><span class="dekstop-label"> Save</span>'+
 						'</button>'+
 					'</div>'+
 					
 					'<div class="btn-group '+ class_detail +'">'+
-						'<button '+ event_detail +' class="btn btn-default btn-xs bottom-action-detail" disabled>'+
+						'<button '+ event_detail +' class="btn btn-default btn-xs btn-action-detail" disabled>'+
 							'<span class="glyphicon glyphicon-list-alt"></span><span class="dekstop-label"> Detail</span>'+
 						'</button>'+
 					'</div>'+
+					
 					'<div class="btn-group '+ class_add +'">'+
 						'<button '+ event_add +' class="btn btn-default btn-xs bottom-action-add">'+
 							'<span class="glyphicon glyphicon-plus"></span><span class="dekstop-label"> Add</span>'+
 						'</button>'+													
 					'</div>'+
+					'<span class="replaceable-after-btn-add"></span>'+
+					
 					'<div class="btn-group '+ class_edit +'">'+
-						'<button '+ event_edit +' onclick="" class="btn btn-default btn-xs bottom-action-edit" disabled>'+
+						'<button '+ event_edit +' onclick="" class="btn btn-default btn-xs btn-action-edit" disabled>'+
 							'<span class="glyphicon glyphicon-pencil"></span><span class="dekstop-label"> Edit</span>'+
 						'</button>'+							
-					'</div>'+
+					'</div>'+ 
+					'<span class="replaceable-after-btn-edit"></span>'+
+					
 					'<div class="btn-group '+ class_export +'">'+
 						'<button '+ event_export +' onclick="" class="btn btn-default btn-xs bottom-action-export">'+
 							'<span class="glyphicon glyphicon-download"></span><span class="dekstop-label"> Export</span>'+
 						'</button>'+							
 					'</div>'+
+					
 					'<div class="btn-group '+ class_import +'">'+
 						'<button '+ event_import +' onclick="" class="btn btn-default btn-xs bottom-action-import">'+
 							'<span class="glyphicon glyphicon-upload"></span><span class="dekstop-label"> Import</span>'+
 						'</button>'+							
 					'</div>'+
+					
 					'<div class="btn-group '+ class_import_f +'">'+
 						'<button '+ event_import_f +' onclick="" class="btn btn-default btn-xs bottom-action-import_format">'+
 							'<span class="glyphicon glyphicon-download"></span><span class="dekstop-label"> Format</span>'+
 						'</button>'+							
 					'</div>'+
+					
 					'<div class="btn-group '+ class_delete +'">'+
-						'<button '+ event_delete +' class="btn btn-default btn-xs bottom-action-delete" disabled>'+
+						'<button '+ event_delete +' class="btn btn-default btn-xs btn-action-delete" disabled>'+
 							'<span class="glyphicon glyphicon-trash"></span><span class="dekstop-label"> Delete</span>'+
 						'</button>'+
-					'</div>'+					
-					'<div class="toolbar-divider btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
+					'</div>'+
+					
+					'<div class="toolbar-divider toolbar-divider-action-end btn btn-default btn-xs btn-group">&nbsp;</div>'+ // pembatas
 				'</span>'+
 				'</div>';
 				
@@ -515,11 +536,19 @@ function _press_Input_Search(e, tagId) {
 		e = window.event;
 		charCode = e.keyCode;
 	}
-	if (charCode === 13) { // enter		
+	
+	if (charCode === 13 && globalData[tagId]['enterPressed'].Search === false) { // enter	
 		const baseLevel = $("#level-"+ tagId);
 		baseLevel.find(".my-topbar").eq(0)
 			.find(".search-action-apply").click();
-	}	
+		
+		globalData[tagId]['enterPressed'].Search = true;
+		let mytimer = setTimeout(function(){
+			 globalData[tagId]['enterPressed'].Search = false;
+		}, 1000); // 1 detik
+		
+		globalData[tagId]['dataTimer']['_press_Input_Search'].push(mytimer);
+	}
 }
 
 function set_Global_Data_Search(tagId) {
@@ -690,28 +719,28 @@ function _handler_btn_Filter_DataTable(getObj) {
 	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
 	
 	if (getObj.btnFilter === 1) {
-		if (baseEl.find(".btn-filter-box").hasClass("my-block") === false) {
+		if (baseEl.find(".btn-filter-box").hasClass("my-btn-mark-active") === false) {
 			baseEl.find(".btn-filter-box").removeClass("my-hide");
-			baseEl.find(".btn-filter-box").addClass("my-block");
+			baseEl.find(".btn-filter-box").addClass("my-btn-mark-active");
 			baseEl.find(".btn-filter-box .btn-filter").prop("disabled", false); 
 		}
 	} else {
 		if (baseEl.find(".btn-filter-box").hasClass("my-hide") === false) {
-			baseEl.find(".btn-filter-box").removeClass("my-block");
+			baseEl.find(".btn-filter-box").removeClass("my-btn-mark-active");
 			baseEl.find(".btn-filter-box").addClass("my-hide");
 			baseEl.find(".btn-filter-box .btn-filter").prop("disabled", true); 
 		}
 	}
 
 	if (getObj.btnSearch === 1) {
-		if (baseEl.find(".btn-search-box").hasClass("my-block") === false) {
+		if (baseEl.find(".btn-search-box").hasClass("my-btn-mark-active") === false) {
 			baseEl.find(".btn-search-box").removeClass("my-hide");
-			baseEl.find(".btn-search-box").addClass("my-block");
+			baseEl.find(".btn-search-box").addClass("my-btn-mark-active");
 			baseEl.find(".btn-search-box .btn-search").prop("disabled", false); 
 		}
 	} else {
 		if (baseEl.find(".btn-search-box").hasClass("my-hide") === false) {
-			baseEl.find(".btn-search-box").removeClass("my-block");
+			baseEl.find(".btn-search-box").removeClass("my-btn-mark-active");
 			baseEl.find(".btn-search-box").addClass("my-hide");
 			baseEl.find(".btn-search-box .btn-search").prop("disabled", true); 
 		}
@@ -722,15 +751,15 @@ function set_Topbar_Tool_Mob(tagId, targetThis) {
 	
 	const baseLevel  = $("#level-"+ tagId);
 	const icon 		 = $(targetThis).find(".my-toggle-icon-mob");
-	const btn_status = icon.hasClass("toggle-active");
+	const btn_status = icon.hasClass("glyphicon-menu-up");
 	
 	const baseEl 	  = baseLevel.find(".my-topbar").eq(0);
 	const contentBody = baseEl.find(".btn-info-table-data-dekstop").html();
 	const status_mob  = baseEl.find(".btn-info-table-data-mobile").html();
 	
-	if (btn_status === false) {
-		$(targetThis).find(".my-toggle-icon-mob").removeClass("toggle-inactive");
-		$(targetThis).find(".my-toggle-icon-mob").addClass("toggle-active");
+	if (btn_status === true) {
+		$(targetThis).find(".my-toggle-icon-mob").removeClass("glyphicon-menu-up");
+		$(targetThis).find(".my-toggle-icon-mob").addClass("glyphicon-menu-down");
 		
 		if (status_mob === '') {
 			baseEl.find(".btn-info-table-data-mobile").html(contentBody);
@@ -739,7 +768,7 @@ function set_Topbar_Tool_Mob(tagId, targetThis) {
 			baseEl.find(".btn-info-table-data-mobile").addClass("my-block");
 			
 			// delete topbar dekstop
-			baseEl.find(".btn-info-table-data-dekstop").html("");
+			baseEl.find(".btn-info-table-data-dekstop").html("-");
 		}
 			
 		baseLevel.find(".my-topbar").eq(0)
@@ -748,8 +777,8 @@ function set_Topbar_Tool_Mob(tagId, targetThis) {
 			.find(".my-container-toolbar-collapse-inner").addClass("my-block");
 		
 	} else {
-		$(targetThis).find(".my-toggle-icon-mob").removeClass("toggle-active");
-		$(targetThis).find(".my-toggle-icon-mob").addClass("toggle-inactive");
+		$(targetThis).find(".my-toggle-icon-mob").removeClass("glyphicon-menu-down");
+		$(targetThis).find(".my-toggle-icon-mob").addClass("glyphicon-menu-up");
 		
 		if (status_mob === '') {
 			baseEl.find(".btn-info-table-data-dekstop").html(contentBody);
@@ -770,17 +799,6 @@ function set_Topbar_Tool_Mob(tagId, targetThis) {
 	
 }
 
-function _hide_Panel_Mob(tagId) {
-		
-	const baseLevel   = $("#level-"+ tagId);
-	const baseEl 	  = baseLevel.find(".my-topbar").eq(0);
-	const contentBody = baseEl.find(".mob-right-panel-body").html();
-	baseEl.find(".my-topbar-right-inner").html(contentBody);
-
-	// delete topbar mobile
-	baseEl.find(".my-container-mobrightpanel").html("");
-}
-
 function _handler_btn_Action_DataTable(tagId, selectedCount) {
 
 	const baseLevel 	= $("#level-"+ tagId);
@@ -788,24 +806,24 @@ function _handler_btn_Action_DataTable(tagId, selectedCount) {
 	
 	// enable/disable button edit & delete
 	if (selectedCount > 0) {
-		if (baseEl.find(".bottom-action-detail").prop("disabled") === true) {
-			baseEl.find(".bottom-action-detail").prop("disabled", false); 
+		if (baseEl.find(".btn-action-detail").prop("disabled") === true) {
+			baseEl.find(".btn-action-detail").prop("disabled", false); 
 		}
-		if (baseEl.find(".bottom-action-edit").prop("disabled") === true) {
-			baseEl.find(".bottom-action-edit").prop("disabled", false); 
+		if (baseEl.find(".btn-action-edit").prop("disabled") === true) {
+			baseEl.find(".btn-action-edit").prop("disabled", false); 
 		}
-		if (baseEl.find(".bottom-action-delete").prop("disabled") === true) {
-			baseEl.find(".bottom-action-delete").prop("disabled", false); 
+		if (baseEl.find(".btn-action-delete").prop("disabled") === true) {
+			baseEl.find(".btn-action-delete").prop("disabled", false); 
 		}
 	} else {
-		if (baseEl.find(".bottom-action-detail").prop("disabled") === false) {
-			baseEl.find(".bottom-action-detail").prop("disabled", true); 
+		if (baseEl.find(".btn-action-detail").prop("disabled") === false) {
+			baseEl.find(".btn-action-detail").prop("disabled", true); 
 		}
-		if (baseEl.find(".bottom-action-edit").prop("disabled") === false) {
-			baseEl.find(".bottom-action-edit").prop("disabled", true); 
+		if (baseEl.find(".btn-action-edit").prop("disabled") === false) {
+			baseEl.find(".btn-action-edit").prop("disabled", true); 
 		}
-		if (baseEl.find(".bottom-action-delete").prop("disabled") === false) {
-			baseEl.find(".bottom-action-delete").prop("disabled", true); 
+		if (baseEl.find(".btn-action-delete").prop("disabled") === false) {
+			baseEl.find(".btn-action-delete").prop("disabled", true); 
 		}
 	}
 }
@@ -815,5 +833,14 @@ function _show_FormTr_Button(tagId) {
 	const baseEl 	= baseLevel.find(".my-topbar").eq(0);
 	
 	baseEl.find(".formtr-button-box").removeClass("my-hide");
-	baseEl.find(".bottom-action-add-tr").prop("disabled", true); 
+	baseEl.find(".btn-action-add-tr").prop("disabled", true); 
+}
+
+function _open_Info_Table(tagId) {
+	// components/alert
+	set_Alert({
+		'type': 'info', 
+		'body': globalData[tagId].info_inTable, 
+		'footer': get_Alert_Footer(1)
+	});	
 }
