@@ -1,5 +1,5 @@
 //> modify module
-function Area_Province(getObj) {
+function Parameter_Holiday_Type(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function Area_Province(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myhris/Area_Sub/'; //> modify module
+        globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function Area_Province(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['AreaLevel'] = 1;
+		globalData[tagId]['dataRules']['pCategory'] = 'holiday_type';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -183,38 +183,52 @@ function Area_Province(getObj) {
             'align': '',
                 'valueConverter': [],
             'field': 'col_status_sw_active',
-            'field_value_default': 'Aktif',
+            'field_value_default': 'Active',
             'require': 1
             });
 			
-		tdWidth    = 20;
+		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Negara',
+            'label': 'Nama',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_parent_area',
+            'field': 'col_parameter_name',
             'field_value_default': '',
             'require': 1
             });
 			
-		tdWidth    = 20;
+		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
-            'label': 'Provinsi',
+        tableHead.push({ // 4
+            'label': 'Deskrisi',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_area',
+            'field': 'col_description',
             'field_value_default': '',
-            'require': 1
+            'require': 0
             });
-			
+		
+		tdWidth    = 8;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 5
+            'label': 'Urutan',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'mynumber',
+            'align': 'right',
+                'valueConverter': [],
+            'field': 'col_seq',
+            'field_value_default': '',
+            'require': 0
+            });
+				
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -231,12 +245,12 @@ function Area_Province(getObj) {
 
         const field = [
 				{
-                'label': 'Negara',
-                'field': 'col_parent_area'
+                'label': 'Nama',
+                'field': 'col_parameter_name'
                 },
 				{
-                'label': 'Provinsi',
-                'field': 'col_area'
+                'label': 'Deskrisi',
+                'field': 'col_description'
                 }
             ];
 
@@ -256,13 +270,6 @@ function Area_Province(getObj) {
 				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
-				'defaultFilter': []
-				},
-				{
-				'label': 'Negara',
-				'field': 'col_parent_area',
-				'filterModel': 'list', // (list/rangeDate)
-				'searchInput': 1,
 				'defaultFilter': []
 				}
 			];
@@ -336,7 +343,7 @@ function Area_Province(getObj) {
             'reqAction': 'export',
 			'exportType': getObj.exportType,
 			'exportPage': getObj.exportPage,
-			'exportDecSep': getObj.exportDecSep // export_decimal_separator
+            'exportDecSep': getObj.exportDecSep // export_decimal_separator
             });
 
     } // Export_Table
@@ -359,12 +366,12 @@ function Area_Province(getObj) {
         const current_page  = dataPaging.current_page;
         let start_row       = (parseInt(display_row) * (parseInt(current_page)-1))
         
-		let exportType 	  = '';
-		let exportDecSep  = '';
+		let exportType 	 = '';
+		let exportDecSep = '';
 		if (getObj.reqAction === 'export') {
 			
-			exportType 	  = getObj.exportType;
-			exportDecSep  = getObj.exportDecSep;
+			exportType 	 = getObj.exportType;
+			exportDecSep = getObj.exportDecSep;
 			
 			if (getObj.exportPage === 'all_page') {
 				start_row	= 0;
@@ -501,10 +508,9 @@ function Area_Province(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_area;
+                                    dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
 									// additional field here 
-									dataTable_Col['col_parent_code']	 = rowData.col_parent_code;
-                                    dataTable_Col['col_parent_code_old'] = rowData.col_parent_code_old;
+									
                                 dataTable_Row.push(dataTable_Col);
 
                             }); // map row
@@ -565,23 +571,30 @@ function Area_Province(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType = globalData[tagId].formType;
-                        set_Btn_Action_DataTable({
+                        const formType 			= globalData[tagId].formType;
+                        const eventDetail 		= 'Parameter_Holiday_Type_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Parameter_Holiday_Type_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Parameter_Holiday_Type_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Holiday_Type_Event`)';
+						//const eventImport		= '';
+						//const eventImport_Format= '';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Holiday_Type_Event`)';
+						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
-                                'eventDetail': 'onclick="Area_Province_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="'+ eventDetail +'" ondblclick="'+ eventDetail +'"',
                             'btnAdd': permission.act_create, 
-                                'eventAdd': 'onclick="Area_Province_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Area_Province_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="'+ eventAdd +'" ondblclick="'+ eventAdd +'"',
                             'btnEdit': permission.act_update,
-                                'eventEdit': 'onclick="Area_Province_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Area_Province_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="'+ eventEdit +'" ondblclick="'+ eventEdit +'"',
                             'btnExport': 0,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Province_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Province_Event`)"',
+                                'eventExport': 'onclick="'+ eventExport +'" ondblclick="'+ eventExport +'"',
                             'btnImport': 0,
                                 'eventImport': '',
-                            'btnImport_Format': permission.format_import,
+                            'btnImport_Format': 0, //permission.act_create,
                                 'eventImport_Format': '',
                             'btnDelete': permission.act_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Province_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Province_Event`)"',
+                                'eventDelete': 'onclick="'+ eventDelete +'" ondblclick="'+ eventDelete +'"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -605,11 +618,9 @@ function Area_Province(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_parameter_name;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								currentData[selectedCb_Index]['col_parent_code']	= rowData.col_parent_code;
-								currentData[selectedCb_Index]['col_parent_code_old']= rowData.col_parent_code_old;
 								
 						}); // map row
 						
@@ -732,7 +743,7 @@ function Area_Province(getObj) {
                     // update globalData 
                     globalData[tagId]['dataPaging'].numrow      = numrow;
                     globalData[tagId]['dataPaging'].numrowpage  = numrowpage;               
-                        // delete globalData data selected
+                        // delete data globalData selected
                         dataTable = dataTable.filter(function(val, i) {
                             return arrDeleteIndex.indexOf(i) == -1;                     
                         });
@@ -901,11 +912,26 @@ function Area_Province(getObj) {
 						'col': col
 						});	
 					}
-			
-			col = (col+1); 
-			fieldForm.push({ // 3
-						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_parent_area
+					
+			col = (col+1); // 3
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_parameter_name
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+					
+			col = (col+1); // 4
+			fieldForm.push({
+                        'input_Type': 'get_Input_Textarea',
+                        'label': tableHead[col].label, // col_description
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -913,40 +939,25 @@ function Area_Province(getObj) {
 						'require': tableHead[col].require,
 						'col': col,
 						'maxlength': -1,
-						'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 1, // search 1/0
-											'col': col
-										}
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type),
+						'readonly': ''
 					});
-					// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'country',
-						'listFormat': 'list', // list/table
-						'selectedFunction': 'Area_Province_Event',
-						'eventParam': '_select_Country'
-						});	
-					}
 					
-			col = (col+1); // 4
+			col = (col+1); // 5
 			fieldForm.push({
                         'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_area
+                        'label': tableHead[col].label, // col_seq
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 200,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(200)',
+						'maxlength': 3,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(3)',
 						'readonly': ''
 					});
-			
+								
         return fieldForm;
         
     } // _Form_Field
@@ -975,13 +986,17 @@ function Area_Province(getObj) {
         
         // components/form
         _show_Form(tagId);
-        //> modify module
-        set_Form_Button({
+        
+		//> modify module
+        const eventSave_All 	= 'Parameter_Holiday_Type_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Parameter_Holiday_Type_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Parameter_Holiday_Type_Event(`Form`, `'+ tagId +'`, `reload`)';
+		set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Area_Province_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Area_Province_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Area_Province_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="'+ eventSave_All +'" ondblclick="'+ eventSave_All +'"',
+            'eventNewForm': 'onclick="'+ eventNewForm +'" ondblclick="'+ eventNewForm +'"',
+			'eventReload_All': 'onclick="'+ eventReload_All +'" ondblclick="'+ eventReload_All +'"'
         });
         
         // button focus
@@ -1030,8 +1045,6 @@ function Area_Province(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    dataTable['col_parent_code']	 = '';
-					dataTable['col_parent_code_old'] = '';
                     
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
@@ -1068,7 +1081,7 @@ function Area_Province(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Area_Province_Event(`Form`, tagId, `edit`)
+						Parameter_Holiday_Type_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1168,7 +1181,7 @@ function Area_Province(getObj) {
                         'fieldForm': fieldForm,
                         'data': data,
                         'row': row,
-						'form_Index': getObj.form_Index,
+                        'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
 
@@ -1213,8 +1226,7 @@ function Area_Province(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-				'col_parent_code': data['col_parent_code'],
-				'col_parent_code_old': data['col_parent_code_old'],
+				//'col_sample': data['col_sample'],
 			'arrChild': []
 			});
 		
@@ -1305,7 +1317,7 @@ function Area_Province(getObj) {
         }
         
         function __process_Save() {
-			let dataKey_onForm  = []; // untuk menandai col_data_key berada pada index form berapa
+           let dataKey_onForm  = []; // untuk menandai col_data_key berada pada index form berapa
             let dataFormRow 	= {};
             for (let x=0; x<formLength; x++) {
                 let alertField  = '';
@@ -1339,16 +1351,15 @@ function Area_Province(getObj) {
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
 					// additional field form here 
-					dataFormCol['col_parent_code']  	= globalData[tagId]['dataForm'][x].col_parent_code;
-					dataFormCol['col_parent_code_old']  = globalData[tagId]['dataForm'][x].col_parent_code_old;
-				
+					// (sample)dataFormCol['col_sample'] = globalData[tagId]['dataForm'][x].col_sample;
+					
 				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
                 dataFormRow[x]	  = dataFormCol;
                 
                 // alert text
                 if (alertField !== '') {
                     let new_alertField = alertField.substring(0, (alertField.length-2));
-                        alertText = alertText + ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
+                        alertText += ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
                 }
             } // form length
                 
@@ -1392,6 +1403,9 @@ function Area_Province(getObj) {
                         
                         if (myObj.status === 'success') {
                             
+							// global
+							_clear_TaskActive(tagId, '_final_action_Form');
+							
                             if (reqAction === 'add') {
                             
                                 const num_success   = myObj.response_data.num_success;
@@ -1442,20 +1456,18 @@ function Area_Province(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_area;
+                                        dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
 										// additional field
-										dataTable_Col['col_parent_code']	= rowData.col_parent_code;
-										dataTable_Col['col_parent_code_old']= rowData.col_parent_code_old;
-                                      
+										
                                     dataTable_Row.push(dataTable_Col);
                                     
-                                    // replace globalData dataTable
+                                    // replace data global dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
-									
+                                    
                                 arr_IndexTr.push(dataLength);
 								dataLength++;
                                 }); // map row
-                                 
+                                
 								const mytimer = setTimeout(() => {
 									// components/table
 									// add new data to table
@@ -1511,20 +1523,17 @@ function Area_Province(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_area;
+                                        currentData[x]['col_text_alert'] = rowData.col_parameter_name;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										currentData[x]['col_parent_code']	 = rowData.col_parent_code;
-										currentData[x]['col_parent_code_old']= rowData.col_parent_code_old;
-                                       
+										
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
-									let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
+									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
-									globalData[tagId]['dataForm'][form_Index]['col_parent_code_old'] = rowData.col_parent_code_old;
-								
+									// (sample) globalData[tagId]['dataForm'][form_Index]['col_sample'] 	= rowData.col_sample;
+									
                                 }); // map row
                                 
                                 // update global dataTable
@@ -1598,51 +1607,6 @@ function Area_Province(getObj) {
             } // alertText
         } // setSave
     } // _Save_Data
-	
-	function __select_Country(getObj) {
-		
-		const tagId 			= getObj.tagId;
-		const colId 			= getObj.colId;
-		const listIndex 		= getObj.listIndex;
-		const targetThis 		= getObj.targetThis;
-		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
-		const dataTable_Index 	= dataAutofill.dataTable_Index;
-		const dataTable 		= dataAutofill.dataTable;
-		
-		const baseLevel 		= $("#level-"+ tagId);
-		const formType 			= globalData[tagId]['formType'];
-		
-		const getClass			= $(targetThis).parents(".form-item").attr("class");
-		const arrClass			= getClass.split(" ");
-		const clasForm_Index	= arrClass[1];
-		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
-		
-		// content/Form
-		set_TaskActive_Form(tagId);
-		
-		let baseEl_Item			= '';
-		
-		if (formType === 'Form') {
-			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
-		} else {
-			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
-		}
-		
-		// this input
-		baseEl_Item.find(".item-data-col .col-data").eq(1)
-			.val(dataTable[listIndex].col_area);
-		
-		// update globalData dataForm
-		globalData[tagId]['dataForm'][form_Index]['col_parent_code'] = dataTable[listIndex].col_code_area;
-	
-		
-		baseEl_Item.find(".select-container-"+ colId 
-			+" .list-item").removeClass("a-item-active");
-			
-		$(targetThis).addClass('a-item-active');
-		
-		_hide_List_Autofill(tagId, colId);
-	}
 // ======== FORM
 
     //> modify module
@@ -1668,10 +1632,7 @@ function Area_Province(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        case '_select_Country': 
-			functionResult = __select_Country(getObj);
-		break;
-		default:
+        default:
             functionResult = set_Alert({
                                 'type': 'danger', 
                                 'body': 'Undefined (setFunction)', 
@@ -1683,7 +1644,7 @@ function Area_Province(getObj) {
 }
 
 //> modify module
-function Area_Province_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Parameter_Holiday_Type_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1692,7 +1653,7 @@ function Area_Province_Event(eventParam, param_1, param_2, param_3, param_4) {
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Area_Province({
+			eventResult = Parameter_Bank({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1701,35 +1662,26 @@ function Area_Province_Event(eventParam, param_1, param_2, param_3, param_4) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = Area_Province({
+			eventResult = Parameter_Holiday_Type({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Area_Province({
+			eventResult = Parameter_Holiday_Type({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Area_Province({
+			eventResult = Parameter_Holiday_Type({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2
             });
         break;
-        case '_select_Country': 
-			eventResult = Area_Province({
-				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
-			});
-		break;
-		default:
+        default:
             eventResult = set_Alert({
                             'type': 'danger', 
                             'body': 'Undefined (eventParam)', 

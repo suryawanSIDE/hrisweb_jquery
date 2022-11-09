@@ -539,23 +539,30 @@ function Area_Country(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType = globalData[tagId].formType;
-                        set_Btn_Action_DataTable({
+                        const formType 			= globalData[tagId].formType;
+                        const eventDetail 		= 'Area_Country_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)';
+						//const eventImport		= '';
+						//const eventImport_Format= '';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)';
+						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
-                                'eventDetail': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="'+ eventDetail +'" ondblclick="'+ eventDetail +'"',
                             'btnAdd': permission.act_create, 
-                                'eventAdd': 'onclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="'+ eventAdd +'" ondblclick="'+ eventAdd +'"',
                             'btnEdit': permission.act_update,
-                                'eventEdit': 'onclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Area_Country_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="'+ eventEdit +'" ondblclick="'+ eventEdit +'"',
                             'btnExport': 0,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Area_Country_Event`)"',
+                                'eventExport': 'onclick="'+ eventExport +'" ondblclick="'+ eventExport +'"',
                             'btnImport': 0,
                                 'eventImport': '',
-                            'btnImport_Format': permission.format_import,
+                            'btnImport_Format': 0, //permission.act_create,
                                 'eventImport_Format': '',
                             'btnDelete': permission.act_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Area_Country_Event`)"',
+                                'eventDelete': 'onclick="'+ eventDelete +'" ondblclick="'+ eventDelete +'"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -917,13 +924,17 @@ function Area_Country(getObj) {
         
         // components/form
         _show_Form(tagId);
-        //> modify module
-        set_Form_Button({
+        
+		//> modify module
+        const eventSave_All 	= 'Area_Country_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Area_Country_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Area_Country_Event(`Form`, `'+ tagId +'`, `reload`)';
+		set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Area_Country_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Area_Country_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="'+ eventSave_All +'" ondblclick="'+ eventSave_All +'"',
+            'eventNewForm': 'onclick="'+ eventNewForm +'" ondblclick="'+ eventNewForm +'"',
+			'eventReload_All': 'onclick="'+ eventReload_All +'" ondblclick="'+ eventReload_All +'"'
         });
         
         // button focus

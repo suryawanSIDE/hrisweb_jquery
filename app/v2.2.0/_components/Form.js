@@ -73,11 +73,14 @@ function set_Form_Button(getObj) {
 	getObj.action === 'edit' || 
 	getObj.action === 'copy'
 	) {
+		if (getObj.eventNewForm !== '') {
 		btn_new_form = `<div class="btn-group">
 							<button ${getObj.eventNewForm} class="btn btn-default btn-sm btn-form-action-new_form">
 								<span class="glyphicon glyphicon-plus"></span><span class="dekstop-label"> New</span>
 							</button>	
 						</div>`;
+		}
+		
 		btn_save_all = `<div class="btn-group">
 							<button ${getObj.eventSave_All} class="btn btn-default btn-sm btn-form-action-save" >
 								<span class="glyphicon glyphicon-floppy-disk"></span><span class="dekstop-label"> Save</span>

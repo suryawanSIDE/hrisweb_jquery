@@ -1,5 +1,5 @@
 //> modify module
-function User_Access(getObj) {
+function Parameter_Bank(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function User_Access(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myconfig/User_Access/'; //> modify module
+        globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function User_Access(getObj) {
         }
 		
 		// set globalData dataRules
-		// globalData[tagId]['dataRules']['sample'] = 'bank';
+		globalData[tagId]['dataRules']['pCategory'] = 'bank';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -173,104 +173,76 @@ function User_Access(getObj) {
             'require': 0
             });
 			
-		tdWidth    = 30;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 2
-            'label': 'Module',
+            'label': 'Status',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_module_display',
-            'field_value_default': '',
+            'field': 'col_status_sw_active',
+            'field_value_default': 'Active',
             'require': 1
             });
 			
-		tdWidth    = 15;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'User',
+            'label': 'Nama',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_user_name',
+            'field': 'col_parameter_name',
             'field_value_default': '',
             'require': 1
             });
-		
-		tdWidth    = 7;
+			
+		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 4
-            'label': 'Read',
+            'label': 'Detail',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
-            'align': 'center',
-                'valueConverter': ['_set_checkbox'],
-            'field': 'col_act_read',
-            'field_value_default': '1',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_parameter_detail',
+            'field_value_default': '',
+            'require': 0
+            });
+		
+		tdWidth    = 30;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 5
+            'label': 'Deskrisi',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_description',
+            'field_value_default': '',
+            'require': 0
+            });
+				
+		tdWidth    = 8;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 6
+            'label': 'Urutan',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'mynumber',
+            'align': 'right',
+                'valueConverter': [],
+            'field': 'col_seq',
+            'field_value_default': '',
             'require': 0
             });
 			
-		tdWidth    = 7;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'Create',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'cente',
-            'align': 'center',
-                'valueConverter': ['_set_checkbox'],
-            'field': 'col_act_create',
-            'field_value_default': 0,
-            'require': 0
-            });
-		
-		tdWidth    = 7;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Update',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': 'center',
-                'valueConverter': ['_set_checkbox'],
-            'field': 'col_act_update',
-            'field_value_default': 0,
-            'require': 0
-            });
-		
-		tdWidth    = 7;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 7
-            'label': 'Delete',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': 'center',
-                'valueConverter': ['_set_checkbox'],
-            'field': 'col_act_delete',
-            'field_value_default': 0,
-            'require': 0
-            });
-		
-		tdWidth    = 7;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 8
-            'label': 'Approve',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': 'center',
-                'valueConverter': ['_set_checkbox'],
-            'field': 'col_act_approve',
-            'field_value_default': 0,
-            'require': 0
-            });
-		
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -287,12 +259,16 @@ function User_Access(getObj) {
 
         const field = [
 				{
-                'label': 'Module',
-                'field': 'col_module_display'
+                'label': 'Nama',
+                'field': 'col_parameter_name'
                 },
 				{
-                'label': 'User',
-                'field': 'col_user_name'
+                'label': 'Detail',
+                'field': 'col_parameter_detail'
+                },
+				{
+                'label': 'Deskrisi',
+                'field': 'col_description'
                 }
             ];
 
@@ -308,17 +284,10 @@ function User_Access(getObj) {
 
         const field = [
 				{
-				'label': 'Module',
-				'field': 'col_module_display',
+				'label': 'Status',
+				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
-				'searchInput': 1,
-				'defaultFilter': []
-				},
-				{
-				'label': 'User',
-				'field': 'col_user_name',
-				'filterModel': 'list', // (list/rangeDate)
-				'searchInput': 1,
+				'searchInput': 0,
 				'defaultFilter': []
 				}
 			];
@@ -557,10 +526,8 @@ function User_Access(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_module_display +' '+ rowData.col_user_name;
+                                    dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
 									// additional field here 
-									dataTable_Col['col_reg_user_ref'] 	 = rowData.col_reg_user_ref;
-									dataTable_Col['col_module_uniq_ref'] = rowData.col_module_uniq_ref;
 									
                                 dataTable_Row.push(dataTable_Col);
 
@@ -622,43 +589,31 @@ function User_Access(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType = globalData[tagId].formType;
-                        set_Btn_Action_DataTable({
+                        const formType 			= globalData[tagId].formType;
+                        const eventDetail 		= 'Parameter_Bank_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Bank_Event`)';
+						//const eventImport		= '';
+						//const eventImport_Format= '';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Bank_Event`)';
+						set_Btn_Action_DataTable({
                             'tagId': tagId,
-                            'btnDetail': 0, //1, 
-                                'eventDetail': '', //'onclick="User_Access_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                            'btnDetail': 1, 
+                                'eventDetail': 'onclick="'+ eventDetail +'" ondblclick="'+ eventDetail +'"',
                             'btnAdd': permission.act_create, 
-                                'eventAdd': 'onclick="User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="'+ eventAdd +'" ondblclick="'+ eventAdd +'"',
                             'btnEdit': permission.act_update,
-                                'eventEdit': 'onclick="User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="'+ eventEdit +'" ondblclick="'+ eventEdit +'"',
                             'btnExport': 0,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `User_Access_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `User_Access_Event`)"',
+                                'eventExport': 'onclick="'+ eventExport +'" ondblclick="'+ eventExport +'"',
                             'btnImport': 0,
                                 'eventImport': '',
-                            'btnImport_Format': permission.format_import,
+                            'btnImport_Format': 0, //permission.act_create,
                                 'eventImport_Format': '',
                             'btnDelete': permission.act_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `User_Access_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `User_Access_Event`)"',
+                                'eventDelete': 'onclick="'+ eventDelete +'" ondblclick="'+ eventDelete +'"',
                         });
-						
-						if (permission.act_create === 1) {
-							// append button action
-							const baseLevel	= $("#level-"+ tagId);
-							const baseEl 	= baseLevel.find(".my-topbar").eq(0);
-							const eventCopy= 'User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `copy`)';
-							const btn_copy = '<div class="btn-group">'+
-													'<button onclick="'+ eventCopy +'" ondblclick="'+ eventCopy +'" class="btn btn-default btn-xs btn-action-edit" disabled>'+
-														'<span class="glyphicon glyphicon-duplicate"></span><span class="dekstop-label"> Copy</span>'+
-													'</button>'+							
-												'</div>'+
-												'<span class="replaceable-after-btn-edit"></span>';
-							
-							// append 
-							baseEl.find(".my-topbar-action-box-group"
-								+" .replaceable-after-btn-edit")
-									.replaceWith(btn_copy);
-						} // permission.act_update
-						
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
 						
@@ -681,12 +636,10 @@ function User_Access(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_module_display +' '+ rowData.col_user_name;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_parameter_name;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								currentData[selectedCb_Index]['col_reg_user_ref'] 	 = rowData.col_reg_user_ref;
-								currentData[selectedCb_Index]['col_module_uniq_ref'] = rowData.col_module_uniq_ref;
-									
+								
 						}); // map row
 						
 						// update global dataTable
@@ -954,8 +907,8 @@ function User_Access(getObj) {
         
         //> modify module
 			fieldForm.push({
-                        'input_Type': 'get_Input_Select',
-                        'label': tableHead[col].label, // col_module_display
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_status_sw_active
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -966,128 +919,78 @@ function User_Access(getObj) {
 						'placeholder': 'select-item',
 						'readonly': '',
 							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 1, // search 1/0
+											'eventInput': 'List_Fixed_Status_Active',
+											'searchInput': 0, // search 1/0
 											'col': col
 										}
 					});
-			// update globalData
+					// update globalData
 					if (paramLength === 0) {
 						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'module',
-						'listFormat': 'list', // list/table
-						'selectedFunction': 'User_Access_Event',
-						'eventParam': '_select_Module'
+						'col': col
 						});	
 					}
-			
+					
 			col = (col+1); // 3
 			fieldForm.push({
-                        'input_Type': 'get_Input_Select',
-                        'label': tableHead[col].label, // col_user_name
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_parameter_name
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': -1,
-						'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 1, // search 1/0
-											'col': col
-										}
-					});
-			// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'user',
-						'listFormat': 'list', // list/table
-						'selectedFunction': 'User_Access_Event',
-						'eventParam': '_select_User'
-						});	
-					}
-					
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input_Cb',
-                        'label': tableHead[col].label, // col_act_read
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': '',
-						'readonly': ''
-					});
-						
-			col = (col+1); // 5
-			fieldForm.push({
-                        'input_Type': 'get_Input_Cb',
-                        'label': tableHead[col].label, // col_act_create
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': '',
-						'readonly': ''
-					});
-				
-			col = (col+1); // 6
-			fieldForm.push({
-                        'input_Type': 'get_Input_Cb',
-                        'label': tableHead[col].label, // col_act_update
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': '',
-						'readonly': ''
-					});
-					
-			col = (col+1); // 7
-			fieldForm.push({
-                        'input_Type': 'get_Input_Cb',
-                        'label': tableHead[col].label, // col_act_delete
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': '',
-						'readonly': ''
-					});
-					
-			col = (col+1); // 8
-			fieldForm.push({
-                        'input_Type': 'get_Input_Cb',
-                        'label': tableHead[col].label, // col_act_approve
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': '',
+						'maxlength': 15,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(15)',
 						'readonly': ''
 					});
 			
-												
+			col = (col+1); // 4
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_parameter_detail
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+					
+			col = (col+1); // 5
+			fieldForm.push({
+                        'input_Type': 'get_Input_Textarea',
+                        'label': tableHead[col].label, // col_description
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type),
+						'readonly': ''
+					});
+					
+			col = (col+1); // 6
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_seq
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 3,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(3)',
+						'readonly': ''
+					});
+								
         return fieldForm;
         
     } // _Form_Field
@@ -1116,13 +1019,17 @@ function User_Access(getObj) {
         
         // components/form
         _show_Form(tagId);
-        //> modify module
-        set_Form_Button({
+        
+		//> modify module
+        const eventSave_All 	= 'Parameter_Bank_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Parameter_Bank_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Parameter_Bank_Event(`Form`, `'+ tagId +'`, `reload`)';
+		set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="User_Access_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="User_Access_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="User_Access_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="'+ eventSave_All +'" ondblclick="'+ eventSave_All +'"',
+            'eventNewForm': 'onclick="'+ eventNewForm +'" ondblclick="'+ eventNewForm +'"',
+			'eventReload_All': 'onclick="'+ eventReload_All +'" ondblclick="'+ eventReload_All +'"'
         });
         
         // button focus
@@ -1171,9 +1078,7 @@ function User_Access(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    dataTable['col_reg_user_ref'] 	 = '';
-					dataTable['col_module_uniq_ref'] = '';
-					
+                    
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
@@ -1209,14 +1114,14 @@ function User_Access(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						User_Access_Event(`Form`, tagId, `edit`)
+						Parameter_Bank_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
 					globalData[tagId]['dataTimer']['__process_Form_reload'].push(mytimer);
 					
 				break;
-				default: // edit, copy, detail
+				default: // edit, detail
                     
                     dataTable = globalData[tagId].dataTable;
                     form_Index  = 0;
@@ -1260,7 +1165,9 @@ function User_Access(getObj) {
     } // _Form
 
     function ___Form_Item(getObj) {
-        
+        /*
+        consumer: 
+        */
         const tagId             = getObj.tagId;
         const tableHead         = _Field().tableHead; // this
         const fieldForm         = _Form_Field(tagId);
@@ -1310,7 +1217,7 @@ function User_Access(getObj) {
                         'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
-		
+
         //> modify module
        let formChild	 = {};
 			/*
@@ -1340,30 +1247,11 @@ function User_Access(getObj) {
 		const formNotif  = get_Form_Notif({'body': ''});
 		
 		// sample->FormDisplay
-		/*
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
 			objForm += val;
-		});*/
-		
-		let objForm	 = '';
-		
-		objForm	 = get_Form_Segment({
-						'segmentModel': 'default',
-						'start': 0,
-						'end': 1,
-						'colClass': 'col-sm-12',
-						'fieldForm': new_fieldForm
-					});
-		
-		objForm	 += get_Form_Segment({
-						'segmentModel': 'default',
-						'start': 2,
-						'end': 6,
-						'colClass': 'col-sm-4',
-						'fieldForm': new_fieldForm
-					});
+		});
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1371,8 +1259,7 @@ function User_Access(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-				'col_reg_user_ref': data['col_reg_user_ref'],
-				'col_module_uniq_ref': data['col_module_uniq_ref'],
+				//'col_sample': data['col_sample'],
 			'arrChild': []
 			});
 		
@@ -1410,7 +1297,7 @@ function User_Access(getObj) {
 		
         return result;
     } // ___Form_Item
-	
+
     function _Save_Data(getObj) {
         /*
         consumer :
@@ -1471,7 +1358,7 @@ function User_Access(getObj) {
                 let inputLength = baseEl_Form.eq(x).find(".item-data-col .col-data").length;
                 let dataFormCol = {};
                 for (let y=0; y<inputLength; y++) {
-                    let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();
+                    let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();         
                         
                         // set data input value
                         dataFormCol[fieldForm[y].field] = value;
@@ -1489,7 +1376,6 @@ function User_Access(getObj) {
                                     'value': value,
                                 });
                     } // require
-					
                 } // input  
                     
                     // add hiden value ke form 
@@ -1498,9 +1384,8 @@ function User_Access(getObj) {
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
 					// additional field form here 
-					dataFormCol['col_reg_user_ref']    = globalData[tagId]['dataForm'][x].col_reg_user_ref;
-					dataFormCol['col_module_uniq_ref'] = globalData[tagId]['dataForm'][x].col_module_uniq_ref;
-								
+					// (sample)dataFormCol['col_sample'] = globalData[tagId]['dataForm'][x].col_sample;
+					
 				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
                 dataFormRow[x]	  = dataFormCol;
                 
@@ -1510,7 +1395,7 @@ function User_Access(getObj) {
                         alertText += ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
                 }
             } // form length
-             
+                
             if (alertText !== '') {     
 
                 // components/loader
@@ -1550,11 +1435,11 @@ function User_Access(getObj) {
                         const myObj  = response;
                         
                         if (myObj.status === 'success') {
-							
+                            
 							// global
 							_clear_TaskActive(tagId, '_final_action_Form');
 							
-                            if (reqAction === 'add' || reqAction === 'copy') {
+                            if (reqAction === 'add') {
                             
                                 const num_success   = myObj.response_data.num_success;
                                 const numrow        = get_Num_Row(tagId)+num_success;
@@ -1569,13 +1454,13 @@ function User_Access(getObj) {
                                 const start_row     = (parseInt(display_row) * (parseInt(current_page)-1));
                                 
                                 const currentData   = globalData[tagId].dataTable;
-                                var dataLength      = Object.keys(currentData).length;
+                                var dataLength    	= Object.keys(currentData).length;
                                 const dataDb        = myObj.response_data.data; 
                                 
                                 set_Num_Row(tagId, numrow); 
                                 set_Num_Row_Page(tagId, numrowpage);
                                 
-								var arr_IndexTr   = [];
+                                var arr_IndexTr   = [];
                                 var dataTable_Row = [];
                                 $.map(dataDb, ( rowData, x ) => {
                                     let dataTable_Col = {};
@@ -1604,17 +1489,15 @@ function User_Access(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_module_display +' '+ rowData.col_user_name;
+                                        dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
 										// additional field
-										dataTable_Col['col_reg_user_ref'] 	 = rowData.col_reg_user_ref;
-										dataTable_Col['col_module_uniq_ref'] = rowData.col_module_uniq_ref;
-								
+										
                                     dataTable_Row.push(dataTable_Col);
                                     
                                     // replace data global dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
-                                 
-								arr_IndexTr.push(dataLength);
+                                    
+                                arr_IndexTr.push(dataLength);
 								dataLength++;
                                 }); // map row
                                 
@@ -1632,7 +1515,7 @@ function User_Access(getObj) {
 										'arr_IndexTr': arr_IndexTr
 									}),
 									// components/topbar
-									set_Num_Selected(tagId, num_success),
+									set_Num_Selected(tagId, num_success),                     
 									// components/form
 									_reset_Form_Body(tagId),
 									//components/table
@@ -1673,18 +1556,16 @@ function User_Access(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_module_display +' '+ rowData.col_user_name;
+                                        currentData[x]['col_text_alert'] = rowData.col_parameter_name;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										currentData[x]['col_reg_user_ref'] 	  = rowData.col_reg_user_ref;
-										currentData[x]['col_module_uniq_ref'] = rowData.col_module_uniq_ref;
-								
+										
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
 									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									// (sample) globalData[tagId]['dataForm'][form_Index]['col_sample'] = rowData.col_sample;
+									// (sample) globalData[tagId]['dataForm'][form_Index]['col_sample'] 	= rowData.col_sample;
 									
                                 }); // map row
                                 
@@ -1759,145 +1640,8 @@ function User_Access(getObj) {
             } // alertText
         } // setSave
     } // _Save_Data
-
-	function __select_Module(getObj) {
-		
-		const tagId 			= getObj.tagId;
-		const colId 			= getObj.colId;
-		const listIndex 		= getObj.listIndex;
-		const targetThis 		= getObj.targetThis;
-		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
-		const dataTable_Index 	= dataAutofill.dataTable_Index;
-		const dataTable 		= dataAutofill.dataTable;
-		
-		const baseLevel 		= $("#level-"+ tagId);
-		const formType 			= globalData[tagId]['formType'];
-		
-		const getClass			= $(targetThis).parents(".form-item").attr("class");
-		const arrClass			= getClass.split(" ");
-		const clasForm_Index	= arrClass[1];
-		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
-		
-		// content/Form
-		set_TaskActive_Form(tagId);
-		
-		let baseEl_Item			= '';
-		
-		if (formType === 'Form') {
-			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
-		} else {
-			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
-		}
-		
-		baseEl_Item.find(".item-data-col .col-data").eq(0)
-			.val(dataTable[listIndex].col_display);
-		
-		globalData[tagId]['dataForm'][form_Index]['col_module_uniq_ref'] = dataTable[listIndex].col_module_uniq;
-		
-		// create
-		if (parseInt(dataTable[listIndex].col_btn_create) === -1) {
-			baseEl_Item.find(".item-data-col .col-data").eq(3)
-				.prop("disabled", true);
-			baseEl_Item.find(".item-data-col .col-data").eq(3)
-				.prop("checked", false);
-			baseEl_Item.find(".item-data-col .col-data").eq(3)
-				.val("-1");
-		} else {
-			baseEl_Item.find(".item-data-col .col-data").eq(3)
-				.prop("disabled", false);
-		}
-		
-		// update
-		if (parseInt(dataTable[listIndex].col_btn_update) === -1) {
-			baseEl_Item.find(".item-data-col .col-data").eq(4)
-				.prop("disabled", true);			
-			baseEl_Item.find(".item-data-col .col-data").eq(4)
-				.prop("checked", false);
-			baseEl_Item.find(".item-data-col .col-data").eq(4)
-				.val("-1");
-		} else {
-			baseEl_Item.find(".item-data-col .col-data").eq(4)
-				.prop("disabled", false);
-		}
-		
-		// delete
-		if (parseInt(dataTable[listIndex].col_btn_delete) === -1) {
-			baseEl_Item.find(".item-data-col .col-data").eq(5)
-				.prop("disabled", true);			
-			baseEl_Item.find(".item-data-col .col-data").eq(5)
-				.prop("checked", false);
-			baseEl_Item.find(".item-data-col .col-data").eq(5)
-				.val("-1");
-		} else {
-			baseEl_Item.find(".item-data-col .col-data").eq(5)
-				.prop("disabled", false);
-		}
-		
-		// approve
-		if (parseInt(dataTable[listIndex].col_act_approve) === -1) {
-			baseEl_Item.find(".item-data-col .col-data").eq(6)
-				.prop("disabled", true);			
-			baseEl_Item.find(".item-data-col .col-data").eq(6)
-				.prop("checked", false);
-			baseEl_Item.find(".item-data-col .col-data").eq(6)
-				.val("-1");
-		} else {
-			baseEl_Item.find(".item-data-col .col-data").eq(6)
-				.prop("disabled", false);
-		}
-		
-		baseEl_Item.find(".select-container-"+ colId 
-			+" .list-item").removeClass("a-item-active");
-			
-		$(targetThis).addClass('a-item-active');
-		
-		_hide_List_Autofill(tagId, colId);
-	} // __select_Module
-	
-	function __select_User(getObj) {
-		
-		const tagId 			= getObj.tagId;
-		const colId 			= getObj.colId;
-		const listIndex 		= getObj.listIndex;
-		const targetThis 		= getObj.targetThis;
-		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
-		const dataTable_Index 	= dataAutofill.dataTable_Index;
-		const dataTable 		= dataAutofill.dataTable;
-		
-		const baseLevel 		= $("#level-"+ tagId);
-		const formType 			= globalData[tagId]['formType'];
-		
-		const getClass			= $(targetThis).parents(".form-item").attr("class");
-		const arrClass			= getClass.split(" ");
-		const clasForm_Index	= arrClass[1];
-		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
-		
-		// content/Form
-		set_TaskActive_Form(tagId);
-		
-		let baseEl_Item			= '';
-		
-		if (formType === 'Form') {
-			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
-		} else {
-			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
-		}
-		
-		baseEl_Item.find(".item-data-col .col-data").eq(1)
-			.val(dataTable[listIndex].col_user_name);
-		
-		globalData[tagId]['dataForm'][form_Index]['col_reg_user_ref'] = dataTable[listIndex].col_reg_user;
-		
-		baseEl_Item.find(".select-container-"+ colId 
-			+" .list-item").removeClass("a-item-active");
-			
-		$(targetThis).addClass('a-item-active');
-		
-		_hide_List_Autofill(tagId, colId);
-	} // __select_User
-
 // ======== FORM
- 
+
     //> modify module
     let functionResult  = '';
     switch (getObj.setFunction) {
@@ -1921,13 +1665,7 @@ function User_Access(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        case '_select_Module': 
-			functionResult = __select_Module(getObj);
-		break;
-		case '_select_User': 
-			functionResult = __select_User(getObj);
-		break;
-		default:
+        default:
             functionResult = set_Alert({
                                 'type': 'danger', 
                                 'body': 'Undefined (setFunction)', 
@@ -1939,7 +1677,7 @@ function User_Access(getObj) {
 }
 
 //> modify module
-function User_Access_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Parameter_Bank_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1948,7 +1686,7 @@ function User_Access_Event(eventParam, param_1, param_2, param_3, param_4) {
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = User_Access({
+			eventResult = Parameter_Bank({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1957,51 +1695,26 @@ function User_Access_Event(eventParam, param_1, param_2, param_3, param_4) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = User_Access({
+			eventResult = Parameter_Bank({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = User_Access({
+			eventResult = Parameter_Bank({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
-        case 'Form_Item_Append': 
-			eventResult = User_Access({
-				'setFunction': eventParam,
-				'tagId': param_1,
-				'form_Index': param_2
-			});
-		break;
         case 'Save_Data': 
-			eventResult = User_Access({
+			eventResult = Parameter_Bank({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2
             });
         break;
-        case '_select_Module': 
-			eventResult = User_Access({
-				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
-			});
-		break;
-		case '_select_User': 
-			eventResult = User_Access({
-				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
-			});
-		break;
-		default:
+        default:
             eventResult = set_Alert({
                             'type': 'danger', 
                             'body': 'Undefined (eventParam)', 

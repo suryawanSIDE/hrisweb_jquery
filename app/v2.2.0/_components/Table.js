@@ -143,9 +143,9 @@ function get_Table(getObj) {
 								</table>
 							</div>`;
 						
-		const table_data = `<div class="my-table-data-box" onscroll="_scroll_Freeze(this, '${tagId}')">
+		const table_data = `<div class="my-table-data-box" onscroll="_scroll_Table_Back(this, '${tagId}')">
 								${trLoader}						
-								<div class="my-table-data-box-freeze" style="overflow: hidden; background-color: #fff; position: absolute;">
+								<div class="my-table-data-box-freeze" onscroll="_scroll_Table_Front(this, '${tagId}')">
 									<table class="my-table-data ${tableClass}" >
 										<tbody class="my-tbody">
 										</tbody>
@@ -184,7 +184,7 @@ function set_Map_Table(getObj) {
 	if (data_numrow >= 200) {
 		data_display_row	= 100;
 		data_start_row		= 0;
-		data_max_page		= (data_numrow/data_display_row);
+		data_max_page		= Math.ceil(data_numrow/data_display_row);
 		data_current_page	= 1;
 	}
 	
@@ -207,7 +207,7 @@ function set_Map_Table(getObj) {
 									'rowData': dataTable[x]
 								}),
 					data_numrowpage++;
-					if (data_numrowpage===(max_part)) {
+					if (data_numrowpage <= max_part) {
 						set_Num_Row_Page(tagId, data_numrowpage);
 					}
 				}, time); // 1/5 ms	
@@ -1105,10 +1105,18 @@ function _table_Height(getObj) {
 	} // dekstop
 }
 
-function _scroll_Freeze(targetThis, tagId) {
+function _scroll_Table_Back(targetThis, tagId) {
 	
 	const baseLevel 	= $("#level-"+ tagId);
 	const baseEl 		= baseLevel.find(".my-table-data-box-freeze").eq(0);
+	
+	$(baseEl).scrollTop($(targetThis).scrollTop());
+}
+
+function _scroll_Table_Front(targetThis, tagId) {
+	
+	const baseLevel 	= $("#level-"+ tagId);
+	const baseEl 		= baseLevel.find(".my-table-data-box").eq(0);
 	
 	$(baseEl).scrollTop($(targetThis).scrollTop());
 }

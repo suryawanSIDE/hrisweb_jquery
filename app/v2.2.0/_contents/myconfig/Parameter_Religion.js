@@ -1,5 +1,5 @@
 //> modify module
-function Parameter_Bank(getObj) {
+function Parameter_Religion(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -121,7 +121,7 @@ function Parameter_Bank(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['pCategory'] = 'bank';
+		globalData[tagId]['dataRules']['pCategory'] = 'religion';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -187,7 +187,7 @@ function Parameter_Bank(getObj) {
             'require': 1
             });
 			
-		tdWidth    = 10;
+		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
             'label': 'Nama',
@@ -204,20 +204,6 @@ function Parameter_Bank(getObj) {
 		tdWidth    = 30;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 4
-            'label': 'Detail',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_parameter_detail',
-            'field_value_default': '',
-            'require': 0
-            });
-		
-		tdWidth    = 30;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
             'label': 'Deskrisi',
             'width': (tdWidth),
             'short': true,
@@ -228,10 +214,10 @@ function Parameter_Bank(getObj) {
             'field_value_default': '',
             'require': 0
             });
-				
+		
 		tdWidth    = 8;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
+        tableHead.push({ // 5
             'label': 'Urutan',
             'width': (tdWidth),
             'short': true,
@@ -242,7 +228,7 @@ function Parameter_Bank(getObj) {
             'field_value_default': '',
             'require': 0
             });
-			
+				
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -261,10 +247,6 @@ function Parameter_Bank(getObj) {
 				{
                 'label': 'Nama',
                 'field': 'col_parameter_name'
-                },
-				{
-                'label': 'Detail',
-                'field': 'col_parameter_detail'
                 },
 				{
                 'label': 'Deskrisi',
@@ -361,7 +343,7 @@ function Parameter_Bank(getObj) {
             'reqAction': 'export',
 			'exportType': getObj.exportType,
 			'exportPage': getObj.exportPage,
-			'exportDecSep': getObj.exportDecSep // export_decimal_separator
+            'exportDecSep': getObj.exportDecSep // export_decimal_separator
             });
 
     } // Export_Table
@@ -384,12 +366,12 @@ function Parameter_Bank(getObj) {
         const current_page  = dataPaging.current_page;
         let start_row       = (parseInt(display_row) * (parseInt(current_page)-1))
         
-		let exportType 	  = '';
-		let exportDecSep  = '';
+		let exportType 	 = '';
+		let exportDecSep = '';
 		if (getObj.reqAction === 'export') {
 			
-			exportType 	  = getObj.exportType;
-			exportDecSep  = getObj.exportDecSep;
+			exportType 	 = getObj.exportType;
+			exportDecSep = getObj.exportDecSep;
 			
 			if (getObj.exportPage === 'all_page') {
 				start_row	= 0;
@@ -589,23 +571,30 @@ function Parameter_Bank(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType = globalData[tagId].formType;
-                        set_Btn_Action_DataTable({
+                        const formType 			= globalData[tagId].formType;
+                        const eventDetail 		= 'Parameter_Religion_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Parameter_Religion_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Parameter_Religion_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Religion_Event`)';
+						//const eventImport		= '';
+						//const eventImport_Format= '';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Religion_Event`)';
+						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
-                                'eventDetail': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="'+ eventDetail +'" ondblclick="'+ eventDetail +'"',
                             'btnAdd': permission.act_create, 
-                                'eventAdd': 'onclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="'+ eventAdd +'" ondblclick="'+ eventAdd +'"',
                             'btnEdit': permission.act_update,
-                                'eventEdit': 'onclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="Parameter_Bank_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="'+ eventEdit +'" ondblclick="'+ eventEdit +'"',
                             'btnExport': 0,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Bank_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Bank_Event`)"',
+                                'eventExport': 'onclick="'+ eventExport +'" ondblclick="'+ eventExport +'"',
                             'btnImport': 0,
                                 'eventImport': '',
-                            'btnImport_Format': permission.format_import,
+                            'btnImport_Format': 0, //permission.act_create,
                                 'eventImport_Format': '',
                             'btnDelete': permission.act_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Bank_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Bank_Event`)"',
+                                'eventDelete': 'onclick="'+ eventDelete +'" ondblclick="'+ eventDelete +'"',
                         });
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
@@ -934,27 +923,12 @@ function Parameter_Bank(getObj) {
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(15)',
-						'readonly': ''
-					});
-			
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_parameter_detail
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'maxlength': 25,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(25)',
 						'readonly': ''
 					});
 					
-			col = (col+1); // 5
+			col = (col+1); // 4
 			fieldForm.push({
                         'input_Type': 'get_Input_Textarea',
                         'label': tableHead[col].label, // col_description
@@ -968,8 +942,8 @@ function Parameter_Bank(getObj) {
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type),
 						'readonly': ''
 					});
-					
-			col = (col+1); // 6
+						
+			col = (col+1); // 5
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_seq
@@ -983,7 +957,7 @@ function Parameter_Bank(getObj) {
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(3)',
 						'readonly': ''
 					});
-								
+							
         return fieldForm;
         
     } // _Form_Field
@@ -1012,13 +986,17 @@ function Parameter_Bank(getObj) {
         
         // components/form
         _show_Form(tagId);
-        //> modify module
-        set_Form_Button({
+        
+		//> modify module
+        const eventSave_All 	= 'Parameter_Religion_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Parameter_Religion_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Parameter_Religion_Event(`Form`, `'+ tagId +'`, `reload`)';
+		set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="Parameter_Bank_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="Parameter_Bank_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="'+ eventSave_All +'" ondblclick="'+ eventSave_All +'"',
+            'eventNewForm': 'onclick="'+ eventNewForm +'" ondblclick="'+ eventNewForm +'"',
+			'eventReload_All': 'onclick="'+ eventReload_All +'" ondblclick="'+ eventReload_All +'"'
         });
         
         // button focus
@@ -1103,7 +1081,7 @@ function Parameter_Bank(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Parameter_Bank_Event(`Form`, tagId, `edit`)
+						Parameter_Religion_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1666,7 +1644,7 @@ function Parameter_Bank(getObj) {
 }
 
 //> modify module
-function Parameter_Bank_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Parameter_Religion_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1684,20 +1662,20 @@ function Parameter_Bank_Event(eventParam, param_1, param_2, param_3, param_4) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = Parameter_Bank({
+			eventResult = Parameter_Religion({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Parameter_Bank({
+			eventResult = Parameter_Religion({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Parameter_Bank({
+			eventResult = Parameter_Religion({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2

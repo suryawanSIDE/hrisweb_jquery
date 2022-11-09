@@ -1,5 +1,5 @@
 //> modify module
-function User(getObj) {
+function Area_City(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function User(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myconfig/User/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Area_Sub/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function User(getObj) {
         }
 		
 		// set globalData dataRules
-		// globalData[tagId]['dataRules']['sample'] = 'bank';
+		globalData[tagId]['dataRules']['AreaLevel'] = 2;
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -190,57 +190,29 @@ function User(getObj) {
 		tdWidth    = 20;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Email',
+            'label': 'Provinsi',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_email',
+            'field': 'col_parent_area',
             'field_value_default': '',
             'require': 1
             });
 			
 		tdWidth    = 20;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 4
-            'label': 'Nama',
+        tableHead.push({ // 3
+            'label': 'Kab/Kota',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_user_name',
+            'field': 'col_area',
             'field_value_default': '',
-            'require': 0
-            });
-		
-		tdWidth    = 20;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'ID Karyawan',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_reg_employee_ref',
-            'field_value_default': '',
-            'require': 0
-            });
-				
-		tdWidth    = 20;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 6
-            'label': 'Terakhir Online',
-            'width': (tdWidth),
-            'short': true,
-            'type': '',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_last_online_datetime_dmy',
-            'field_value_default': '',
-            'require': 0
+            'require': 1
             });
 			
         result['tableWidth'] = tableWidth;
@@ -259,12 +231,12 @@ function User(getObj) {
 
         const field = [
 				{
-                'label': 'Email',
-                'field': 'col_email'
+                'label': 'Provinsi',
+                'field': 'col_parent_area'
                 },
 				{
-                'label': 'Nama',
-                'field': 'col_user_name'
+                'label': 'Kab/Kota',
+                'field': 'col_area'
                 }
             ];
 
@@ -284,6 +256,13 @@ function User(getObj) {
 				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Provinsi',
+				'field': 'col_parent_area',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 1,
 				'defaultFilter': []
 				}
 			];
@@ -522,12 +501,11 @@ function User(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_email;
+                                    dataTable_Col['col_text_alert'] = rowData.col_area;
 									// additional field here 
-									dataTable_Col['col_password']   	 = '';
-									dataTable_Col['col_password_retype'] = '';
-									dataTable_Col['col_reg_user_old']    = rowData.col_reg_user;
-									
+									dataTable_Col['col_parent_code']	 = rowData.col_parent_code;
+                                    dataTable_Col['col_parent_code_old'] = rowData.col_parent_code_old;
+                                   
                                 dataTable_Row.push(dataTable_Col);
 
                             }); // map row
@@ -588,61 +566,31 @@ function User(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType = globalData[tagId].formType;
-                        set_Btn_Action_DataTable({
+                        const formType 			= globalData[tagId].formType;
+                        const eventDetail 		= 'Area_City_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Area_City_Event`)';
+						//const eventImport		= '';
+						//const eventImport_Format= '';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Area_City_Event`)';
+						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
-                                'eventDetail': 'onclick="User_Event(`Form`, `'+ tagId +'`, `detail`)" ondblclick="User_Event(`Form`, `'+ tagId +'`, `detail`)"',
+                                'eventDetail': 'onclick="'+ eventDetail +'" ondblclick="'+ eventDetail +'"',
                             'btnAdd': permission.act_create, 
-                                'eventAdd': 'onclick="User_Event(`'+ formType +'`, `'+ tagId +'`, `add`)" ondblclick="User_Event(`'+ formType +'`, `'+ tagId +'`, `add`)"',
+                                'eventAdd': 'onclick="'+ eventAdd +'" ondblclick="'+ eventAdd +'"',
                             'btnEdit': permission.act_update,
-                                'eventEdit': 'onclick="User_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)" ondblclick="User_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)"',
+                                'eventEdit': 'onclick="'+ eventEdit +'" ondblclick="'+ eventEdit +'"',
                             'btnExport': 0,
-                                'eventExport': 'onclick="Confirm_Form(`'+ tagId +'`, `export`, `User_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `export`, `User_Event`)"',
+                                'eventExport': 'onclick="'+ eventExport +'" ondblclick="'+ eventExport +'"',
                             'btnImport': 0,
                                 'eventImport': '',
-                            'btnImport_Format': 0,
+                            'btnImport_Format': 0, //permission.act_create,
                                 'eventImport_Format': '',
                             'btnDelete': permission.act_delete,
-                                'eventDelete': 'onclick="Confirm_Form(`'+ tagId +'`, `delete`, `User_Event`)" ondblclick="Confirm_Form(`'+ tagId +'`, `delete`, `User_Event`)"',
+                                'eventDelete': 'onclick="'+ eventDelete +'" ondblclick="'+ eventDelete +'"',
                         });
-						
-						if (permission.act_create === 1) {
-							// append button action
-							const baseLevel	= $("#level-"+ tagId);
-							const baseEl 	= baseLevel.find(".my-topbar").eq(0);
-							const eventCopy= 'User_Event(`'+ formType +'`, `'+ tagId +'`, `copy`)';
-							const btn_copy = '<div class="btn-group">'+
-													'<button onclick="'+ eventCopy +'" ondblclick="'+ eventCopy +'" class="btn btn-default btn-xs btn-action-edit" disabled>'+
-														'<span class="glyphicon glyphicon-duplicate"></span><span class="dekstop-label"> Copy</span>'+
-													'</button>'+							
-												'</div>'+
-												'<span class="replaceable-after-btn-edit"></span>';
-							
-							// append 
-							baseEl.find(".my-topbar-action-box-group"
-								+" .replaceable-after-btn-edit")
-									.replaceWith(btn_copy);
-						} // permission.act_update
-						
-						if (permission.act_update === 1) {
-							// append button action
-							const baseLevel	= $("#level-"+ tagId);
-							const baseEl 	= baseLevel.find(".my-topbar").eq(0);
-							const eventChPwd= 'User_Event(`'+ formType +'`, `'+ tagId +'`, `edit_password`)';
-							const btn_chpwd = '<div class="btn-group">'+
-													'<button onclick="'+ eventChPwd +'" ondblclick="'+ eventChPwd +'" class="btn btn-default btn-xs btn-action-edit" disabled>'+
-														'<span class="glyphicon glyphicon-pencil"></span><span class="dekstop-label"> Change Password</span>'+
-													'</button>'+							
-												'</div>'+
-												'<span class="replaceable-after-btn-edit"></span>';
-							
-							// append 
-							baseEl.find(".my-topbar-action-box-group"
-								+" .replaceable-after-btn-edit")
-									.replaceWith(btn_chpwd);
-						} // permission.act_update
-						
                     } // reqAction view
 					else if (getObj.reqAction === 'formreload') {
 						
@@ -665,13 +613,12 @@ function User(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_email;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								currentData[selectedCb_Index]['col_password']   	= '';
-								currentData[selectedCb_Index]['col_password_retype']= '';
-								currentData[selectedCb_Index]['col_reg_user_old']   = rowData.col_reg_user;
-								
+								currentData[selectedCb_Index]['col_parent_code']	= rowData.col_parent_code;
+								currentData[selectedCb_Index]['col_parent_code_old']= rowData.col_parent_code_old;
+								  
 						}); // map row
 						
 						// update global dataTable
@@ -793,7 +740,7 @@ function User(getObj) {
                     // update globalData 
                     globalData[tagId]['dataPaging'].numrow      = numrow;
                     globalData[tagId]['dataPaging'].numrowpage  = numrowpage;               
-                        // delete data globalData selected
+                        // delete globalData data selected
                         dataTable = dataTable.filter(function(val, i) {
                             return arrDeleteIndex.indexOf(i) == -1;                     
                         });
@@ -962,41 +909,11 @@ function User(getObj) {
 						'col': col
 						});	
 					}
-					
-			col = (col+1); // 3
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_email
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(15)',
-						'readonly': ''
-					});
 			
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_user_name
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-					
-			col = (col+1); // 5
-			fieldForm.push({
-                        'input_Type': 'get_Input_Select',
-                        'label': tableHead[col].label, // col_reg_employee_ref
+			col = (col+1); 
+			fieldForm.push({ // 3
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_parent_area
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -1012,62 +929,32 @@ function User(getObj) {
 											'col': col
 										}
 					});
-			// update globalData
+					// update globalData
 					if (paramLength === 0) {
 						globalData[tagId]['dataAutofill_Param'].push({
 						'col': col,
-						'listRequest': 'employee',
+						'listRequest': 'province',
 						'listFormat': 'list', // list/table
-						'selectedFunction': 'User_Event',
-						'eventParam': '_select_Employee'
+						'selectedFunction': 'Area_City_Event',
+						'eventParam': '_select_Province'
 						});	
 					}
 					
-			col = (col+1); // 6
+			col = (col+1); // 4
 			fieldForm.push({
                         'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_last_online_datetime_dmy
+                        'label': tableHead[col].label, // col_area
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': -1,
-						'placeholder': 'readonly',
-						'readonly': 'readonly="readonly"'
-					});
-				
-			col = (col+1); // 7
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': 'Password', // col_password
-						'field': 'col_password',
-							'valueConverter': '',
-						'type': 'text',
-						'align': 'left',
-						'require': 1,
-						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-password max(15)',
+						'maxlength': 200,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(200)',
 						'readonly': ''
 					});
-				
-			col = (col+1); // 8
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': 'Retype', // col_password_retype
-						'field': 'col_password_retype',
-							'valueConverter': '',
-						'type': 'text',
-						'align': 'left',
-						'require': 1,
-						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-password max(15)',
-						'readonly': ''
-					});
-												
+			
         return fieldForm;
         
     } // _Form_Field
@@ -1096,13 +983,17 @@ function User(getObj) {
         
         // components/form
         _show_Form(tagId);
-        //> modify module
-        set_Form_Button({
+        
+		//> modify module
+        const eventSave_All 	= 'Area_City_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Area_City_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Area_City_Event(`Form`, `'+ tagId +'`, `reload`)';
+		set_Form_Button({
             'tagId': tagId,
             'action': action,
-            'eventSave_All': 'onclick="User_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)"',
-            'eventNewForm': 'onclick="User_Event(`Form`, `'+ tagId +'`, `add`)"',
-			'eventReload_All': 'onclick="User_Event(`Form`, `'+ tagId +'`, `reload`)"'
+            'eventSave_All': 'onclick="'+ eventSave_All +'" ondblclick="'+ eventSave_All +'"',
+            'eventNewForm': 'onclick="'+ eventNewForm +'" ondblclick="'+ eventNewForm +'"',
+			'eventReload_All': 'onclick="'+ eventReload_All +'" ondblclick="'+ eventReload_All +'"'
         });
         
         // button focus
@@ -1151,10 +1042,9 @@ function User(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-					dataTable['col_password'] 		 = '';
-					dataTable['col_password_retype'] = '';
-					dataTable['col_reg_user_old']	 = '';
-					
+                    dataTable['col_parent_code']	= '';
+                    dataTable['col_parent_code_old']= '';
+                                
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
@@ -1190,47 +1080,21 @@ function User(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						User_Event(`Form`, tagId, `edit`)
+						Area_City_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
 					globalData[tagId]['dataTimer']['__process_Form_reload'].push(mytimer);
 					
 				break;
-				case 'edit_password':
-				
-                    dataTable = globalData[tagId].dataTable;
-                    form_Index  = 0;
-                    baseLevel.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0").each(function(i) {
-                        if (this.checked) {
-							
-							// additional field here
-							
-                            // components/form
-                            content_Form_Append(tagId, ___Form_Item({
-                                'tagId': tagId,
-                                'action': action,
-                                'dataTable_Index': i,
-                                'data': dataTable[i],
-								'form_Index': form_Index
-                                    // child => 'levelRow_Child': levelRow_Child,
-                                }));
-                                
-                        form_Index++;
-                        }
-                    });
-					
-				break;
-				default: // edit, copy, detail
+				default: // edit, detail
                     
                     dataTable = globalData[tagId].dataTable;
                     form_Index  = 0;
                     baseLevel.find(".my-tbody").eq(0).find(".my-tr .my-td-cb-col-0").each(function(i) {
                         if (this.checked) {
 							
-							// additional field here
-							
-							// components/form
+                            // components/form
                             content_Form_Append(tagId, ___Form_Item({
                                 'tagId': tagId,
                                 'action': action,
@@ -1267,7 +1131,9 @@ function User(getObj) {
     } // _Form
 
     function ___Form_Item(getObj) {
-        
+        /*
+        consumer: 
+        */
         const tagId             = getObj.tagId;
         const tableHead         = _Field().tableHead; // this
         const fieldForm         = _Form_Field(tagId);
@@ -1314,7 +1180,7 @@ function User(getObj) {
                         'fieldForm': fieldForm,
                         'data': data,
                         'row': row,
-                        'form_Index': getObj.form_Index,
+						'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
 
@@ -1347,58 +1213,11 @@ function User(getObj) {
 		const formNotif  = get_Form_Notif({'body': ''});
 		
 		// sample->FormDisplay
-		/*
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
 			objForm += val;
-		});*/
-		
-		let objForm	 = '';
-		
-		if (getObj.action === 'add' || getObj.action === 'copy') {
-			objForm	 = get_Form_Segment({
-							'segmentModel': 'default',
-							'start': 0,
-							'end': 3,
-							'colClass': 'col-sm-12',
-							'fieldForm': new_fieldForm
-						});
-			objForm	 += get_Form_Segment({
-							'segmentModel': 'default',
-							'start': 5,
-							'end': 6,
-							'colClass': 'col-sm-12',
-							'fieldForm': new_fieldForm
-						});
-		} else if (getObj.action === 'edit_password') {
-			
-			let eventSavePwd = 'User_Event(`Save_Edit_Pwd`, `'+ tagId +'`, `'+ getObj.form_Index +'`)';
-			objForm	 = get_Form_Segment({
-							'segmentModel': 'modify',
-							'fieldForm': '<div class="col-sm-12">Email: '+ data.col_email +'</div>'
-						});
-			objForm	 += get_Form_Segment({
-							'segmentModel': 'default',
-							'start': 5,
-							'end': 6,
-							'colClass': 'col-sm-12',
-							'fieldForm': new_fieldForm
-						});
-			objForm	 += get_Form_Segment({
-							'segmentModel': 'modify',
-							'fieldForm': '<div class="col-sm-12"><button onclick="'+ eventSavePwd +'" ondblclick="'+ eventSavePwd +'" class="btn btn-primary btn-xs">Save Password</button></div>'
-						});
-		} else {
-			objForm	 = get_Form_Segment({
-							'segmentModel': 'default',
-							'start': 0,
-							'end': 4,
-							'colClass': 'col-sm-12',
-							'fieldForm': new_fieldForm
-						});
-		}	
-		
+		});
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1406,8 +1225,8 @@ function User(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-				//'col_sample': data['col_sample'],
-				'col_reg_user_old': data['col_reg_user_old'],
+				'col_parent_code': data['col_parent_code'],
+				'col_parent_code_old': data['col_parent_code_old'],
 			'arrChild': []
 			});
 		
@@ -1445,7 +1264,7 @@ function User(getObj) {
 		
         return result;
     } // ___Form_Item
-	
+
     function _Save_Data(getObj) {
         /*
         consumer :
@@ -1505,9 +1324,8 @@ function User(getObj) {
                 let formSeq     = baseEl_Form.eq(x).find(".form-item-seq").html();
                 let inputLength = baseEl_Form.eq(x).find(".item-data-col .col-data").length;
                 let dataFormCol = {};
-                //for (let y=0; y<inputLength; y++) {
-				for (let y=0; y<4; y++) {
-                    let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();
+                for (let y=0; y<inputLength; y++) {
+                    let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();         
                         
                         // set data input value
                         dataFormCol[fieldForm[y].field] = value;
@@ -1527,43 +1345,25 @@ function User(getObj) {
                     } // require
                 } // input  
                     
-				//> modify
-				if (reqAction === 'add' || reqAction === 'copy') {
-					var value_password = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(4).val();
-					var value_password_retype = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(5).val();
-					if (value_password === '') {
-						alertField += 'Password, '; 
-					}
-					if (value_password_retype === '') {
-						alertField += 'Retype, '; 
-					}
-					if (value_password !== value_password_retype) {
-						alertField += '<br>Password not match, '; 
-					}				
-				}
-				
                     // add hiden value ke form 
                     //> modify module
                     dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
 					// additional field form here 
-				if (reqAction === 'add' || reqAction === 'copy') {
-					dataFormCol['col_password'] 	   = value_password;
-					dataFormCol['col_password_retype'] = value_password_retype;
-					dataFormCol['col_reg_user_old']    = globalData[tagId]['dataForm'][x].col_reg_user_old;
-				}
-				
-				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
-                dataFormRow[x]	  = dataFormCol;
+					dataFormCol['col_parent_code']  	= globalData[tagId]['dataForm'][x].col_parent_code;
+					dataFormCol['col_parent_code_old']  = globalData[tagId]['dataForm'][x].col_parent_code_old;
+					 
+                dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
+                dataFormRow[x] 	  = dataFormCol;
                 
                 // alert text
                 if (alertField !== '') {
                     let new_alertField = alertField.substring(0, (alertField.length-2));
-                        alertText += ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
+                        alertText = alertText + ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
                 }
             } // form length
-            
+                
             if (alertText !== '') {     
 
                 // components/loader
@@ -1603,11 +1403,8 @@ function User(getObj) {
                         const myObj  = response;
                         
                         if (myObj.status === 'success') {
-							
-							// global
-							_clear_TaskActive(tagId, '_final_action_Form');
-							
-                            if (reqAction === 'add' || reqAction === 'copy') {
+                            
+                            if (reqAction === 'add') {
                             
                                 const num_success   = myObj.response_data.num_success;
                                 const numrow        = get_Num_Row(tagId)+num_success;
@@ -1657,21 +1454,20 @@ function User(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_email;
+                                        dataTable_Col['col_text_alert'] = rowData.col_area;
 										// additional field
-										dataTable_Col['col_password'] 		 = '';
-										dataTable_Col['col_password_retype'] = '';
-										dataTable_Col['col_reg_user_old'] 	 = rowData.col_reg_user;
-										
+										dataTable_Col['col_parent_code']	= rowData.col_parent_code;
+                                    	dataTable_Col['col_parent_code_old']= rowData.col_parent_code_old;
+                                       
                                     dataTable_Row.push(dataTable_Col);
                                     
-                                    // replace data global dataTable
+                                    // replace globalData dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
                                 arr_IndexTr.push(dataLength);
 								dataLength++;
                                 }); // map row
-                                
+                                 
 								const mytimer = setTimeout(() => {
 									// components/table
 									// add new data to table
@@ -1727,20 +1523,20 @@ function User(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_email;
+                                        currentData[x]['col_text_alert'] = rowData.col_area;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										currentData[x]['col_password']   	 = '';
-                                        currentData[x]['col_password_retype']= '';
-                                        currentData[x]['col_reg_user_old']   = rowData.col_reg_user;
+										currentData[x]['col_parent_code']	 = rowData.col_parent_code;
+                                        currentData[x]['col_parent_code_old']= rowData.col_parent_code_old;
                                         
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
-									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
+									let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									// (sample) globalData[tagId]['dataForm'][form_Index]['col_sample'] = rowData.col_sample;
-									
+									globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
+									globalData[tagId]['dataForm'][form_Index]['col_parent_code_old'] = rowData.col_parent_code_old;
+								
                                 }); // map row
                                 
                                 // update global dataTable
@@ -1815,134 +1611,7 @@ function User(getObj) {
         } // setSave
     } // _Save_Data
 	
-    function _Save_Edit_Pwd(getObj) {
-        /*
-        consumer :
-            this
-        */
-        
-        const tagId         = getObj.tagId;
-        const form_Index    = getObj.form_Index;
-        const urlController = globalData[tagId].urlController;
-        let alertText       = '';
-        
-        const baseLevel     = $("#level-"+ tagId);
-        const baseEl_Form   = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item");
-        
-		const value_Pwd 	= baseEl_Form.eq(form_Index).find(".item-data-col .col-data").eq(0).val();
-		const value_Retype 	= baseEl_Form.eq(form_Index).find(".item-data-col .col-data").eq(1).val();
-		
-		let alertField = '';
-		if (value_Pwd === '') {
-			alertField += 'Password, ';
-		}
-		if (value_Retype === '') {
-			alertField += 'Retype Password, '
-		}
-		
-		if (alertField === '') {
-			if (value_Pwd !== value_Retype) {
-				alertField += 'Password not match, '
-			}	
-		}
-		
-		alertText = alertField.substring(0, (alertField.length-2));
-		
-		if (alertText !== '') {     
-			set_Alert({
-					'type': 'warning', 
-					'body': 'Please complete :<br>'+ alertText,  
-					'footer': get_Alert_Footer(1)
-					});
-		} else {
-			
-			set_Loader();
-				
-			 // async save data
-                $.ajax({
-                    type: "post",
-                    url: baseUrl + urlController,
-                    dataType: "json",
-                    data: {
-                        'appId': appId,
-                        'loginKey': get_LoginKey(), // components/key
-                        'randomKey': get_RandomKey(), // components/key
-                        'moduleId': globalData[tagId].moduleId,
-                        'reqAction': 'edit_password',
-                        'setObj': {
-                            'dataInput': {
-									'col_password': value_Pwd,
-									'col_password_retype': value_Retype,
-									'col_data_key': globalData[tagId]['dataForm'][form_Index].col_data_key									
-								},
-							'dataRules': globalData[tagId]['dataRules']
-                        }
-                    }, // data
-                    success: (response) => {    
-                        
-                        // components/loader
-                        _hide_Loader();
-						
-                        const myObj  = response;
-                        
-                        if (myObj.status === 'success') {
-							
-							// global
-							_clear_TaskActive(tagId, '_final_action_Form');
-							
-							let eventChPwd = 'User_Event(`Form_Item_Append`, `'+ tagId +'`, `'+ form_Index +'`)';
-							
-							baseLevel.find(".my-content-form").eq(0)
-							.find(".form-index-"+ form_Index 
-								+" .form-item-extend-change_pwd")
-									.html('<button onclick="'+ eventChPwd +'" ondblclick="'+ eventChPwd +'" class="btn btn-primary btn-xs">Ganti Password</button>');
-							
-							set_Alert({
-								'type': 'info', 
-								'body': 'Password has been changed',  
-								'footer': get_Alert_Footer(1)
-								});
-								
-                        } else if (myObj.status === 'reject') {
-
-                            // components/key
-                            unset_LoginKey();
-
-                            // controllers
-                            Load_Redirect();
-
-                        } else {
-                            
-                            // components/loader
-                            _hide_Loader();
-
-                            // components/alert
-                            set_Alert({
-                                'type': 'danger', 
-                                'body': myObj.message, 
-                                'footer': get_Alert_Footer(1)
-                            });
-
-                        }
-                    }, // success
-                    error: (xhr) => {
-                        
-                        // components/loader
-                        _hide_Loader();
-
-                        // components/alert
-                        set_Alert({
-                            'type': 'danger', 
-                            'body': 'Error: '+ xhr.status +', '+xhr.responseText, //'Error connection', 
-                            'footer': get_Alert_Footer(1)
-                        });
-                    }, // error
-                }); // ajax
-		} // alertText
-		
-	} // _Save_Edit_Pwd
-	
-	function __select_Employee(getObj) {
+	function __select_Province(getObj) {
 		
 		const tagId 			= getObj.tagId;
 		const colId 			= getObj.colId;
@@ -1959,7 +1628,7 @@ function User(getObj) {
 		const arrClass			= getClass.split(" ");
 		const clasForm_Index	= arrClass[1];
 		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
-		
+			
 		// content/Form
 		set_TaskActive_Form(tagId);
 		
@@ -1971,11 +1640,13 @@ function User(getObj) {
 			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
 		}
 		
-		baseEl_Item.find(".item-data-col .col-data").eq(2)
-			.val(dataTable[listIndex].col_name);
+		// this input
+		baseEl_Item.find(".item-data-col .col-data").eq(1)
+			.val(dataTable[listIndex].col_area);
 		
-		baseEl_Item.find(".item-data-col .col-data").eq(3)
-			.val(dataTable[listIndex].col_reg_employee);
+		// update globalData dataForm
+		globalData[tagId]['dataForm'][form_Index]['col_parent_code'] = dataTable[listIndex].col_code_area;
+	
 		
 		baseEl_Item.find(".select-container-"+ colId 
 			+" .list-item").removeClass("a-item-active");
@@ -1985,7 +1656,7 @@ function User(getObj) {
 		_hide_List_Autofill(tagId, colId);
 	}
 // ======== FORM
- 
+
     //> modify module
     let functionResult  = '';
     switch (getObj.setFunction) {
@@ -2009,14 +1680,8 @@ function User(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        case 'Save_Edit_Pwd': 
-            _clearTimer(getObj.tagId, '_Save_Data'); // global
-            _clearTimer(getObj.tagId, '__process_Save_add'); // global
-            _clearTimer(getObj.tagId, '__process_Save_edit'); // global
-            functionResult = _Save_Edit_Pwd(getObj);
-        break;
-        case '_select_Employee': 
-			functionResult = __select_Employee(getObj);
+        case '_select_Province': 
+			functionResult = __select_Province(getObj);
 		break;
 		default:
             functionResult = set_Alert({
@@ -2030,7 +1695,7 @@ function User(getObj) {
 }
 
 //> modify module
-function User_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Area_City_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -2039,7 +1704,7 @@ function User_Event(eventParam, param_1, param_2, param_3, param_4) {
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = User({
+			eventResult = Area_City({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -2048,49 +1713,35 @@ function User_Event(eventParam, param_1, param_2, param_3, param_4) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = User({
+			eventResult = Area_City({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = User({
+			eventResult = Area_City({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
-        case 'Form_Item_Append': 
-			eventResult = User({
-				'setFunction': eventParam,
-				'tagId': param_1,
-				'form_Index': param_2
-			});
-		break;
         case 'Save_Data': 
-			eventResult = User({
+			eventResult = Area_City({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2
             });
         break;
-        case 'Save_Edit_Pwd': 
-			eventResult = User({
-                'setFunction': eventParam,
-                'tagId': param_1,
-                'form_Index': param_2
-            });
-        break;
-	    case '_select_Employee': 
-			eventResult = User({
+        case '_select_Province': 
+			eventResult = Area_City({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'colId': param_2,
 				'listIndex': param_3,
 				'targetThis': param_4
 			});
-		 break;
-		 default:
+		break;
+		default:
             eventResult = set_Alert({
                             'type': 'danger', 
                             'body': 'Undefined (eventParam)', 
