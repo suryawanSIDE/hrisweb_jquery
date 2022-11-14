@@ -1,5 +1,5 @@
 //> modify module
-function Parameter_Relationship(getObj) {
+function Profile(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function Parameter_Relationship(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Profile/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function Parameter_Relationship(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['pCategory'] = 'relationship';
+		globalData[tagId]['dataRules']['AreaLevel'] = 0;
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -172,63 +172,231 @@ function Parameter_Relationship(getObj) {
             'field_value_default': '',
             'require': 0
             });
-			
+		
 		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 2
+            'label': 'ID',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_reg_employee',
+            'field_value_default': '',
+            'require': -1
+            });
+			
+		tdWidth    = 8;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 3
             'label': 'Status',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_status_sw_active',
+            'field': 'col_employee_status_text',
             'field_value_default': 'Aktif',
-            'require': 1
+            'require': -1
             });
-			
-		tdWidth    = 15;
+		
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
+        tableHead.push({ // 4
+            'label': 'Tgl. Bergabung',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_join_date_dmy',
+            'field_value_default': '',
+            'require': -1
+            });
+					
+		tdWidth    = 20;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 5
             'label': 'Nama',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_parameter_name',
+            'field': 'col_name',
             'field_value_default': '',
             'require': 1
             });
-			
-		tdWidth    = 30;
+		
+		tdWidth    = 15;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 4
-            'label': 'Deskrisi',
+        tableHead.push({ // 6
+            'label': 'Nama Panggilan',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_description',
+            'field': 'col_nick_name',
             'field_value_default': '',
-            'require': 0
+            'require': 1
+            });
+		
+		tdWidth    = 5;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 7
+            'label': 'JK',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_sex',
+            'field_value_default': '',
+            'require': 1
             });
 		
 		tdWidth    = 8;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'Urutan',
+        tableHead.push({ // 8
+            'label': 'Gol. Darah',
             'width': (tdWidth),
             'short': true,
-            'type': 'mynumber',
-            'align': 'right',
+            'type': 'text',
+            'align': '',
                 'valueConverter': [],
-            'field': 'col_seq',
+            'field': 'col_blood_type',
             'field_value_default': '',
             'require': 0
             });
-				
+		
+		tdWidth    = 10;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 9
+            'label': 'Tempat Lahir',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_pob',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ //10
+            'label': 'Tgl. Lahir',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'mydate',
+            'align': 'right',
+                'valueConverter': [],
+            'field': 'col_dob_date_dmy',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 10;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 11
+            'label': 'Kebangsaan',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_nationality',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 10;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 12
+            'label': 'Agama',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_religion',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 13
+            'label': 'No. KTP',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'mynumber',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_ktp',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 14
+            'label': 'No. KK',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'mynumber',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_kk',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 15
+            'label': 'No. NPWP',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_npwp',
+            'field_value_default': '',
+            'require': 0
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 16
+            'label': 'No. BPJS TK',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_bpjs_tk',
+            'field_value_default': '',
+            'require': 0
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 17
+            'label': 'No. BPJS Kes.',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_bpjs_k',
+            'field_value_default': '',
+            'require': 0
+            });
+			
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -246,11 +414,7 @@ function Parameter_Relationship(getObj) {
         const field = [
 				{
                 'label': 'Nama',
-                'field': 'col_parameter_name'
-                },
-				{
-                'label': 'Deskrisi',
-                'field': 'col_description'
+                'field': 'col_name'
                 }
             ];
 
@@ -267,7 +431,7 @@ function Parameter_Relationship(getObj) {
         const field = [
 				{
 				'label': 'Status',
-				'field': 'col_status_sw_active',
+				'field': 'col_employee_status_text',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
 				'defaultFilter': []
@@ -343,7 +507,7 @@ function Parameter_Relationship(getObj) {
             'reqAction': 'export',
 			'exportType': getObj.exportType,
 			'exportPage': getObj.exportPage,
-            'exportDecSep': getObj.exportDecSep // export_decimal_separator
+			'exportDecSep': getObj.exportDecSep // export_decimal_separator
             });
 
     } // Export_Table
@@ -366,12 +530,12 @@ function Parameter_Relationship(getObj) {
         const current_page  = dataPaging.current_page;
         let start_row       = (parseInt(display_row) * (parseInt(current_page)-1))
         
-		let exportType 	 = '';
-		let exportDecSep = '';
+		let exportType 	  = '';
+		let exportDecSep  = '';
 		if (getObj.reqAction === 'export') {
 			
-			exportType 	 = getObj.exportType;
-			exportDecSep = getObj.exportDecSep;
+			exportType 	  = getObj.exportType;
+			exportDecSep  = getObj.exportDecSep;
 			
 			if (getObj.exportPage === 'all_page') {
 				start_row	= 0;
@@ -508,8 +672,14 @@ function Parameter_Relationship(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+                                    dataTable_Col['col_text_alert'] = rowData.col_area;
 									// additional field here 
+									dataTable_Col['col_file_photo']   = rowData.col_file_photo;
+									dataTable_Col['col_file_ktp'] 	  = rowData.col_file_ktp;
+									dataTable_Col['col_file_kk'] 	  = rowData.col_file_kk;
+									dataTable_Col['col_file_npwp'] 	  = rowData.col_file_npwp;
+									dataTable_Col['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
+									dataTable_Col['col_file_bpjs_k']  = rowData.col_file_bpjs_k;
 									
                                 dataTable_Row.push(dataTable_Col);
 
@@ -563,7 +733,7 @@ function Parameter_Relationship(getObj) {
 							// components/table
 							get_Tr_Empty(tagId);
 						}
-                        
+						
 						// update globalData info_inTable
 						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
 						// update globalData info_inForm
@@ -576,13 +746,13 @@ function Parameter_Relationship(getObj) {
                         set_Form_Title(tagId, titleBar);
                             
                         const formType 			= globalData[tagId].formType;
-                        const eventDetail 		= 'Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `detail`)';
-						const eventAdd 			= 'Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
-						const eventEdit			= 'Parameter_Relationship_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
-						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Parameter_Relationship_Event`)';
+                        const eventDetail 		= 'Profile_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Profile_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Profile_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Profile_Event`)';
 						//const eventImport		= '';
 						//const eventImport_Format= '';
-						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Parameter_Relationship_Event`)';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Profile_Event`)';
 						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
@@ -622,10 +792,16 @@ function Parameter_Relationship(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_parameter_name;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								
+								currentData[selectedCb_Index]['col_file_photo']   = rowData.col_file_photo;
+								currentData[selectedCb_Index]['col_file_ktp'] 	  = rowData.col_file_ktp;
+								currentData[selectedCb_Index]['col_file_kk'] 	  = rowData.col_file_kk;
+								currentData[selectedCb_Index]['col_file_npwp'] 	  = rowData.col_file_npwp;
+								currentData[selectedCb_Index]['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
+								currentData[selectedCb_Index]['col_file_bpjs_k']   = rowData.col_file_bpjs_k;
+									
 						}); // map row
 						
 						// update global dataTable
@@ -747,7 +923,7 @@ function Parameter_Relationship(getObj) {
                     // update globalData 
                     globalData[tagId]['dataPaging'].numrow      = numrow;
                     globalData[tagId]['dataPaging'].numrowpage  = numrowpage;               
-                        // delete data globalData selected
+                        // delete globalData data selected
                         dataTable = dataTable.filter(function(val, i) {
                             return arrDeleteIndex.indexOf(i) == -1;                     
                         });
@@ -893,8 +1069,83 @@ function Parameter_Relationship(getObj) {
         
         //> modify module
 			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_reg_employee
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'readonly',
+						'readonly': 'readonly="readonly"'
+					});
+					
+			col = (col+1); // 3
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_employee_status_text
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'readonly',
+						'readonly': 'readonly="readonly"'
+					});
+			
+			col = (col+1); // 4
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_join_date_dmy
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'readonly',
+						'readonly': 'readonly="readonly"'
+					});
+				
+			col = (col+1); // 5
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_name
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+				
+			col = (col+1); // 6
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_nick_name
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+			
+			col = (col+1); // 7
+			fieldForm.push({
 						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_status_sw_active
+						'label': tableHead[col].label, // col_sex
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -905,7 +1156,7 @@ function Parameter_Relationship(getObj) {
 						'placeholder': 'select-item',
 						'readonly': '',
 							'eventObject': {
-											'eventInput': 'List_Fixed_Status_Active',
+											'eventInput': 'List_Autofill',
 											'searchInput': 0, // search 1/0
 											'col': col
 										}
@@ -913,29 +1164,75 @@ function Parameter_Relationship(getObj) {
 					// update globalData
 					if (paramLength === 0) {
 						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col
+						'col': col,
+						'listRequest': 'sex',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
 						});	
 					}
-					
-			col = (col+1); // 3
+			
+			col = (col+1); // 8
 			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_parameter_name
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_blood_type
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 15,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(15)',
-						'readonly': ''
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 0, // search 1/0
+											'col': col
+										}
 					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'bloody_type',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
+						});	
+					}
 					
-			col = (col+1); // 4
+			col = (col+1); // 9
 			fieldForm.push({
-                        'input_Type': 'get_Input_Textarea',
-                        'label': tableHead[col].label, // col_description
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_pob
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 1, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'city',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
+						});	
+					}
+						
+			col = (col+1); // 10
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_dob_date_dmy
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -944,24 +1241,146 @@ function Parameter_Relationship(getObj) {
 						'col': col,
 						'maxlength': -1,
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type),
-						'readonly': ''
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'Pick_Date',
+											'col': col
+										}
 					});
-						
-			col = (col+1); // 5
+			
+			col = (col+1); // 11
 			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_seq
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_nationality
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
 						'align': tableHead[col].align,
 						'require': tableHead[col].require,
 						'col': col,
-						'maxlength': 3,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(3)',
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 1, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'country',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
+						});	
+					}
+						
+			col = (col+1); // 12
+			fieldForm.push({
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_religion
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 0, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'religion',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
+						});	
+					}
+						
+			col = (col+1); // 13
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_ktp
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
 						'readonly': ''
 					});
-							
+					
+			col = (col+1); // 14
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_kk
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+				
+			col = (col+1); // 15
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_npwp
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+				
+			col = (col+1); // 16
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_bpjs_tk
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+				
+			col = (col+1); // 17
+			fieldForm.push({
+                        'input_Type': 'get_Input',
+                        'label': tableHead[col].label, // col_bpjs_k
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 100,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
+						'readonly': ''
+					});
+			
         return fieldForm;
         
     } // _Form_Field
@@ -992,9 +1411,9 @@ function Parameter_Relationship(getObj) {
         _show_Form(tagId);
         
 		//> modify module
-        const eventSave_All 	= 'Parameter_Relationship_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
-        const eventNewForm  	= 'Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `add`)';
-		const eventReload_All	= 'Parameter_Relationship_Event(`Form`, `'+ tagId +'`, `reload`)';
+        const eventSave_All 	= 'Profile_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Profile_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Profile_Event(`Form`, `'+ tagId +'`, `reload`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1049,8 +1468,14 @@ function Parameter_Relationship(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    
-                        // components/form
+                    dataTable['col_file_photo']   = '';
+					dataTable['col_file_ktp'] 	  = '';
+					dataTable['col_file_kk'] 	  = '';
+					dataTable['col_file_npwp'] 	  = '';
+					dataTable['col_file_bpjs_tk'] = '';
+					dataTable['col_file_bpjs_k']  = '';
+                   
+						// components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
                             'action': action,
@@ -1085,7 +1510,7 @@ function Parameter_Relationship(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Parameter_Relationship_Event(`Form`, tagId, `edit`)
+						Profile_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1218,11 +1643,155 @@ function Parameter_Relationship(getObj) {
 		const formNotif  = get_Form_Notif({'body': ''});
 		
 		// sample->FormDisplay
+		/*
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
 			objForm += val;
-		});
+		});*/
+		
+		let objForm	 = '';
+		
+		// segment 1
+		let path_foto = 'app/_images/profile.png';
+		if (data.col_file_photo !== '' && data.col_file_photo !== null) {
+			path_foto = data.col_file_photo;
+		}
+		let pre_segment_1 = `<div class="col-sm-4"></div>
+							<div class="col-sm-4"><span class="my-profile-img"><center><img style="height: 100px;" class="img-responsive img-circle" src="${path_foto}" alt="profile" /></span></center></div>`;
+		const segment_1  = get_Form_Segment({
+						'segmentModel': 'modify',
+						'fieldForm': pre_segment_1
+						});
+						
+		// segment 2				
+			let segment_2_block_1 = '<div class="col-sm-6">'+
+						new_fieldForm[0]+ // col_reg_employee
+						'</div>';
+			let segment_2_block_2 = '<div class="col-sm-3">'+
+						new_fieldForm[1]+ // col_employee_status_text
+						'</div>';
+			let segment_2_block_3 = '<div class="col-sm-3">'+
+						new_fieldForm[2]+ // col_join_date_dmy
+						'</div>';			
+		let pre_segment_2 = segment_2_block_1 + segment_2_block_2 + segment_2_block_3;
+		const segment_2  = get_Form_Segment({
+						'segmentModel': 'modify',
+						'fieldForm': pre_segment_2
+						});
+				
+		// segment 3				
+			let segment_3_block_1_c = '<div class="col-sm-6" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[5]+ // col_sex
+								'</div>'+
+								'<div class="col-sm-6" style="padding: 0px;">'+
+									new_fieldForm[6]+ // col_blood_type
+								'</div>';
+			let segment_3_block_1 = '<div class="col-sm-6">'+
+						new_fieldForm[3]+ // col_name
+						new_fieldForm[4]+ // col_nick_name
+						add_Class_Row(segment_3_block_1_c) +
+						'</div>';
+						
+			let segment_3_block_2_a = '<div class="col-sm-7" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[7]+ // col_pob
+								'</div>'+
+								'<div class="col-sm-5" style="padding: 0px;">'+
+									new_fieldForm[8]+ // col_dob_date_dmy
+								'</div>';
+			let segment_3_block_2 = '<div class="col-sm-6">'+
+						add_Class_Row(segment_3_block_2_a) +
+						new_fieldForm[9]+ // col_nationality
+						new_fieldForm[10]+ // col_religion
+						'</div>';
+						
+		let pre_segment_3 = segment_3_block_1 + segment_3_block_2;
+		const segment_3  = get_Form_Segment({
+						'segmentModel': 'modify',
+						'fieldForm': pre_segment_3
+						});
+		// segment 4
+			let link_file_blank = '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-file"></span></a>';
+			
+			let link_file_ktp = link_file_blank;
+			if (data.col_file_ktp !== '' && data.col_file_ktp !== null) {
+				link_file_ktp = '<a href="'+ data.col_file_ktp +'" target="blank" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-file"></span></a>';
+			}
+			let segment_4_block_1_a = '<div class="col-sm-11" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[11]+ // col_ktp
+								'</div>'+
+								'<div class="col-sm-1" style="padding: 0px;">'+
+									'<div class="col-label">&nbsp;</div>'+
+									link_file_ktp+
+								'</div>';
+			let link_file_kk = link_file_blank;
+			if (data.col_file_kk !== '' && data.col_file_kk !== null) {
+				link_file_kk = '<a href="'+ data.col_file_kk +'" target="blank" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-file"></span></a>';
+			}
+			let segment_4_block_1_b = '<div class="col-sm-11" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[12]+ // col_kk
+								'</div>'+
+								'<div class="col-sm-1" style="padding: 0px;">'+
+									'<div class="col-label">&nbsp;</div>'+
+									link_file_kk+
+								'</div>';
+			let link_file_npwp = link_file_blank;
+			if (data.col_file_npwp !== '' && data.col_file_npwp !== null) {
+				link_file_npwp = '<a href="'+ data.col_file_npwp +'" target="blank" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-file"></span></a>';
+			}
+			let segment_4_block_1_c = '<div class="col-sm-11" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[13]+ // col_npwp
+								'</div>'+
+								'<div class="col-sm-1" style="padding: 0px;">'+
+									'<div class="col-label">&nbsp;</div>'+
+									link_file_npwp+
+								'</div>';
+			let segment_4_block_1 = '<div class="col-sm-6">'+
+						add_Class_Row(segment_4_block_1_a) + // col_ktp
+						add_Class_Row(segment_4_block_1_b) + // col_kk
+						add_Class_Row(segment_4_block_1_c) + // col_npwp
+						'</div>';
+			
+			let link_file_bpjs_tk = link_file_blank;
+			if (data.col_file_bpjs_tk !== '' && data.col_file_bpjs_tk !== null) {
+				link_file_bpjs_tk = '<a href="'+ data.col_file_bpjs_tk +'" target="blank" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-file"></span></a>';
+			}
+			let segment_4_block_2_a = '<div class="col-sm-11" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[14]+ // col_bpjs_tk
+								'</div>'+
+								'<div class="col-sm-1" style="padding: 0px;">'+
+									'<div class="col-label">&nbsp;</div>'+
+									link_file_bpjs_tk+
+								'</div>';
+			let link_file_bpjs_k = link_file_blank;
+			if (data.col_file_bpjs_k !== '' && data.col_file_bpjs_k !== null) {
+				link_file_bpjs_k = '<a href="'+ data.col_file_bpjs_k +'" target="blank" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-file"></span></a>';
+			}
+			let segment_4_block_2_b = '<div class="col-sm-11" style="padding: 0px 5px 0px 0px;">'+
+									new_fieldForm[15]+ // col_bpjs_k
+								'</div>'+
+								'<div class="col-sm-1" style="padding: 0px;">'+
+									'<div class="col-label">&nbsp;</div>'+
+									link_file_bpjs_k+
+								'</div>';
+			let segment_4_block_2 = '<div class="col-sm-6">'+
+						add_Class_Row(segment_4_block_2_a) + // col_bpjs_tk
+						add_Class_Row(segment_4_block_2_b) + // col_bpjs_k
+						'</div>';
+						
+		let pre_segment_4 = segment_4_block_1 + segment_4_block_2;
+		const segment_4  = get_Form_Segment({
+						'segmentModel': 'modify',
+						'fieldForm': pre_segment_4
+						});
+						
+		let eventFormAttachment = '';
+		const segment_5 = get_Form_Segment({
+							'segmentModel': 'modify',
+							'fieldForm': '<div class="col-sm-12"><button onclick="'+ eventFormAttachment +'" ondblclick="'+ eventFormAttachment +'" class="btn btn-primary btn-xs">Kelola Lampiran</button></div>'
+						});
+						
+		objForm = segment_1 + segment_2 + segment_3 + segment_4 + segment_5;
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1230,7 +1799,6 @@ function Parameter_Relationship(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-				//'col_sample': data['col_sample'],
 			'arrChild': []
 			});
 		
@@ -1249,7 +1817,8 @@ function Parameter_Relationship(getObj) {
                         `;
         } // formBody
         
-        const result = `<div class="col-sm-6">
+        const result = `<div class="col-sm-1"></div>
+					<div class="col-sm-10">
                     <div class="form-item form-index-${getObj.form_Index} form-item-${dataTable_Index}">
                     <div class="form-item-inner">
 
@@ -1328,7 +1897,8 @@ function Parameter_Relationship(getObj) {
                 let formSeq     = baseEl_Form.eq(x).find(".form-item-seq").html();
                 let inputLength = baseEl_Form.eq(x).find(".item-data-col .col-data").length;
                 let dataFormCol = {};
-                for (let y=0; y<inputLength; y++) {
+                //for (let y=0; y<inputLength; y++) {
+				for (let y=1; y<inputLength; y++) {
                     let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();         
                         
                         // set data input value
@@ -1354,16 +1924,14 @@ function Parameter_Relationship(getObj) {
                     dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
-					// additional field form here 
-					// (sample)dataFormCol['col_sample'] = globalData[tagId]['dataForm'][x].col_sample;
-					
+                
 				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
                 dataFormRow[x]	  = dataFormCol;
                 
                 // alert text
                 if (alertField !== '') {
                     let new_alertField = alertField.substring(0, (alertField.length-2));
-                        alertText += ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
+                        alertText = alertText + ' Form ' + formSeq +' field <i>'+ new_alertField +'</i><br>';
                 }
             } // form length
                 
@@ -1407,9 +1975,6 @@ function Parameter_Relationship(getObj) {
                         
                         if (myObj.status === 'success') {
                             
-							// global
-							_clear_TaskActive(tagId, '_final_action_Form');
-							
                             if (reqAction === 'add') {
                             
                                 const num_success   = myObj.response_data.num_success;
@@ -1460,12 +2025,18 @@ function Parameter_Relationship(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_parameter_name;
+                                        dataTable_Col['col_text_alert'] = rowData.col_area;
 										// additional field
+										dataTable_Col['col_file_photo']   = rowData.col_file_photo;
+										dataTable_Col['col_file_ktp'] 	  = rowData.col_file_ktp;
+										dataTable_Col['col_file_kk'] 	  = rowData.col_file_kk;
+										dataTable_Col['col_file_npwp'] 	  = rowData.col_file_npwp;
+										dataTable_Col['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
+										dataTable_Col['col_file_bpjs_k']  = rowData.col_file_bpjs_k;
 										
                                     dataTable_Row.push(dataTable_Col);
                                     
-                                    // replace data global dataTable
+                                    // replace globalData dataTable
                                     globalData[tagId]['dataTable'][dataLength] = dataTable_Col;
                                     
                                 arr_IndexTr.push(dataLength);
@@ -1527,16 +2098,22 @@ function Parameter_Relationship(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_parameter_name;
+                                        currentData[x]['col_text_alert'] = rowData.col_area;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
+										currentData[x]['col_file_photo']   = rowData.col_file_photo;
+										currentData[x]['col_file_ktp'] 	   = rowData.col_file_ktp;
+										currentData[x]['col_file_kk'] 	   = rowData.col_file_kk;
+										currentData[x]['col_file_npwp']    = rowData.col_file_npwp;
+										currentData[x]['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
+										currentData[x]['col_file_bpjs_k']  = rowData.col_file_bpjs_k;
 										
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
 									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									// (sample) globalData[tagId]['dataForm'][form_Index]['col_sample'] = rowData.col_sample;
+									// (sample) globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
 									
                                 }); // map row
                                 
@@ -1648,7 +2225,7 @@ function Parameter_Relationship(getObj) {
 }
 
 //> modify module
-function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -1657,7 +2234,7 @@ function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, par
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Parameter_Bank({
+			eventResult = Profile({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -1666,20 +2243,20 @@ function Parameter_Relationship_Event(eventParam, param_1, param_2, param_3, par
 			});
 		break;
 		case 'Delete': 
-			eventResult = Parameter_Relationship({
+			eventResult = Profile({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Parameter_Relationship({
+			eventResult = Profile({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Parameter_Relationship({
+			eventResult = Profile({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2

@@ -610,6 +610,10 @@ function User_Access(getObj) {
 							// update globaldata dataTimer
 							globalData[tagId]['dataTimer']['__Fetch_Data'].push(mytimer);
                         } // check data empty
+                        else {
+							// components/table
+							get_Tr_Empty(tagId);
+						}
                         
 						// update globalData info_inTable
 						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
@@ -1860,6 +1864,8 @@ function User_Access(getObj) {
 		baseEl_Item.find(".select-container-"+ colId 
 			+" .list-item").removeClass("a-item-active");
 			
+		baseEl_Item.find(".col-notif").html("");
+		
 		$(targetThis).addClass('a-item-active');
 		
 		_hide_List_Autofill(tagId, colId);
@@ -1901,7 +1907,9 @@ function User_Access(getObj) {
 		
 		baseEl_Item.find(".select-container-"+ colId 
 			+" .list-item").removeClass("a-item-active");
-			
+		
+		baseEl_Item.find(".col-notif").html("");
+		
 		$(targetThis).addClass('a-item-active');
 		
 		_hide_List_Autofill(tagId, colId);

@@ -183,7 +183,7 @@ function Parameter_Educational_Stage(getObj) {
             'align': '',
                 'valueConverter': [],
             'field': 'col_status_sw_active',
-            'field_value_default': 'Active',
+            'field_value_default': 'Aktif',
             'require': 1
             });
 			
@@ -559,6 +559,10 @@ function Parameter_Educational_Stage(getObj) {
 							// update globaldata dataTimer
 							globalData[tagId]['dataTimer']['__Fetch_Data'].push(mytimer);
                         } // check data empty
+                        else {
+							// components/table
+							get_Tr_Empty(tagId);
+						}
                         
 						// update globalData info_inTable
 						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;

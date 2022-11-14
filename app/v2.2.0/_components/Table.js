@@ -1271,6 +1271,8 @@ function _select_Tr(targetThis, tagId) {
 	
 	//note get class  $(targetThis).parents("tr").attr("class").split(/\s+/)[1];
 	
+	_reset_Cb_All(tagId);
+	
 	if (deviceType === 'mobile') {
 		_mobile();
 	} else {

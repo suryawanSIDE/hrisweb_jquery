@@ -290,6 +290,9 @@ function get_Map_Form_Input(getObj) {
 					case 'get_Input_File':
 						result.push(get_Input_File(colData));
 					break;
+					case 'get_Input_Detail':
+						result.push(get_Input_Detail(colData));
+					break;
 					default: // get_Input
 						result.push(get_Input(colData));
 				} // switchcase input type
@@ -348,7 +351,12 @@ function get_Input(getObj) {
 	}
 	
 	if (getObj.align !== '') {
-		inputStyle = inputStyle +'text-align: '+ getObj.align +';';
+		inputStyle += 'text-align: '+ getObj.align +';';
+	}
+	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
 	}
 	
 	let maxlength = '';
@@ -377,7 +385,7 @@ function get_Input(getObj) {
 					  'onkeypress="_press_Input(event, `'+ tagId +'`)"'+
 					  eventInput; // onclick & ondblclick
 					  
-	const result  = `<div class="item-data-col">
+	const result  = `<div class="item-data-col" style="${boxStyle}">
 					${labelCol}
 					${labelRequire}
 					<input 
@@ -412,7 +420,12 @@ function get_Input_Select(getObj) {
 	}
 	
 	if (getObj.align !== '') {
-		inputStyle = inputStyle +'text-align: '+ getObj.align +';';
+		inputStyle += 'text-align: '+ getObj.align +';';
+	}
+	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
 	}
 	
 	let labelCol	 = '';
@@ -440,7 +453,7 @@ function get_Input_Select(getObj) {
 					  'onkeypress="_press_Input(event, `'+ tagId +'`)"'+
 					  eventInput; // onclick & ondblclick
 					  
-	const result  = `<div class="item-data-col">
+	const result  = `<div class="item-data-col" style="${boxStyle}">
 					${labelCol}
 					${labelRequire}
 					<input 
@@ -463,11 +476,16 @@ function get_Input_Textarea(getObj) {
 	const tagId   = getObj.tagId;
 	const classXY = getObj.row +'-'+ getObj.col;
 	
-	let inputBorder = '';
+	let inputStyle = '';
 	let require = '';
 	if (getObj.require === 1) {
-		inputBorder = 'border: 0.5px solid #F3432E';
+		inputStyle = 'border: 0.5px solid #F3432E';
 		require 	= '<span class="my-required"> * </span>';
+	}
+	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
 	}
 	
 	let labelCol	 = '';
@@ -484,11 +502,11 @@ function get_Input_Textarea(getObj) {
 	
 	const eventList = 'onkeyup="_validate_Input(this, `'+ tagId +'`, `'+ classXY +'`)"';
 					  
-	const result  = `<div class="item-data-col">
+	const result  = `<div class="item-data-col" style="${boxStyle}">
 					${labelCol}
 					${labelRequire}
 					<textarea 
-						style="${inputBorder}" 
+						style="${inputStyle}" 
 						${eventList} 
 						data-input="input" 
 						data-require="${getObj.require}"
@@ -507,6 +525,11 @@ function get_Input_Cb(getObj) {
 	let require = '';
 	if (getObj.require === 1) {
 		require 	= '<span class="my-required"> * </span>';
+	}
+	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
 	}
 	
 	let labelCol	 = '';
@@ -540,7 +563,7 @@ function get_Input_Cb(getObj) {
 		disabled = '';
 	}
 	
-	const result  = `<div class="item-data-col">
+	const result  = `<div class="item-data-col" style="${boxStyle}">
 					${labelCol}
 					<input 
 						${eventList} 
@@ -565,8 +588,13 @@ function get_Input_File(getObj) {
 		require 	= '<span class="my-required"> * </span>';
 	}
 	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
+	}
+	
 	if (getObj.align !== '') {
-		inputStyle = inputStyle +'text-align: '+ getObj.align +';';
+		inputStyle += 'text-align: '+ getObj.align +';';
 	}
 	
 	let labelCol	 = '';
@@ -581,7 +609,7 @@ function get_Input_File(getObj) {
 	
 	const value = replaceNull(getObj.value);
 	
-	const result  = `<div class="item-data-col">
+	const result  = `<div class="item-data-col" style="${boxStyle}">
 					${labelCol}
 					${labelRequire}
 					<input 
@@ -603,6 +631,11 @@ function get_Input_Detail(getObj) {
 		inputStyle = 'text-align: '+ getObj.align +';';
 	}
 	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
+	}
+	
 	const classXY = getObj.row +'-'+ getObj.col;
 	var value_fix = '';
 	if (getObj.label === 'Password' || getObj.label === 'Slip') {
@@ -620,7 +653,7 @@ function get_Input_Detail(getObj) {
 		value_fix = '-';
 	}
 
-	const result = `<div class="item-data-col">
+	const result = `<div class="item-data-col" style="${boxStyle}">
 					<div class="col-label">${getObj.label}:</div>
 					<div style="${inputStyle}" data-input="div" class="col-data col-data-${classXY} col-data-detail">${value_fix}</div>
 					<hr class="my-hr">

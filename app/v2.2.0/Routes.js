@@ -23,10 +23,10 @@ function Route_Content(getObj) {
 			_screen_Adjust(tagId);	
 		break;
 		
-		// myhris/employee
-		case (key +'emp'+ markLevel) :
-			globalData[tagId]['moduleId'] = 'emp';
-			Employee_Profile({
+		// myhris/profile
+		case (key +'emp-prf'+ markLevel) :
+			globalData[tagId]['moduleId'] = 'emp-prf';
+			Profile({
 				'setFunction': 'Main',
 				'tagId': tagId,
 				'loadMethode': loadMethode,
@@ -34,7 +34,7 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 		break;
-		// myhris/employee 
+		// myhris/profile 
 		
 		// myhris/area 
 		case (key +'ar-cou'+ markLevel) :

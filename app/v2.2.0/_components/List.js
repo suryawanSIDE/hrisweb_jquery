@@ -120,8 +120,10 @@ function _select_List_Fixed(tagId, colId, targetThis) {
 	baseEl_Item.find(".col-data-"+ colId).val($(targetThis).html());
 	baseEl_Item.find(".select-container-"+ colId).removeClass("my-block");
 	baseEl_Item.find(".select-container-"+ colId).addClass("my-hide");
+	baseEl_Item.find(".col-notif").html("");
 	
 	$(targetThis).addClass('a-item-active');
+	
 }
 
 function List_Autofill(tagId, colId, searchForm) {
@@ -360,6 +362,7 @@ function _select_List_Autofill(eventParam, tagId, colId, indexData, targetThis) 
 	
 	baseEl_Item.find(".col-data-"+ colId).val(dataTable[indexData].col_display);
 	baseEl_Item.find(".select-container-"+ colId +" .list-item").removeClass("a-item-active");
+	baseEl_Item.find(".col-notif").html("");
 	
 	$(targetThis).addClass('a-item-active');
 	

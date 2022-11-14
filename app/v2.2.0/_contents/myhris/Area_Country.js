@@ -527,6 +527,10 @@ function Area_Country(getObj) {
 							// update globaldata dataTimer
 							globalData[tagId]['dataTimer']['__Fetch_Data'].push(mytimer);
                         } // check data empty
+                        else {
+							// components/table
+							get_Tr_Empty(tagId);
+						}
                         
 						// update globalData info_inTable
 						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
