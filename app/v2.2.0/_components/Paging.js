@@ -27,8 +27,10 @@ function set_Paging(tagId) {
 			}
 			
 			if(next_page < max_group) { 
-				result += '<li><a onclick="Arrow_Paging(`'+ tagId +'`, '+ (next_page+1) +', `right`)" class="nav-li-a nav-li-a-right" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>'+
-						  '<li><a onclick="Arrow_Paging(`'+ tagId +'`, '+ (max_group) +', `forward`)" class="nav-li-a nav-li-a-forward" href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>';
+				result += '<li><a onclick="Arrow_Paging(`'+ tagId +'`, '+ (next_page+1) +', `right`)" class="nav-li-a nav-li-a-right" href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>';
+				if (numrow <= 5000) {
+					result += '<li><a onclick="Arrow_Paging(`'+ tagId +'`, '+ (max_group) +', `forward`)" class="nav-li-a nav-li-a-forward" href="#"><span class="glyphicon glyphicon-step-forward"></span></a></li>';
+				}
 			}
 
 		result += '</ul></span>'; // page-box

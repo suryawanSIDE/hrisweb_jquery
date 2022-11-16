@@ -15,6 +15,7 @@ function set_Containter_Form(tagId) {
 	
 	const result = `<div style="${contentFormStyle}" class="my-content-form my-hide">
 					<div style="${formStyle}" class="my-form">
+						<div class="my-form-popup"></div>					
 						<div class="my-form-header">
 							<span class="my-form-header-action"></span>
 							<span class="my-form-header-title"></span>
@@ -290,6 +291,10 @@ function get_Map_Form_Input(getObj) {
 					case 'get_Input_File':
 						result.push(get_Input_File(colData));
 					break;
+					case 'get_Link_File':
+						colData['file_path'] = data[colData.field_path];
+						result.push(get_Link_File(colData));
+					break;
 					case 'get_Input_Detail':
 						result.push(get_Input_Detail(colData));
 					break;
@@ -512,6 +517,7 @@ function get_Input_Textarea(getObj) {
 						data-require="${getObj.require}"
 						class="col-data col-data-${classXY} form-control input-sm" 
 						placeholder="${getObj.placeholder}" 
+						rows="${getObj.tarea_row}" 
 						${getObj.readonly} >${value}</textarea>
 					</div>`;
 	return result;
@@ -621,6 +627,38 @@ function get_Input_File(getObj) {
 						placeholder="${getObj.placeholder}" 
 						${getObj.readonly} />
 					</div>`;
+	return result;
+}
+
+function get_Link_File(getObj) {
+	
+	let inputStyle = '';
+	if (getObj.align !== '') {
+		inputStyle = 'text-align: '+ getObj.align +';';
+	}
+	
+	let boxStyle  = '';
+	if (typeof getObj.box_margin !== 'undefined') {
+		boxStyle += 'margin: '+ getObj.box_margin +';';
+	}
+	
+	const classXY = getObj.row +'-'+ getObj.col;
+	
+	let value_null = replaceNull(getObj.value);
+	let value_fix  = '';
+	
+	if (value_null === '' || value_null === null) {
+		value_fix = 'empty file';
+	} else {
+		value_fix = '<a href="'+ getObj.file_path +'" target="blank"> '+ (value_null) +'</a>';;
+	}
+
+	const result = `<div class="item-data-col" style="${boxStyle}">
+					<div class="col-label">${getObj.label}:</div>
+					<div style="${inputStyle}" data-input="link" class="col-data col-data-${classXY} col-data-detail">${value_fix}</div>
+					<hr class="my-hr">
+				</div>`;
+				
 	return result;
 }
 
@@ -823,4 +861,51 @@ function set_TaskActive_Form(tagId) {
 	
 	let title_form  = get_Form_Title(tagId);
 	globalData[tagId]['dataTaskActive']['formChange'] = title_form;
+}
+
+
+function set_FormPopup(getObj) {
+	
+	const tagId		= getObj.tagId;
+	const baseLevel = $("#level-"+ tagId);
+		
+	let btnClass = 'btn-sm';
+	if (deviceType === 'mobile') {
+		btnClass = 'btn-xs';
+	} else {
+		btnClass = 'btn-sm';
+	}
+	
+	// sample : functionDelete = Time_Sheet_Event()
+	footer = '<div style="text-align: right">'+
+			'<hr class="my-hr">'+						
+			'<button onclick="'+ getObj.nextFunction +'" ondbclick="'+ getObj.nextFunction +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>'+
+			'<button onclick="_hide_FormPopup(`'+ tagId +'`)" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
+			'</div>';
+		
+	const result = `<div class="popup-block"><div class="popup-box my-move-tobottom">
+					<div class="popup-box-head">
+						<span class="popup-box-title">${getObj.title}</span>
+					</div>
+					<div class="popup-box-body">${getObj.body}</div>
+					<div class="popup-box-footer">${footer}</div>
+				</div></div>`;	
+	
+	baseLevel.find(".my-content-form").eq(0)
+		.find(".my-form-popup").html(result);
+
+	baseLevel.find(".my-content-form").eq(0)
+		.find(".my-form-popup .popup-block").css({
+				'height': wHeight +'px'
+			});
+	
+}
+
+function _hide_FormPopup(tagId) {
+	
+	const baseLevel = $("#level-"+ tagId);
+	
+	baseLevel.find(".my-content-form").eq(0)
+		.find(".my-form-popup").html("");
+		
 }

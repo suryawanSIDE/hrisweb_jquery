@@ -1,5 +1,5 @@
 //> modify module
-function Profile(getObj) {
+function Address(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -61,7 +61,7 @@ function Profile(getObj) {
         const Field_Filter  = _Field_Filter();
         
         // set global urlController
-        globalData[tagId]['urlController'] = 'myhris/Profile/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Address/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -121,7 +121,7 @@ function Profile(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['AreaLevel'] = 0;
+		globalData[tagId]['dataRules']['ShowData'] = 'all';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -172,53 +172,25 @@ function Profile(getObj) {
             'field_value_default': '',
             'require': 0
             });
-		
+			
 		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 2
-            'label': 'ID',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_reg_employee',
-            'field_value_default': '',
-            'require': -1
-            });
-			
-		tdWidth    = 8;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
             'label': 'Status',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_employee_status_text',
+            'field': 'col_status_sw_active',
             'field_value_default': 'Aktif',
-            'require': -1
+            'require': 1
             });
-		
-		tdWidth    = 10;
+			
+		tdWidth    = 15;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 4
-            'label': 'Tgl. Bergabung',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_join_date_dmy',
-            'field_value_default': '',
-            'require': -1
-            });
-					
-		tdWidth    = 20;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 5
-            'label': 'Nama',
+        tableHead.push({ // 3
+            'label': 'Karyawan',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
@@ -228,175 +200,91 @@ function Profile(getObj) {
             'field_value_default': '',
             'require': 1
             });
+			
+		tdWidth    = 10;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 4
+            'label': 'Kategori',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_address_type',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 12;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 5
+            'label': 'Povinsi',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_area_province',
+            'field_value_default': '',
+            'require': 1
+            });
 		
 		tdWidth    = 15;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 6
-            'label': 'Nama Panggilan',
+            'label': 'Kabupaten/Kota',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_nick_name',
+            'field': 'col_area_city',
             'field_value_default': '',
             'require': 1
             });
 		
-		tdWidth    = 5;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 7
-            'label': 'JK',
+            'label': 'Desa/Kelurahan',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_sex',
+            'field': 'col_address_detail_1',
             'field_value_default': '',
             'require': 1
             });
 		
-		tdWidth    = 8;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 8
-            'label': 'Gol. Darah',
+            'label': 'RT/RW',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_blood_type',
-            'field_value_default': '',
-            'require': 0
-            });
-		
-		tdWidth    = 10;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 9
-            'label': 'Tempat Lahir',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_pob',
+            'field': 'col_address_detail_2',
             'field_value_default': '',
             'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ //10
-            'label': 'Tgl. Lahir',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'mydate',
-            'align': 'right',
-                'valueConverter': [],
-            'field': 'col_dob_date_dmy',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 10;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 11
-            'label': 'Kebangsaan',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_nationality',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 10;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 12
-            'label': 'Agama',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_religion',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 13
-            'label': 'No. KTP',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'mynumber',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_ktp',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 14
-            'label': 'No. KK',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'mynumber',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_kk',
-            'field_value_default': '',
-            'require': 1
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 15
-            'label': 'No. NPWP',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_npwp',
-            'field_value_default': '',
-            'require': 0
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 16
-            'label': 'No. BPJS TK',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_bpjs_tk',
-            'field_value_default': '',
-            'require': 0
-            });
-		
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 17
-            'label': 'No. BPJS Kes.',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_bpjs_k',
-            'field_value_default': '',
-            'require': 0
             });
 			
+		tdWidth    = 20;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 9
+            'label': 'Alamat',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_address',
+            'field_value_default': '',
+            'require': 1
+            });
+		
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -413,8 +301,8 @@ function Profile(getObj) {
 
         const field = [
 				{
-                'label': 'Nama',
-                'field': 'col_name'
+                'label': 'Alamat',
+                'field': 'col_address'
                 }
             ];
 
@@ -431,9 +319,37 @@ function Profile(getObj) {
         const field = [
 				{
 				'label': 'Status',
-				'field': 'col_employee_status_text',
+				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Kategori',
+				'field': 'col_address_type',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 0,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Karyawan',
+				'field': 'col_name',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 0,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Provinsi',
+				'field': 'col_area_province',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 1,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Kabupaten/Kota',
+				'field': 'col_area_city',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 1,
 				'defaultFilter': []
 				}
 			];
@@ -674,13 +590,10 @@ function Profile(getObj) {
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
                                     dataTable_Col['col_text_alert'] = rowData.col_area;
 									// additional field here 
-									dataTable_Col['col_file_photo']   = rowData.col_file_photo;
-									dataTable_Col['col_file_ktp'] 	  = rowData.col_file_ktp;
-									dataTable_Col['col_file_kk'] 	  = rowData.col_file_kk;
-									dataTable_Col['col_file_npwp'] 	  = rowData.col_file_npwp;
-									dataTable_Col['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
-									dataTable_Col['col_file_bpjs_k']  = rowData.col_file_bpjs_k;
-									
+									dataTable_Col['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+                                    dataTable_Col['col_code_province']		= rowData.col_code_province;
+                                    dataTable_Col['col_code_city']	 		= rowData.col_code_city;
+                                   
                                 dataTable_Row.push(dataTable_Col);
 
                             }); // map row
@@ -733,7 +646,7 @@ function Profile(getObj) {
 							// components/table
 							get_Tr_Empty(tagId);
 						}
-						
+                        
 						// update globalData info_inTable
 						globalData[tagId]['info_inTable'] = myObj.response_data.info_in_table;
 						// update globalData info_inForm
@@ -746,13 +659,13 @@ function Profile(getObj) {
                         set_Form_Title(tagId, titleBar);
                             
                         const formType 			= globalData[tagId].formType;
-                        const eventDetail 		= 'Profile_Event(`Form`, `'+ tagId +'`, `detail`)';
-						const eventAdd 			= 'Profile_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
-						const eventEdit			= 'Profile_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
-						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Profile_Event`)';
+                        const eventDetail 		= 'Address_Event(`Form`, `'+ tagId +'`, `detail`)';
+						const eventAdd 			= 'Address_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
+						const eventEdit			= 'Address_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Address_Event`)';
 						//const eventImport		= '';
 						//const eventImport_Format= '';
-						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Profile_Event`)';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Address_Event`)';
 						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
@@ -795,13 +708,10 @@ function Profile(getObj) {
 								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								currentData[selectedCb_Index]['col_file_photo']   = rowData.col_file_photo;
-								currentData[selectedCb_Index]['col_file_ktp'] 	  = rowData.col_file_ktp;
-								currentData[selectedCb_Index]['col_file_kk'] 	  = rowData.col_file_kk;
-								currentData[selectedCb_Index]['col_file_npwp'] 	  = rowData.col_file_npwp;
-								currentData[selectedCb_Index]['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
-								currentData[selectedCb_Index]['col_file_bpjs_k']   = rowData.col_file_bpjs_k;
-									
+								currentData[selectedCb_Index]['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+								currentData[selectedCb_Index]['col_code_province']		= rowData.col_code_province;
+								currentData[selectedCb_Index]['col_code_city']			= rowData.col_code_city;
+								  
 						}); // map row
 						
 						// update global dataTable
@@ -1069,83 +979,64 @@ function Profile(getObj) {
         
         //> modify module
 			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_reg_employee
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'readonly',
-						'readonly': 'readonly="readonly"'
-					});
-					
-			col = (col+1); // 3
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_employee_status_text
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'readonly',
-						'readonly': 'readonly="readonly"'
-					});
-			
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_join_date_dmy
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'readonly',
-						'readonly': 'readonly="readonly"'
-					});
-				
-			col = (col+1); // 5
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_name
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-				
-			col = (col+1); // 6
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_nick_name
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-			
-			col = (col+1); // 7
-			fieldForm.push({
 						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_sex
+						'label': tableHead[col].label, // col_status_sw_active
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Fixed_Status_Active',
+											'searchInput': 0, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col
+						});	
+					}
+			
+			col = (col+1); 
+			fieldForm.push({ // 3
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_name
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 1, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'employee',
+						'listFormat': 'list', // list/table
+						'selectedFunction': 'Address_Event',
+						'eventParam': '_select_Employee'
+						});	
+					}
+					
+			col = (col+1); 
+			fieldForm.push({ // 4
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_address_type
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -1165,16 +1056,16 @@ function Profile(getObj) {
 					if (paramLength === 0) {
 						globalData[tagId]['dataAutofill_Param'].push({
 						'col': col,
-						'listRequest': 'sex',
+						'listRequest': 'address_type',
 						'listFormat': 'list', // list/table
 						'selectedFunction': '_select_List_Autofill'
 						});	
 					}
-			
-			col = (col+1); // 8
-			fieldForm.push({
+					
+			col = (col+1); 
+			fieldForm.push({ // 5
 						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_blood_type
+						'label': tableHead[col].label, // col_area_province
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -1186,7 +1077,7 @@ function Profile(getObj) {
 						'readonly': '',
 							'eventObject': {
 											'eventInput': 'List_Autofill',
-											'searchInput': 0, // search 1/0
+											'searchInput': 1, // search 1/0
 											'col': col
 										}
 					});
@@ -1194,16 +1085,17 @@ function Profile(getObj) {
 					if (paramLength === 0) {
 						globalData[tagId]['dataAutofill_Param'].push({
 						'col': col,
-						'listRequest': 'bloody_type',
+						'listRequest': 'province',
 						'listFormat': 'list', // list/table
-						'selectedFunction': '_select_List_Autofill'
+						'selectedFunction': 'Address_Event',
+						'eventParam': '_select_Province'
 						});	
 					}
 					
-			col = (col+1); // 9
-			fieldForm.push({
+			col = (col+1); 
+			fieldForm.push({ // 8
 						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_pob
+						'label': tableHead[col].label, // col_area_city
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -1214,7 +1106,7 @@ function Profile(getObj) {
 						'placeholder': 'select-item',
 						'readonly': '',
 							'eventObject': {
-											'eventInput': 'List_Autofill',
+											'eventInput': 'List_Autofill_City',
 											'searchInput': 1, // search 1/0
 											'col': col
 										}
@@ -1225,14 +1117,44 @@ function Profile(getObj) {
 						'col': col,
 						'listRequest': 'city',
 						'listFormat': 'list', // list/table
-						'selectedFunction': '_select_List_Autofill'
+						'selectedFunction': '_select_List_Autofill_City'
 						});	
 					}
-						
-			col = (col+1); // 10
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_dob_date_dmy
+					
+			col = (col+1); 
+			fieldForm.push({ // 9
+						'input_Type': 'get_Input',
+						'label': tableHead[col].label, // col_address_detail_1/desa_kelurahan
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 200,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(200)',
+						'readonly': ''
+					});		
+					
+			col = (col+1); 
+			fieldForm.push({ // 3
+						'input_Type': 'get_Input',
+						'label': tableHead[col].label, // col_address_detail_2/rt_rw
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 15,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(15)',
+						'readonly': ''
+					});	
+					
+			col = (col+1); 
+			fieldForm.push({ // 3
+						'input_Type': 'get_Input_Textarea',
+						'label': tableHead[col].label, // col_address
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -1241,146 +1163,9 @@ function Profile(getObj) {
 						'col': col,
 						'maxlength': -1,
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type),
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'Pick_Date',
-											'col': col
-										}
-					});
-			
-			col = (col+1); // 11
-			fieldForm.push({
-						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_nationality
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 1, // search 1/0
-											'col': col
-										}
-					});
-					// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'country',
-						'listFormat': 'list', // list/table
-						'selectedFunction': '_select_List_Autofill'
-						});	
-					}
-						
-			col = (col+1); // 12
-			fieldForm.push({
-						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_religion
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 0, // search 1/0
-											'col': col
-										}
-					});
-					// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'religion',
-						'listFormat': 'list', // list/table
-						'selectedFunction': '_select_List_Autofill'
-						});	
-					}
-						
-			col = (col+1); // 13
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_ktp
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
 						'readonly': ''
-					});
+					});	
 					
-			col = (col+1); // 14
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_kk
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-				
-			col = (col+1); // 15
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_npwp
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-				
-			col = (col+1); // 16
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_bpjs_tk
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-				
-			col = (col+1); // 17
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_bpjs_k
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': 100,
-						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
-						'readonly': ''
-					});
-			
         return fieldForm;
         
     } // _Form_Field
@@ -1411,9 +1196,9 @@ function Profile(getObj) {
         _show_Form(tagId);
         
 		//> modify module
-        const eventSave_All 	= 'Profile_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
-        const eventNewForm  	= 'Profile_Event(`Form`, `'+ tagId +'`, `add`)';
-		const eventReload_All	= 'Profile_Event(`Form`, `'+ tagId +'`, `reload`)';
+        const eventSave_All 	= 'Address_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
+        const eventNewForm  	= 'Address_Event(`Form`, `'+ tagId +'`, `add`)';
+		const eventReload_All	= 'Address_Event(`Form`, `'+ tagId +'`, `reload`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1468,14 +1253,11 @@ function Profile(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    dataTable['col_file_photo']   = '';
-					dataTable['col_file_ktp'] 	  = '';
-					dataTable['col_file_kk'] 	  = '';
-					dataTable['col_file_npwp'] 	  = '';
-					dataTable['col_file_bpjs_tk'] = '';
-					dataTable['col_file_bpjs_k']  = '';
-                   
-						// components/form
+                    dataTable['col_reg_employee_ref']	= '';
+                    dataTable['col_code_province'] = '';
+					dataTable['col_code_city']	 = '';
+								            
+                        // components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
                             'action': action,
@@ -1510,7 +1292,7 @@ function Profile(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Profile_Event(`Form`, tagId, `edit`)
+						Address_Event(`Form`, tagId, `edit`)
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1598,6 +1380,8 @@ function Profile(getObj) {
                 // tambahkan object baru ke dataAutofill
                     dataAutofill['dataTable_Index']  = dataTable_Index;
                     dataAutofill['dataTable']        = [];
+					dataAutofill['form_Index']  	 = getObj.form_Index;
+                    
             });
         }
 		
@@ -1610,7 +1394,7 @@ function Profile(getObj) {
                         'fieldForm': fieldForm,
                         'data': data,
                         'row': row,
-                        'form_Index': getObj.form_Index,
+						'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
 
@@ -1643,92 +1427,11 @@ function Profile(getObj) {
 		const formNotif  = get_Form_Notif({'body': ''});
 		
 		// sample->FormDisplay
-		/*
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
 			objForm += val;
-		});*/
-		
-		let objForm	 = '';
-		
-		// segment 1
-		let path_foto = 'app/_images/profile.png';
-		if (data.col_file_photo !== '' && data.col_file_photo !== null) {
-			path_foto = data.col_file_photo;
-		}
-		let pre_segment_1 = `<div class="col-sm-12">
-								<span class="my-profile-img">
-								<center><img style="height: 100px;" class="img-responsive img-circle" src="${path_foto}" alt="profile" /></center>
-								</span>
-							</div>`;
-		const segment_1  = get_Form_Segment({
-						'segmentModel': 'modify',
-						'fieldForm': pre_segment_1
-						});
-						
-		// segment 2				
-			let segment_2_block_1 = '<div class="col-sm-6">'+
-						new_fieldForm[0]+ // col_reg_employee
-						'</div>';
-			let segment_2_block_2 = '<div class="col-sm-3">'+
-						new_fieldForm[1]+ // col_employee_status_text
-						'</div>';
-			let segment_2_block_3 = '<div class="col-sm-3">'+
-						new_fieldForm[2]+ // col_join_date_dmy
-						'</div>';			
-		let pre_segment_2 = segment_2_block_1 + segment_2_block_2 + segment_2_block_3;
-		const segment_2  = get_Form_Segment({
-						'segmentModel': 'modify',
-						'fieldForm': pre_segment_2
-						});
-				
-		// segment 3				
-			let segment_3_block_1_c = '<div class="col-sm-6" style="padding-left: 0px; padding-right: 5px;">'+
-									new_fieldForm[5]+ // col_sex
-								'</div>'+
-								'<div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">'+
-									new_fieldForm[6]+ // col_blood_type
-								'</div>';
-			let segment_3_block_1 = '<div class="col-sm-6">'+
-						new_fieldForm[3]+ // col_name
-						new_fieldForm[4]+ // col_nick_name
-						add_Class_Row(segment_3_block_1_c) +
-						'</div>';						
-			let segment_3_block_2_a = '<div class="col-sm-7" style="padding-left: 0px; padding-right: 5px;">'+
-									new_fieldForm[7]+ // col_pob
-								'</div>'+
-								'<div class="col-sm-5" style="padding-left: 0px; padding-right: 0px;">'+
-									new_fieldForm[8]+ // col_dob_date_dmy
-								'</div>';
-			let segment_3_block_2 = '<div class="col-sm-6">'+
-						add_Class_Row(segment_3_block_2_a) +
-						new_fieldForm[9]+ // col_nationality
-						new_fieldForm[10]+ // col_religion
-						'</div>';						
-		let pre_segment_3 = segment_3_block_1 + segment_3_block_2;
-		const segment_3  = get_Form_Segment({
-						'segmentModel': 'modify',
-						'fieldForm': pre_segment_3
-						});
-		// segment 4
-			
-			let segment_4_block_1 = '<div class="col-sm-6">'+
-						new_fieldForm[11]+ // col_ktp
-						new_fieldForm[12]+ // col_kk
-						new_fieldForm[13]+ // col_npwp
-						'</div>';
-			let segment_4_block_2 = '<div class="col-sm-6">'+
-						new_fieldForm[14]+ // col_bpjs_tk
-						new_fieldForm[15]+ // col_bpjs_k
-						'</div>';
-		let pre_segment_4 = segment_4_block_1 + segment_4_block_2;
-		const segment_4  = get_Form_Segment({
-						'segmentModel': 'modify',
-						'fieldForm': pre_segment_4
-						});
-			
-		objForm = segment_1 + segment_2 + segment_3 + segment_4;
+		});
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1736,6 +1439,9 @@ function Profile(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
+				'col_reg_employee_ref': data['col_reg_employee_ref'],
+				'col_code_province': data['col_code_province'],
+				'col_code_city': data['col_code_city'],
 			'arrChild': []
 			});
 		
@@ -1754,8 +1460,7 @@ function Profile(getObj) {
                         `;
         } // formBody
         
-        const result = `<div class="col-sm-2"></div>
-					<div class="col-sm-8">
+        const result = `<div class="col-sm-6">
                     <div class="form-item form-index-${getObj.form_Index} form-item-${dataTable_Index}">
                     <div class="form-item-inner">
 
@@ -1834,8 +1539,7 @@ function Profile(getObj) {
                 let formSeq     = baseEl_Form.eq(x).find(".form-item-seq").html();
                 let inputLength = baseEl_Form.eq(x).find(".item-data-col .col-data").length;
                 let dataFormCol = {};
-                //for (let y=0; y<inputLength; y++) {
-				for (let y=1; y<inputLength; y++) {
+                for (let y=0; y<inputLength; y++) {
                     let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();         
                         
                         // set data input value
@@ -1861,9 +1565,13 @@ function Profile(getObj) {
                     dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
-                
-				dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
-                dataFormRow[x]	  = dataFormCol;
+					// additional field form here 
+					dataFormCol['col_reg_employee_ref'] = globalData[tagId]['dataForm'][x].col_reg_employee_ref;
+					dataFormCol['col_code_province']  	= globalData[tagId]['dataForm'][x].col_code_province;
+					dataFormCol['col_code_city']  		= globalData[tagId]['dataForm'][x].col_code_city;
+					 
+                dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
+                dataFormRow[x] 	  = dataFormCol;
                 
                 // alert text
                 if (alertField !== '') {
@@ -1964,13 +1672,10 @@ function Profile(getObj) {
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
                                         dataTable_Col['col_text_alert'] = rowData.col_area;
 										// additional field
-										dataTable_Col['col_file_photo']   = rowData.col_file_photo;
-										dataTable_Col['col_file_ktp'] 	  = rowData.col_file_ktp;
-										dataTable_Col['col_file_kk'] 	  = rowData.col_file_kk;
-										dataTable_Col['col_file_npwp'] 	  = rowData.col_file_npwp;
-										dataTable_Col['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
-										dataTable_Col['col_file_bpjs_k']  = rowData.col_file_bpjs_k;
-										
+										dataTable_Col['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+                                    	dataTable_Col['col_code_province']		= rowData.col_code_province;
+                                    	dataTable_Col['col_code_city']			= rowData.col_code_city;
+                                    	
                                     dataTable_Row.push(dataTable_Col);
                                     
                                     // replace globalData dataTable
@@ -1979,7 +1684,7 @@ function Profile(getObj) {
                                 arr_IndexTr.push(dataLength);
 								dataLength++;
                                 }); // map row
-                                
+                                 
 								const mytimer = setTimeout(() => {
 									// components/table
 									// add new data to table
@@ -2038,20 +1743,19 @@ function Profile(getObj) {
                                         currentData[x]['col_text_alert'] = rowData.col_area;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										currentData[x]['col_file_photo']   = rowData.col_file_photo;
-										currentData[x]['col_file_ktp'] 	   = rowData.col_file_ktp;
-										currentData[x]['col_file_kk'] 	   = rowData.col_file_kk;
-										currentData[x]['col_file_npwp']    = rowData.col_file_npwp;
-										currentData[x]['col_file_bpjs_tk'] = rowData.col_file_bpjs_tk;
-										currentData[x]['col_file_bpjs_k']  = rowData.col_file_bpjs_k;
-										
+										currentData[x]['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+                                        currentData[x]['col_code_province']		= rowData.col_code_province;
+                                    	currentData[x]['col_code_city']			= rowData.col_code_city;
+                                    	
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
-									// let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
+									let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									// (sample) globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
-									
+									globalData[tagId]['dataForm'][form_Index]['col_reg_employee_ref'] 	= rowData.col_reg_employee_ref;
+									globalData[tagId]['dataForm'][form_Index]['col_code_province'] 		= rowData.col_code_province;
+									globalData[tagId]['dataForm'][form_Index]['col_code_city'] 			= rowData.col_code_city;
+								
                                 }); // map row
                                 
                                 // update global dataTable
@@ -2126,19 +1830,102 @@ function Profile(getObj) {
         } // setSave
     } // _Save_Data
 	
-	function _Form_Attachment(getObj) {
-		const tagId	 = getObj.tagId;
+	function __select_Employee(getObj) {
 		
-		const result = set_FormPopup({
-					'tagId': tagId,
-					'nextFunction': '',
-					'title': 'Upload File',
-					'body': 'tes'
-					});
+		const tagId 			= getObj.tagId;
+		const colId 			= getObj.colId;
+		const listIndex 		= getObj.listIndex;
+		const targetThis 		= getObj.targetThis;
+		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
+		const dataTable_Index 	= dataAutofill.dataTable_Index;
+		const dataTable 		= dataAutofill.dataTable;
 		
-				
-	} // _Form_Attachment
+		const baseLevel 		= $("#level-"+ tagId);
+		const formType 			= globalData[tagId]['formType'];
+		
+		const getClass			= $(targetThis).parents(".form-item").attr("class");
+		const arrClass			= getClass.split(" ");
+		const clasForm_Index	= arrClass[1];
+		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
+			
+		// content/Form
+		set_TaskActive_Form(tagId);
+		
+		let baseEl_Item			= '';
+		
+		if (formType === 'Form') {
+			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
+		} else {
+			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
+		}
+		
+		// this input
+		baseEl_Item.find(".item-data-col .col-data").eq(1)
+			.val(dataTable[listIndex].col_name);
+		
+		// update globalData dataForm
+		globalData[tagId]['dataForm'][form_Index]['col_reg_employee_ref'] = dataTable[listIndex].col_reg_employee;
 	
+		
+		baseEl_Item.find(".select-container-"+ colId 
+			+" .list-item").removeClass("a-item-active");
+			
+		$(targetThis).addClass('a-item-active');
+		
+		_hide_List_Autofill(tagId, colId);
+	}
+	
+	function __select_Province(getObj) {
+		
+		const tagId 			= getObj.tagId;
+		const colId 			= getObj.colId;
+		const listIndex 		= getObj.listIndex;
+		const targetThis 		= getObj.targetThis;
+		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
+		const dataTable_Index 	= dataAutofill.dataTable_Index;
+		const dataTable 		= dataAutofill.dataTable;
+		
+		const baseLevel 		= $("#level-"+ tagId);
+		const formType 			= globalData[tagId]['formType'];
+		
+		const getClass			= $(targetThis).parents(".form-item").attr("class");
+		const arrClass			= getClass.split(" ");
+		const clasForm_Index	= arrClass[1];
+		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
+			
+		// content/Form
+		set_TaskActive_Form(tagId);
+		
+		let baseEl_Item			= '';
+		
+		if (formType === 'Form') {
+			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
+		} else {
+			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
+		}
+		
+		// this input
+		baseEl_Item.find(".item-data-col .col-data").eq(3)
+			.val(dataTable[listIndex].col_area);
+		
+		// reset child
+		let sp 		= colId.split('-');
+		let rowId 	= sp[0];
+		baseEl_Item.find(".item-data-col .col-data").eq(4)
+			.val('');
+		baseEl_Item.find(".select-container-"+ rowId +"-6" 
+			+" .select-content-body").html('');
+		
+		// update globalData dataForm
+		globalData[tagId]['dataForm'][form_Index]['col_code_province'] = dataTable[listIndex].col_code_area;
+	
+		baseEl_Item.find(".select-container-"+ colId 
+			+" .list-item").removeClass("a-item-active");
+			
+		$(targetThis).addClass('a-item-active');
+		
+		_hide_List_Autofill(tagId, colId);
+	}
 // ======== FORM
 
     //> modify module
@@ -2164,8 +1951,11 @@ function Profile(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        case 'Form_Attachment':
-			functionResult = _Form_Attachment(getObj);
+        case '_select_Employee': 
+			functionResult = __select_Employee(getObj);
+		break;
+		case '_select_Province': 
+			functionResult = __select_Province(getObj);
 		break;
 		default:
             functionResult = set_Alert({
@@ -2179,7 +1969,7 @@ function Profile(getObj) {
 }
 
 //> modify module
-function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
+function Address_Event(eventParam, param_1, param_2, param_3, param_4) {
    
 	let eventResult= '';
     switch (eventParam) {
@@ -2188,7 +1978,7 @@ function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Profile({
+			eventResult = Address({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'exportType': exportType,
@@ -2197,29 +1987,41 @@ function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = Profile({
+			eventResult = Address({
                 'setFunction': eventParam,
                 'tagId': param_1
             });
         break;
         case 'Form': 
-			eventResult = Profile({
+			eventResult = Address({
 				'setFunction': eventParam,
 				'tagId': param_1,
 				'action': param_2
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Profile({
+			eventResult = Address({
                 'setFunction': eventParam,
                 'tagId': param_1,
                 'action': param_2
             });
         break;
-        case 'Form_Attachment': 
-			eventResult = Profile({
+        case '_select_Employee': 
+			eventResult = Address({
 				'setFunction': eventParam,
-				'tagId': param_1
+				'tagId': param_1,
+				'colId': param_2,
+				'listIndex': param_3,
+				'targetThis': param_4
+			});
+		break;
+		case '_select_Province': 
+			eventResult = Address({
+				'setFunction': eventParam,
+				'tagId': param_1,
+				'colId': param_2,
+				'listIndex': param_3,
+				'targetThis': param_4
 			});
 		break;
 		default:

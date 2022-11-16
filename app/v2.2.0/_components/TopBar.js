@@ -509,10 +509,10 @@ function set_Popup_Search(tagId) {
 		
 		contentBody = contentBody +'</tbody></table>'
 		
-		const result = `<div class="right-panel-popup my-move-tobottom">
-						<div class="right-panel-popup-head">Search</div>
-						<div class="search-body right-panel-popup-body">${contentBody}</div>
-						<div class="right-panel-popup-footer">
+		const result = `<div class="tool-panel-popup my-move-tobottom">
+						<div class="tool-panel-popup-head">Search</div>
+						<div class="search-body tool-panel-popup-body">${contentBody}</div>
+						<div class="tool-panel-popup-footer">
 							<div style="text-align: right">
 							<span class="btn-group" role="toolbar">
 								<button onclick="Load_Search('${tagId}', 1)" class="btn btn-sm btn-default btn-group search-action-apply">Apply</button>&nbsp;
@@ -599,10 +599,10 @@ function set_Panel_Filter(tagId) {
 		}); // map
 		contentBody = contentBody +'</tbody></table>';
 		
-		const result = `<div class="right-panel-popup my-move-tobottom">
-						<div class="right-panel-popup-head">Filter</div>
-						<div class="filter-body right-panel-popup-body">${contentBody}</div>
-						<div class="right-panel-popup-footer">
+		const result = `<div class="tool-panel-popup my-move-tobottom">
+						<div class="tool-panel-popup-head">Filter</div>
+						<div class="filter-body tool-panel-popup-body">${contentBody}</div>
+						<div class="tool-panel-popup-footer">
 							<div style="text-align: right">
 							<span class="btn-group" role="toolbar">
 								<button onclick="Load_Filter('${tagId}', 1)" class="btn btn-sm btn-default btn-group">Apply</button>&nbsp;
@@ -658,7 +658,7 @@ function _hide_Topbar_Popup(tagId, targetEl) {
 		
 	const baseLevel    = $("#level-"+ tagId);
 	const baseEl 	   = baseLevel.find(".my-topbar").eq(0);
-	const baseEl_Popup = baseEl.find(".my-container-"+ targetEl +" .right-panel-popup");
+	const baseEl_Popup = baseEl.find(".my-container-"+ targetEl +" .tool-panel-popup");
 		  baseEl_Popup.removeClass("my-move-tobottom");
 		  baseEl_Popup.addClass("my-move-totop");
 		  baseEl_Popup.addClass("my-hide");

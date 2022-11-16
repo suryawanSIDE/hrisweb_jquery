@@ -37,6 +37,7 @@ function Confirm_Form(tagId, action, nextFunction) {
 					'</div>';
 				
 			set_Confirm({
+				'icon': 'glyphicon-warning-sign',
 				'title': 'Delete '+ count_checked +' data ?',
 				'body': body, 
 				'footer': footer
@@ -101,6 +102,7 @@ function Confirm_Form(tagId, action, nextFunction) {
 					'</div>';
 				
 			set_Confirm({
+				'icon': 'glyphicon glyphicon-file',
 				'title': 'Export',
 				'body': body, 
 				'footer': footer
@@ -124,6 +126,7 @@ function Confirm_Form(tagId, action, nextFunction) {
 			});
 			
 			set_Confirm({
+				'icon': 'glyphicon-warning-sign',
 				'title': 'You have not saved data',
 				'body': body, 
 				'footer': footer
@@ -147,7 +150,7 @@ function set_Confirm(getObj) {
 	
 	const result = `<div class="confirm-block"><div class="confirm-box my-move-tobottom">
 					<div class="confirm-box-head">
-						<span class="confirm-box-icon"><span class="glyphicon glyphicon-warning-sign"></span></span>
+						<span class="confirm-box-icon"><span class="glyphicon ${getObj.icon}"></span></span>
 						<span class="confirm-box-title">${getObj.title}</span>
 					</div>
 					<div class="confirm-box-body">${getObj.body}</div>
@@ -166,3 +169,5 @@ function _hide_Confirm() {
 	
 	$("#my-confirm").html("");
 }
+
+

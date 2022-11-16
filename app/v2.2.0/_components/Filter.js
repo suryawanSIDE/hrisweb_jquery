@@ -169,10 +169,10 @@ function set_Filter_Form(getObj) {
 	
 	const tagId  = getObj.tagId;
 	
-	const result = '<div class="right-panel-popup my-move-tobottom">'+
-					'<div class="right-panel-popup-head">Filter '+ getObj.label +'</div>'+
-					'<div class="right-panel-popup-body">'+ getObj.contentBody +'</div>'+
-					'<div class="right-panel-popup-footer">'+
+	const result = '<div class="tool-panel-popup my-move-tobottom">'+
+					'<div class="tool-panel-popup-head">Filter '+ getObj.label +'</div>'+
+					'<div class="tool-panel-popup-body">'+ getObj.contentBody +'</div>'+
+					'<div class="tool-panel-popup-footer">'+
 						'<div style="text-align: right">'+
 						'<span class="btn-group" role="toolbar">'+
 							'<button onclick="_hide_Filter_Form(`'+ tagId +'`, `'+ getObj.field +'`)" class="btn btn-sm btn-default btn-group">Close</button>'+
