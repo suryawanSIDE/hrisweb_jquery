@@ -1173,6 +1173,7 @@ function Parameter_Holiday_Type(getObj) {
                 // tambahkan object baru ke dataAutofill
                     dataAutofill['dataTable_Index']  = dataTable_Index;
                     dataAutofill['dataTable']        = [];
+					dataAutofill['form_Index']  	 = getObj.form_Index;
             });
         }
 		
