@@ -66,6 +66,48 @@ function User(getObj) {
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
         
+		// set global dataEvent
+        globalData[tagId]['dataEvent']['detail_Key'] = {
+											'eventParam': 'Form',
+											'action': 'detail'
+											}
+		globalData[tagId]['dataEvent']['reload_Key'] = {
+											'eventParam': 'Form',
+											'action': 'reload'
+											}
+		globalData[tagId]['dataEvent']['add_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'add'
+											}
+		globalData[tagId]['dataEvent']['edit_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_delete_Key'] = {
+											'nextFunction': 'User_Event',
+											'action': 'delete'
+											}
+        globalData[tagId]['dataEvent']['delete_Key'] = {
+											'eventParam': 'Delete',
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_export_Key'] = {
+											'nextFunction': 'User_Event',
+											'action': 'export'
+											}
+        globalData[tagId]['dataEvent']['export_Key'] = {
+											'eventParam': 'Export_Table',
+											'action': 'export'
+											}
+		globalData[tagId]['dataEvent']['copy_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'copy'
+											}
+		globalData[tagId]['dataEvent']['edit_password_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'edit_password'
+											}
+		
         // set global field search
         if (Object.keys(globalData[tagId].fieldSearch).length === 0) {
             globalData[tagId]['fieldSearch'] = Field_Search;
@@ -592,14 +634,11 @@ function User(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType 			= globalData[tagId].formType;
-                        const eventDetail 		= 'User_Event(`Form`, `'+ tagId +'`, `detail`)';
-						const eventAdd 			= 'User_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
-						const eventEdit			= 'User_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
-						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `User_Event`)';
-						//const eventImport		= '';
-						//const eventImport_Format= '';
-						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `User_Event`)';
+                        const eventDetail 		= 'User_Event(`'+ tagId +'`, `detail_Key`)';
+						const eventAdd 			= 'User_Event(`'+ tagId +'`, `add_Key`)';
+						const eventEdit			= 'User_Event(`'+ tagId +'`, `edit_Key`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `confirm_delete_Key`)';
 						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
@@ -622,7 +661,7 @@ function User(getObj) {
 							// append button action
 							const baseLevel	= $("#level-"+ tagId);
 							const baseEl 	= baseLevel.find(".my-topbar").eq(0);
-							const eventCopy= 'User_Event(`'+ formType +'`, `'+ tagId +'`, `copy`)';
+							const eventCopy= 'User_Event(`'+ tagId +'`, `copy_Key`)';
 							const btn_copy = '<div class="btn-group">'+
 													'<button onclick="'+ eventCopy +'" ondblclick="'+ eventCopy +'" class="btn btn-default btn-xs btn-action-edit" disabled>'+
 														'<span class="glyphicon glyphicon-duplicate"></span><span class="dekstop-label"> Copy</span>'+
@@ -640,7 +679,7 @@ function User(getObj) {
 							// append button action
 							const baseLevel	= $("#level-"+ tagId);
 							const baseEl 	= baseLevel.find(".my-topbar").eq(0);
-							const eventChPwd= 'User_Event(`'+ formType +'`, `'+ tagId +'`, `edit_password`)';
+							const eventChPwd= 'User_Event(`'+ tagId +'`, `edit_password_Key`)';
 							const btn_chpwd = '<div class="btn-group">'+
 													'<button onclick="'+ eventChPwd +'" ondblclick="'+ eventChPwd +'" class="btn btn-default btn-xs btn-action-edit" disabled>'+
 														'<span class="glyphicon glyphicon-pencil"></span><span class="dekstop-label"> Change Password</span>'+
@@ -1109,9 +1148,13 @@ function User(getObj) {
         _show_Form(tagId);
         
 		//> modify module
-        const eventSave_All 	= 'User_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
-        const eventNewForm  	= 'User_Event(`Form`, `'+ tagId +'`, `add`)';
-		const eventReload_All	= 'User_Event(`Form`, `'+ tagId +'`, `reload`)';
+        globalData[tagId]['dataEvent']['save_Key'] = {
+											'eventParam': 'Save_Data',
+											'action': action
+											}
+        const eventSave_All 	= 'User_Event(`'+ tagId +'`, `save_Key`)';
+        const eventNewForm  	= 'User_Event(`'+ tagId +'`, `add_Key`)';
+		const eventReload_All	= 'User_Event(`'+ tagId +'`, `reload_Key`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1205,7 +1248,7 @@ function User(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						User_Event(`Form`, tagId, `edit`)
+						User_Event(tagId, 'edit_Key')
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1388,8 +1431,13 @@ function User(getObj) {
 							'fieldForm': new_fieldForm
 						});
 		} else if (getObj.action === 'edit_password') {
-			
-			let eventSavePwd = 'User_Event(`Save_Edit_Pwd`, `'+ tagId +'`, `'+ getObj.form_Index +'`)';
+			let tempId = 'edit_password'+ getObj.form_Index;
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId] = {
+										'eventParam': 'Save_Edit_Pwd',
+										'form_Index': getObj.form_Index
+										}
+			let eventSavePwd = 'User_Event(`'+ tagId +'`, `'+ tempId +'`)';
 			objForm	 = get_Form_Segment({
 							'segmentModel': 'modify',
 							'fieldForm': '<div class="col-sm-12">Email: '+ data.col_email +'</div>'
@@ -1906,7 +1954,13 @@ function User(getObj) {
 							// global
 							_clear_TaskActive(tagId, '_final_action_Form');
 							
-							let eventChPwd = 'User_Event(`Form_Item_Append`, `'+ tagId +'`, `'+ form_Index +'`)';
+							// update globalData dataEvent
+							let tempId = 'save_pwd'+ form_Index;
+							globalData[tagId]['dataEvent'][tempId] = {
+														'eventParam': 'Form_Item_Append',
+														'form_Index': form_Index
+														}
+							let eventChPwd = 'User_Event(`'+ tagId +'`, `'+ tempId +'`)';
 							
 							baseLevel.find(".my-content-form").eq(0)
 							.find(".form-index-"+ form_Index 
@@ -2046,9 +2100,12 @@ function User(getObj) {
 }
 
 //> modify module
-function User_Event(eventParam, param_1, param_2, param_3, param_4) {
-   
-	let eventResult= '';
+function User_Event(tagId, eventId, targetThis) {
+	
+	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
+    const eventParam 	= eventObj.eventParam;
+	
+	let eventResult		= '';
     switch (eventParam) {
 		case 'Export_Table': 
 			const exportType 	= $("#my-confirm").find("input[name='export_type']:checked").val();
@@ -2057,7 +2114,7 @@ function User_Event(eventParam, param_1, param_2, param_3, param_4) {
 			
 			eventResult = User({
 				'setFunction': eventParam,
-				'tagId': param_1,
+				'tagId': tagId,
 				'exportType': exportType,
 				'exportPage': exportPage,
 				'exportDecSep': exportDecSep 
@@ -2066,44 +2123,44 @@ function User_Event(eventParam, param_1, param_2, param_3, param_4) {
 		case 'Delete': 
 			eventResult = User({
                 'setFunction': eventParam,
-                'tagId': param_1
+                'tagId': tagId
             });
         break;
         case 'Form': 
 			eventResult = User({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'action': param_2
+				'tagId': tagId,
+				'action': eventObj.action
 			});
 		break;
         case 'Form_Item_Append': 
 			eventResult = User({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'form_Index': param_2
+				'tagId': tagId,
+				'form_Index': eventObj.form_Index
 			});
 		break;
         case 'Save_Data': 
 			eventResult = User({
                 'setFunction': eventParam,
-                'tagId': param_1,
-                'action': param_2
+                'tagId': tagId,
+                'action': eventObj.action
             });
         break;
         case 'Save_Edit_Pwd': 
 			eventResult = User({
                 'setFunction': eventParam,
-                'tagId': param_1,
-                'form_Index': param_2
+                'tagId': tagId,
+                'form_Index': eventObj.form_Index
             });
         break;
 	    case '_select_Employee': 
 			eventResult = User({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
+				'tagId': tagId,
+				'colId': eventObj.colId,
+				'listIndex': eventObj.listIndex,
+				'targetThis': targetThis
 			});
 		 break;
 		 default:

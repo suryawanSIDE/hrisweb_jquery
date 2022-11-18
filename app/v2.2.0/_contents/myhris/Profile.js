@@ -65,8 +65,42 @@ function Profile(getObj) {
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
-        
-        // set global field search
+		
+		// set global dataEvent
+        globalData[tagId]['dataEvent']['detail_Key'] = {
+											'eventParam': 'Form',
+											'action': 'detail'
+											}
+		globalData[tagId]['dataEvent']['reload_Key'] = {
+											'eventParam': 'Form',
+											'action': 'reload'
+											}
+		globalData[tagId]['dataEvent']['add_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'add'
+											}
+		globalData[tagId]['dataEvent']['edit_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_delete_Key'] = {
+											'nextFunction': 'Profile_Event',
+											'action': 'delete'
+											}
+        globalData[tagId]['dataEvent']['delete_Key'] = {
+											'eventParam': 'Delete',
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_export_Key'] = {
+											'nextFunction': 'Profile_Event',
+											'action': 'export'
+											}
+        globalData[tagId]['dataEvent']['export_Key'] = {
+											'eventParam': 'Export_Table',
+											'action': 'export'
+											}
+		
+		// set global field search
         if (Object.keys(globalData[tagId].fieldSearch).length === 0) {
             globalData[tagId]['fieldSearch'] = Field_Search;
         }
@@ -745,14 +779,11 @@ function Profile(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType 			= globalData[tagId].formType;
-                        const eventDetail 		= 'Profile_Event(`Form`, `'+ tagId +'`, `detail`)';
-						const eventAdd 			= 'Profile_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
-						const eventEdit			= 'Profile_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
-						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Profile_Event`)';
-						//const eventImport		= '';
-						//const eventImport_Format= '';
-						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Profile_Event`)';
+                        const eventDetail 		= 'Profile_Event(`'+ tagId +'`, `detail_Key`)';
+						const eventAdd 			= 'Profile_Event(`'+ tagId +'`, `add_Key`)';
+						const eventEdit			= 'Profile_Event(`'+ tagId +'`, `edit_Key`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `confirm_delete_Key`)';
 						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
@@ -1082,7 +1113,7 @@ function Profile(getObj) {
 						'readonly': 'readonly="readonly"'
 					});
 					
-			col = (col+1); // 3
+			col = (col+1); // 3/1
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_employee_status_text
@@ -1097,7 +1128,7 @@ function Profile(getObj) {
 						'readonly': 'readonly="readonly"'
 					});
 			
-			col = (col+1); // 4
+			col = (col+1); // 4/2
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_join_date_dmy
@@ -1112,7 +1143,7 @@ function Profile(getObj) {
 						'readonly': 'readonly="readonly"'
 					});
 				
-			col = (col+1); // 5
+			col = (col+1); // 5/3
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_name
@@ -1127,7 +1158,7 @@ function Profile(getObj) {
 						'readonly': ''
 					});
 				
-			col = (col+1); // 6
+			col = (col+1); // 6/4
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_nick_name
@@ -1142,7 +1173,7 @@ function Profile(getObj) {
 						'readonly': ''
 					});
 			
-			col = (col+1); // 7
+			col = (col+1); // 7/5
 			fieldForm.push({
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_sex
@@ -1171,7 +1202,7 @@ function Profile(getObj) {
 						});	
 					}
 			
-			col = (col+1); // 8
+			col = (col+1); // 8/6
 			fieldForm.push({
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_blood_type
@@ -1200,7 +1231,7 @@ function Profile(getObj) {
 						});	
 					}
 					
-			col = (col+1); // 9
+			col = (col+1); // 9/7
 			fieldForm.push({
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_pob
@@ -1229,7 +1260,7 @@ function Profile(getObj) {
 						});	
 					}
 						
-			col = (col+1); // 10
+			col = (col+1); // 10/8
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_dob_date_dmy
@@ -1248,7 +1279,7 @@ function Profile(getObj) {
 										}
 					});
 			
-			col = (col+1); // 11
+			col = (col+1); // 11/9
 			fieldForm.push({
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_nationality
@@ -1277,7 +1308,7 @@ function Profile(getObj) {
 						});	
 					}
 						
-			col = (col+1); // 12
+			col = (col+1); // 12/10
 			fieldForm.push({
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_religion
@@ -1306,7 +1337,7 @@ function Profile(getObj) {
 						});	
 					}
 						
-			col = (col+1); // 13
+			col = (col+1); // 13/11
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_ktp
@@ -1321,7 +1352,7 @@ function Profile(getObj) {
 						'readonly': ''
 					});
 					
-			col = (col+1); // 14
+			col = (col+1); // 14/12
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_kk
@@ -1336,7 +1367,7 @@ function Profile(getObj) {
 						'readonly': ''
 					});
 				
-			col = (col+1); // 15
+			col = (col+1); // 15/13
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_npwp
@@ -1351,7 +1382,7 @@ function Profile(getObj) {
 						'readonly': ''
 					});
 				
-			col = (col+1); // 16
+			col = (col+1); // 16/14
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_bpjs_tk
@@ -1366,7 +1397,7 @@ function Profile(getObj) {
 						'readonly': ''
 					});
 				
-			col = (col+1); // 17
+			col = (col+1); // 17/15
 			fieldForm.push({
                         'input_Type': 'get_Input',
                         'label': tableHead[col].label, // col_bpjs_k
@@ -1380,7 +1411,87 @@ function Profile(getObj) {
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(100)',
 						'readonly': ''
 					});
-			
+					
+			col = (col+1); // 18/16
+			fieldForm.push({
+                        'input_Type': 'get_Link_File_2',
+                        'label': '', 
+						'field': 'col_ktp',
+						'field_path' : 'col_file_ktp',
+							'valueConverter': '',
+						//'type': '',
+						//'align': '',
+						//'require': -1,
+						'col': col,
+						//'maxlength': -1,
+						//'placeholder': '',
+						//'readonly': ''
+					});
+									
+			col = (col+1); // 19/17
+			fieldForm.push({
+                        'input_Type': 'get_Link_File_2',
+                        'label': '', 
+						'field': 'col_kk',
+						'field_path' : 'col_file_kk',
+							'valueConverter': '',
+						//'type': '',
+						//'align': '',
+						//'require': -1,
+						'col': col,
+						//'maxlength': -1,
+						//'placeholder': '',
+						//'readonly': ''
+					});
+								
+			col = (col+1); // 20/18
+			fieldForm.push({
+                        'input_Type': 'get_Link_File_2',
+                        'label': '', 
+						'field': 'col_npwp',
+						'field_path' : 'col_file_npwp',
+							'valueConverter': '',
+						//'type': '',
+						//'align': '',
+						//'require': -1,
+						'col': col,
+						//'maxlength': -1,
+						//'placeholder': '',
+						//'readonly': ''
+					});
+							
+			col = (col+1); // 21/19
+			fieldForm.push({
+                        'input_Type': 'get_Link_File_2',
+                        'label': '',
+						'field': 'col_bpjs_tk',
+						'field_path' : 'col_file_bpjs_tk',
+							'valueConverter': '',
+						//'type': '',
+						//'align': '',
+						//'require': -1,
+						'col': col,
+						//'maxlength': -1,
+						//'placeholder': '',
+						//'readonly': ''
+					});
+						
+			col = (col+1); // 22/20
+			fieldForm.push({
+                        'input_Type': 'get_Link_File_2',
+                        'label': '',
+						'field': 'col_bpjs_k',
+						'field_path' : 'col_file_bpjs_k',
+							'valueConverter': '',
+						//'type': '',
+						//'align': '',
+						//'require': -1,
+						'col': col,
+						//'maxlength': -1,
+						//'placeholder': '',
+						//'readonly': ''
+					});
+					
         return fieldForm;
         
     } // _Form_Field
@@ -1411,9 +1522,14 @@ function Profile(getObj) {
         _show_Form(tagId);
         
 		//> modify module
-        const eventSave_All 	= 'Profile_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
-        const eventNewForm  	= 'Profile_Event(`Form`, `'+ tagId +'`, `add`)';
-		const eventReload_All	= 'Profile_Event(`Form`, `'+ tagId +'`, `reload`)';
+		// set global dataEvent
+        globalData[tagId]['dataEvent']['save_Key'] = {
+											'eventParam': 'Save_Data',
+											'action': action
+											}
+        const eventSave_All 	= 'Profile_Event(`'+ tagId +'`, `save_Key`)';
+        const eventNewForm  	= 'Profile_Event(`'+ tagId +'`, `add_Key`)';
+		const eventReload_All	= 'Profile_Event(`'+ tagId +'`, `reload_Key`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1510,7 +1626,7 @@ function Profile(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Profile_Event(`Form`, tagId, `edit`)
+						Profile_Event(tagId, 'edit_Key')
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1653,14 +1769,24 @@ function Profile(getObj) {
 		
 		let objForm	 = '';
 		
+		let customStyle_1 = 'padding-right: 5px;';
+		if (deviceType === 'mobile') {
+			customStyle_1 = 'padding-right: 0px;';
+		}
+		
+		let customStyle_2 = '';
+		if (deviceType === 'mobile') {
+			customStyle_2 = 'margin-left: -5px;';
+		}
+		
 		// segment 1
 		let path_foto = 'app/_images/profile.png';
 		if (data.col_file_photo !== '' && data.col_file_photo !== null) {
-			path_foto = data.col_file_photo;
+			path_foto = baseUrl_Upload + data.col_file_photo;
 		}
 		let pre_segment_1 = `<div class="col-sm-12">
 								<span class="my-profile-img">
-								<center><img style="height: 100px;" class="img-responsive img-circle" src="${path_foto}" alt="profile" /></center>
+								<center><img style="height: 100px;" class="img-responsive img-thumbnail" src="${path_foto}" alt="profile" /></center>
 								</span>
 							</div>`;
 		const segment_1  = get_Form_Segment({
@@ -1685,25 +1811,27 @@ function Profile(getObj) {
 						});
 				
 		// segment 3				
-			let segment_3_block_1_c = '<div class="col-sm-6" style="padding-left: 0px; padding-right: 5px;">'+
+			let segment_3_block_1 = '<div class="col-sm-6">'+
+						new_fieldForm[3]+ // col_name
+						new_fieldForm[4]+ // col_nick_name
+						add_Class_Row(
+								'<div class="col-sm-6" style="padding-left: 0px; '+ customStyle_1 +'">'+
 									new_fieldForm[5]+ // col_sex
 								'</div>'+
 								'<div class="col-sm-6" style="padding-left: 0px; padding-right: 0px;">'+
 									new_fieldForm[6]+ // col_blood_type
-								'</div>';
-			let segment_3_block_1 = '<div class="col-sm-6">'+
-						new_fieldForm[3]+ // col_name
-						new_fieldForm[4]+ // col_nick_name
-						add_Class_Row(segment_3_block_1_c) +
-						'</div>';						
-			let segment_3_block_2_a = '<div class="col-sm-7" style="padding-left: 0px; padding-right: 5px;">'+
+								'</div>'
+							) +
+						'</div>';	
+			let segment_3_block_2 = '<div class="col-sm-6">'+
+						add_Class_Row(
+								'<div class="col-sm-7" style="padding-left: 0px; '+ customStyle_1 +'">'+
 									new_fieldForm[7]+ // col_pob
 								'</div>'+
 								'<div class="col-sm-5" style="padding-left: 0px; padding-right: 0px;">'+
 									new_fieldForm[8]+ // col_dob_date_dmy
-								'</div>';
-			let segment_3_block_2 = '<div class="col-sm-6">'+
-						add_Class_Row(segment_3_block_2_a) +
+								'</div>'
+							) +
 						new_fieldForm[9]+ // col_nationality
 						new_fieldForm[10]+ // col_religion
 						'</div>';						
@@ -1715,21 +1843,78 @@ function Profile(getObj) {
 		// segment 4
 			
 			let segment_4_block_1 = '<div class="col-sm-6">'+
-						new_fieldForm[11]+ // col_ktp
-						new_fieldForm[12]+ // col_kk
-						new_fieldForm[13]+ // col_npwp
+						add_Class_Row(
+								'<div class="col-sm-10" style="padding-left: 0px; '+ customStyle_1 +'">'+
+									new_fieldForm[11]+ // col_ktp
+								'</div>'+
+								'<div class="col-sm-2" style="'+ customStyle_2 +' padding-left: 0px; padding-right: 0px;">'+
+									new_fieldForm[16]+ // col_file_ktp
+								'</div>'
+							) +
+						add_Class_Row(
+								'<div class="col-sm-10" style="padding-left: 0px; '+ customStyle_1 +'">'+
+									new_fieldForm[12]+ // col_kk
+								'</div>'+
+								'<div class="col-sm-2" style="'+ customStyle_2 +' padding-left: 0px; padding-right: 0px;">'+
+									new_fieldForm[17]+ // col_file_kk
+								'</div>'
+							) +
+						add_Class_Row(
+								'<div class="col-sm-10" style="padding-left: 0px; '+ customStyle_1 +'">'+
+									new_fieldForm[13]+ // col_npwp
+								'</div>'+
+								'<div class="col-sm-2" style="'+ customStyle_2 +' padding-left: 0px; padding-right: 0px;">'+
+									new_fieldForm[18]+ // col_file_npwp
+								'</div>'
+							) +
 						'</div>';
 			let segment_4_block_2 = '<div class="col-sm-6">'+
-						new_fieldForm[14]+ // col_bpjs_tk
-						new_fieldForm[15]+ // col_bpjs_k
+						add_Class_Row(
+								'<div class="col-sm-10" style="padding-left: 0px; '+ customStyle_1 +'">'+
+									new_fieldForm[14]+ // col_bpjs_tk
+								'</div>'+
+								'<div class="col-sm-2" style="'+ customStyle_2 +' padding-left: 0px; padding-right: 0px;">'+
+									new_fieldForm[19]+ // col_file_bpjs_tk
+								'</div>'
+							) +
+						add_Class_Row(
+								'<div class="col-sm-10" style="padding-left: 0px; '+ customStyle_1 +'">'+
+									new_fieldForm[15]+ // col_bpjs_k
+								'</div>'+
+								'<div class="col-sm-2" style="'+ customStyle_2 +' padding-left: 0px; padding-right: 0px;">'+
+									new_fieldForm[20]+ // col_file_bpjs_k
+								'</div>'
+							) +
 						'</div>';
 		let pre_segment_4 = segment_4_block_1 + segment_4_block_2;
 		const segment_4  = get_Form_Segment({
 						'segmentModel': 'modify',
 						'fieldForm': pre_segment_4
 						});
-			
-		objForm = segment_1 + segment_2 + segment_3 + segment_4;
+		
+		let segment_5 = '';
+		if (getObj.action === 'edit') {
+		// segment 5
+			let tempId = tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId] = {
+									'eventParam': 'Form_Attachment',
+									'dataTable_Index': dataTable_Index,
+									'row': row
+									}
+			let eventFormAttachment = 'Profile_Event(`'+ tagId +'`, `'+ tempId +'`)';
+			segment_5 = get_Form_Segment({
+							'segmentModel': 'modify',
+							'fieldForm': '<div class="col-sm-12"><button onclick="'+ eventFormAttachment +'" ondblclick="'+ eventFormAttachment +'" class="btn btn-primary btn-xs">Manage File</button></div>'
+						});
+		} // if (getObj.action !== 'edit')
+
+		
+		objForm = segment_1 + 
+				  segment_2 + 
+				  segment_3 + 
+				  segment_4 + 
+				  segment_5;
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1836,7 +2021,7 @@ function Profile(getObj) {
                 let inputLength = baseEl_Form.eq(x).find(".item-data-col .col-data").length;
                 let dataFormCol = {};
                 //for (let y=0; y<inputLength; y++) {
-				for (let y=1; y<inputLength; y++) {
+				for (let y=1; y<11; y++) {
                     let value = baseEl_Form.eq(x).find(".item-data-col .col-data").eq(y).val();         
                         
                         // set data input value
@@ -1857,6 +2042,106 @@ function Profile(getObj) {
                     } // require
                 } // input  
                     
+					// col_ktp
+					const index_ktp   		= 11;
+					const index_field_ktp 	= 11;
+					const value_ktp   		= baseEl_Form.eq(x).find(".item-data-col .col-data").eq(index_ktp).val();         
+                        // set data input value_ktp
+                        dataFormCol[fieldForm[index_field_ktp].field] = value_ktp;
+                    // check value_ktp
+                    if (fieldForm[index_field_ktp].require === 1) {
+                        let alertField_Temp = alertField;
+                            alertField = _validate_Input_Submit({
+                                    'baseEl_Form': baseEl_Form,
+                                    'form_Index': x,
+                                    'inputIndex': index_ktp,
+                                    'alertField': alertField_Temp,
+                                    'type': fieldForm[index_field_ktp].type,
+                                    'label': fieldForm[index_field_ktp].label,
+                                    'value': value_ktp,
+                                });
+                    } // require
+					
+					// col_kk
+					const index_kk 			= 13;
+					const index_field_kk 	= 12;
+					const value_kk 			= baseEl_Form.eq(x).find(".item-data-col .col-data").eq(index_kk).val();         
+                        // set data input value_kk
+                        dataFormCol[fieldForm[index_field_kk].field] = value_kk;
+                    // check value_kk
+                    if (fieldForm[index_field_kk].require === 1) {
+                        let alertField_Temp = alertField;
+                            alertField = _validate_Input_Submit({
+                                    'baseEl_Form': baseEl_Form,
+                                    'form_Index': x,
+                                    'inputIndex': index_kk,
+                                    'alertField': alertField_Temp,
+                                    'type': fieldForm[index_field_kk].type,
+                                    'label': fieldForm[index_field_kk].label,
+                                    'value': value_kk,
+                                });
+                    } // require
+					
+					// col_npwp
+					const index_npwp 		= 15;
+					const index_field_npwp 	= 13;
+					const value_npwp 		= baseEl_Form.eq(x).find(".item-data-col .col-data").eq(index_npwp).val();         
+                        // set data input value_npwp
+                        dataFormCol[fieldForm[index_field_npwp].field] = value_npwp;
+                    // check value_npwp
+                    if (fieldForm[index_field_npwp].require === 1) {
+                        let alertField_Temp = alertField;
+                            alertField = _validate_Input_Submit({
+                                    'baseEl_Form': baseEl_Form,
+                                    'form_Index': x,
+                                    'inputIndex': index_npwp,
+                                    'alertField': alertField_Temp,
+                                    'type': fieldForm[index_field_npwp].type,
+                                    'label': fieldForm[index_field_npwp].label,
+                                    'value': value_npwp,
+                                });
+                    } // require
+					
+					// col_bpjs_tk
+					const index_bpjs_tk 		= 17;
+					const index_field_bpjs_tk 	= 14;
+					const value_bpjs_tk 		= baseEl_Form.eq(x).find(".item-data-col .col-data").eq(index_bpjs_tk).val();         
+                        // set data input value_bpjs_tk
+                        dataFormCol[fieldForm[index_field_bpjs_tk].field] = value_bpjs_tk;
+                    // check value_bpjs_tk
+                    if (fieldForm[index_field_bpjs_tk].require === 1) {
+                        let alertField_Temp = alertField;
+                            alertField = _validate_Input_Submit({
+                                    'baseEl_Form': baseEl_Form,
+                                    'form_Index': x,
+                                    'inputIndex': index_bpjs_tk,
+                                    'alertField': alertField_Temp,
+                                    'type': fieldForm[index_field_bpjs_tk].type,
+                                    'label': fieldForm[index_field_bpjs_tk].label,
+                                    'value': value_bpjs_tk,
+                                });
+                    } // require
+					
+					// col_bpjs_k
+					const index_bpjs_k 			= 19;
+					const index_field_bpjs_k 	= 15;
+					const value_bpjs_k 			= baseEl_Form.eq(x).find(".item-data-col .col-data").eq(index_bpjs_k).val();         
+                        // set data input value_bpjs_k
+                        dataFormCol[fieldForm[index_field_bpjs_k].field] = value_bpjs_k;
+                    // check value_bpjs_k
+                    if (fieldForm[index_field_bpjs_k].require === 1) {
+                        let alertField_Temp = alertField;
+                            alertField = _validate_Input_Submit({
+                                    'baseEl_Form': baseEl_Form,
+                                    'form_Index': x,
+                                    'inputIndex': index_bpjs_k,
+                                    'alertField': alertField_Temp,
+                                    'type': fieldForm[index_field_bpjs_k].type,
+                                    'label': fieldForm[index_field_bpjs_k].label,
+                                    'value': value_bpjs_k,
+                                });
+                    } // require
+					
                     // add hiden value ke form 
                     //> modify module
                     dataFormCol['tableSeq']         = globalData[tagId]['dataForm'][x].tableSeq;
@@ -1913,6 +2198,9 @@ function Profile(getObj) {
                         
                         if (myObj.status === 'success') {
                             
+							// global
+							_clear_TaskActive(tagId, '_final_action_Form');
+							
                             if (reqAction === 'add') {
                             
                                 const num_success   = myObj.response_data.num_success;
@@ -2126,20 +2414,485 @@ function Profile(getObj) {
             } // alertText
         } // setSave
     } // _Save_Data
-	
+			
 	function _Form_Attachment(getObj) {
-		const tagId	 = getObj.tagId;
+		const tagId	 			= getObj.tagId;
+		const row	 			= getObj.row;
+		const dataTable_Index 	= getObj.dataTable_Index;
+		const currentData   	= globalData[tagId].dataTable;
+		
+		const col_data_key 		= currentData[dataTable_Index].col_data_key;
+		let eventConfirm		= '';
+		
+		const col_reg_employee 	= currentData[dataTable_Index].col_reg_employee;
+		let col_file_photo 		= replaceNull(currentData[dataTable_Index].col_file_photo);
+		let photo_fix			= '';
+		let photo_delete		= '';
+		eventConfirm 			= '';
+		if (col_file_photo === '' || col_file_photo === null) {
+			photo_fix = 'empty file';
+		} else {
+			let tempId_photo 	= tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId_photo] = {
+										'nextFunction': 'Profile_Event',
+										'eventParam': 'Form_Attachment_Delete',
+										'action': 'delete_2',
+										'category': 'photo',
+										'notif': 'File '+ col_reg_employee,
+										'data_key': col_data_key
+										}
+			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_photo +'`)';
+			photo_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
+			photo_fix 			= '<a href="'+ baseUrl_Upload + col_file_photo +'" target="blank"> '+ (col_reg_employee) +'</a>';
+		}
+		
+		const col_ktp			= currentData[dataTable_Index].col_ktp;
+		let col_file_ktp		= replaceNull(currentData[dataTable_Index].col_file_ktp);
+		let ktp_fix				= '';
+		let ktp_delete			= '';
+		eventConfirm 			= '';
+		if (col_file_ktp === '' || col_file_ktp === null) {
+			ktp_fix = 'empty file';
+		} else {
+			let tempId_ktp 		= tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId_ktp] = {
+										'nextFunction': 'Profile_Event',
+										'eventParam': 'Form_Attachment_Delete',
+										'action': 'delete_2',
+										'category': 'ktp',
+										'notif': 'File '+ col_ktp,
+										'data_key': col_data_key
+										}
+			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_ktp +'`)';
+			ktp_delete 	 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
+			ktp_fix 	 		= '<a href="'+ baseUrl_Upload + col_file_ktp +'" target="blank"> '+ (col_ktp) +'</a>';
+		}
+		
+		const col_kk 			= currentData[dataTable_Index].col_kk;
+		let col_file_kk 		= replaceNull(currentData[dataTable_Index].col_file_kk);
+		let kk_fix				= '';
+		let kk_delete			= '';
+		eventConfirm 			= '';
+		if (col_file_kk === '' || col_file_kk === null) {
+			kk_fix = 'empty file';
+		} else {
+			let tempId_kk 		= tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId_kk] = {
+										'nextFunction': 'Profile_Event',
+										'eventParam': 'Form_Attachment_Delete',
+										'action': 'delete_2',
+										'category': 'kk',
+										'notif': 'File '+ col_kk,
+										'data_key': col_data_key
+										}
+			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_kk +'`)';
+			kk_delete 			= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
+			kk_fix 				= '<a href="'+ baseUrl_Upload + col_file_kk +'" target="blank"> '+ (col_kk) +'</a>';
+		}
+		
+		const col_npwp 			= currentData[dataTable_Index].col_npwp;
+		let col_file_npwp 		= replaceNull(currentData[dataTable_Index].col_file_npwp);
+		let npwp_fix			= '';
+		let npwp_delete			= '';
+		eventConfirm 			= '';
+		if (col_file_npwp === '' || col_file_npwp === null) {
+			npwp_fix = 'empty file';
+		} else {
+			let tempId_npwp 	= tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId_npwp] = {
+										'nextFunction': 'Profile_Event',
+										'eventParam': 'Form_Attachment_Delete',
+										'action': 'delete_2',
+										'category': 'npwp',
+										'notif': 'File '+ col_npwp,
+										'data_key': col_data_key
+										}
+			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_npwp +'`)';
+			npwp_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
+			npwp_fix 			= '<a href="'+ baseUrl_Upload + col_file_npwp +'" target="blank"> '+ (col_npwp) +'</a>';
+		}
+		
+		const col_bpjs_tk	= currentData[dataTable_Index].col_bpjs_tk;
+		let col_file_bpjs_tk	= replaceNull(currentData[dataTable_Index].col_file_bpjs_tk);
+		let bpjs_tk_fix			= '';
+		let bpjs_tk_delete		= '';
+		eventConfirm 			= '';
+		if (col_file_bpjs_tk === '' || col_file_bpjs_tk === null) {
+			bpjs_tk_fix = 'empty file';
+		} else {
+			let tempId_bpjs_tk  = tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId_bpjs_tk] = {
+										'nextFunction': 'Profile_Event',
+										'eventParam': 'Form_Attachment_Delete',
+										'action': 'delete_2',
+										'category': 'bpjs_tk',
+										'notif': 'File '+ col_bpjs_tk,
+										'data_key': col_data_key
+										}
+			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_bpjs_tk +'`)';
+			bpjs_tk_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
+			bpjs_tk_fix 		= '<a href="'+ baseUrl_Upload + col_file_bpjs_tk +'" target="blank"> '+ (col_bpjs_tk) +'</a>';
+		}
+		
+		const col_bpjs_k		= currentData[dataTable_Index].col_bpjs_k;
+		let col_file_bpjs_k		= replaceNull(currentData[dataTable_Index].col_file_bpjs_k);
+		let bpjs_k_fix			= '';
+		let bpjs_k_delete		= '';
+		eventConfirm 			= '';
+		if (col_file_bpjs_k === '' || col_file_bpjs_k === null) {
+			bpjs_k_fix = 'empty file';
+		} else {
+			let tempId_bpjs_k 	= tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId_bpjs_k] = {
+										'nextFunction': 'Profile_Event',
+										'eventParam': 'Form_Attachment_Delete',
+										'action': 'delete_2',
+										'category': 'bpjs_k',
+										'notif': 'File '+ col_bpjs_k,
+										'data_key': col_data_key
+										}
+			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_bpjs_k +'`)';
+			bpjs_k_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
+			bpjs_k_fix 			= '<a href="'+ baseUrl_Upload + col_file_bpjs_k +'" target="blank"> '+ (col_bpjs_k) +'</a>';
+		}
+		
+		const list_file= `<table class="my-table table-condensed table-bordered">
+							<tr>
+								<td width="20%">Photo</td>
+								<td width="70%">${photo_fix}</td>
+								<td width="10%" align="center">${photo_delete}</td>
+							</tr>
+							<tr>
+								<td>KTP</td>
+								<td>${ktp_fix}</td>
+								<td align="center">${ktp_delete}</td>
+							</tr>
+							<tr>
+								<td>KK</td>
+								<td>${kk_fix}</td>
+								<td align="center">${kk_delete}</td>
+							</tr>
+							<tr>
+								<td>NPWP</td>
+								<td>${npwp_fix}</td>
+								<td align="center">${npwp_delete}</td>
+							</tr>
+							<tr>
+								<td>BPJS TK</td>
+								<td>${bpjs_tk_fix}</td>
+								<td align="center">${bpjs_tk_delete}</td>
+							</tr>
+							<tr>
+								<td>BPJS Kesehatan</td>
+								<td>${bpjs_k_fix}</td>
+								<td align="center">${bpjs_k_delete}</td>
+							</tr>
+						</table>
+						<hr class="my-hr">
+						`;
+		
+		
+		const input_file_photo = get_Input_File({
+									'tagId': tagId,
+									'form_Index': '',
+									'formType': '',
+									'value': '',
+									'label': 'Photo',
+									'align': '',
+									'require': 0,
+									'row': row,
+									'col': 'file_photo',
+									'placeholder': 'input-file',
+									'readonly': ''
+								});
+		const input_file_ktp	= get_Input_File({
+									'tagId': tagId,
+									'form_Index': '',
+									'formType': '',
+									'value': '',
+									'label': 'File KTP',
+									'align': '',
+									'require': 0,
+									'row': row,
+									'col': 'file_ktp',
+									'placeholder': 'input-file',
+									'readonly': ''
+								});
+		const input_file_kk	= get_Input_File({
+									'tagId': tagId,
+									'form_Index': '',
+									'formType': '',
+									'value': '',
+									'label': 'File KK',
+									'align': '',
+									'require': 0,
+									'row': row,
+									'col': 'file_kk',
+									'placeholder': 'input-file',
+									'readonly': ''
+								});
+		const input_file_npwp	= get_Input_File({
+									'tagId': tagId,
+									'form_Index': '',
+									'formType': '',
+									'value': '',
+									'label': 'File NPWP',
+									'align': '',
+									'require': 0,
+									'row': row,
+									'col': 'file_npwp',
+									'placeholder': 'input-file',
+									'readonly': ''
+								});
+		const input_file_bpjs_tk	= get_Input_File({
+									'tagId': tagId,
+									'form_Index': '',
+									'formType': '',
+									'value': '',
+									'label': 'File BPJS TK',
+									'align': '',
+									'require': 0,
+									'row': row,
+									'col': 'file_bpjs_tk',
+									'placeholder': 'input-file',
+									'readonly': ''
+								});
+		const input_file_bpjs_k	= get_Input_File({
+									'tagId': tagId,
+									'form_Index': '',
+									'formType': '',
+									'value': '',
+									'label': 'File BPJS Kesehatan',
+									'align': '',
+									'require': 0,
+									'row': row,
+									'col': 'file_bpjs_k',
+									'placeholder': 'input-file',
+									'readonly': ''
+							});
+							
+		let tempId = tempId_Generate();
+			// update globalData dataEvent
+			globalData[tagId]['dataEvent'][tempId] = {
+									'eventParam': 'Form_Attachment_Save',
+									'row': row
+									}
+		const eventAttachmentSubmit = 'Profile_Event(`'+ tagId +'`, `'+ tempId +'`)';
+		const btn_submit = add_Class_Row('<button onclick="'+ eventAttachmentSubmit +'" ondblclick="'+ eventAttachmentSubmit +'" class="btn btn-primary btn-sm">Submit</button>');
+		
+		const body = list_file + 
+					 input_file_photo + 
+					 input_file_ktp + 
+					 input_file_kk + 
+					 input_file_npwp + 
+					 input_file_bpjs_tk + 
+					 input_file_bpjs_k + 
+					 btn_submit;
 		
 		const result = set_FormPopup({
 					'tagId': tagId,
 					'nextFunction': '',
-					'title': 'Upload File',
-					'body': 'tes'
+					'title': 'Manage File',
+					'body': body
 					});
 		
 				
 	} // _Form_Attachment
 	
+	function _Form_Attachment_Save(getObj) {
+		
+		const tagId 		= getObj.tagId;
+		const row	 		= getObj.row;
+		
+        const baseLevel     = $("#level-"+ tagId);
+        const baseEl_Form   = baseLevel.find(".my-content-form").eq(0).find(".my-form-popup");
+        const formLength    = baseEl_Form.length;
+        
+		let alertText       = '';
+        
+		let form_data = new FormData();
+			form_data.append("appId", appId);
+			form_data.append("loginKey", get_LoginKey());
+			form_data.append("randomKey", get_RandomKey());
+			form_data.append("moduleId", globalData[tagId].moduleId);
+			
+            // let dataFormRow = {};
+            for (let x=0; x<formLength; x++) {
+                let alertField  = '';
+               
+				let baseInput_photo	= baseEl_Form.eq(x).find(".item-data-col .col-data-"+ row +"-file_photo");
+				let file_prop_photo	= baseInput_photo.prop("files")[0];
+				if (baseInput_photo.val() !== '') {
+					form_data.append('col_file_photo_'+ x, file_prop_photo);
+					form_data.append('col_file_photo_name_'+ x, file_prop_photo.name);
+				}
+				
+				let baseInput_ktp	= baseEl_Form.eq(x).find(".item-data-col .col-data-"+ row +"-file_ktp");
+				let file_prop_ktp	= baseInput_ktp.prop("files")[0];
+				if (baseInput_ktp.val() !== '') {
+					form_data.append('col_file_ktp_'+ x, file_prop_ktp);
+					form_data.append('col_file_ktp_name_'+ x, file_prop_ktp.name);
+				}
+				
+				let baseInput_kk	= baseEl_Form.eq(x).find(".item-data-col .col-data-"+ row +"-file_kk");
+				let file_prop_kk	= baseInput_kk.prop("files")[0];
+				if (baseInput_kk.val() !== '') {
+					form_data.append('col_file_kk_'+ x, file_prop_kk);
+					form_data.append('col_file_kk_name_'+ x, file_prop_kk.name);
+				}
+				
+				let baseInput_npwp	= baseEl_Form.eq(x).find(".item-data-col .col-data-"+ row +"-file_npwp");
+				let file_prop_npwp	= baseInput_npwp.prop("files")[0];
+				if (baseInput_npwp.val() !== '') {
+					form_data.append('col_file_npwp_'+ x, file_prop_npwp);
+					form_data.append('col_file_npwp_name_'+ x, file_prop_npwp.name);
+				}
+				
+				let baseInput_bpjs_tk	= baseEl_Form.eq(x).find(".item-data-col .col-data-"+ row +"-file_bpjs_tk");
+				let file_prop_bpjs_tk	= baseInput_bpjs_tk.prop("files")[0];
+				if (baseInput_bpjs_tk.val() !== '') {
+					form_data.append('col_file_bpjs_tk_'+ x, file_prop_bpjs_tk);
+					form_data.append('col_file_bpjs_tk_name_'+ x, file_prop_bpjs_tk.name);
+				}
+				
+				let baseInput_bpjs_k	= baseEl_Form.eq(x).find(".item-data-col .col-data-"+ row +"-file_bpjs_k");
+				let file_prop_bpjs_k	= baseInput_bpjs_k.prop("files")[0];
+				if (baseInput_bpjs_k.val() !== '') {
+					form_data.append('col_file_bpjs_k_'+ x, file_prop_bpjs_k);
+					form_data.append('col_file_bpjs_k_name_'+ x, file_prop_bpjs_k.name);
+				}
+				
+				// add hiden value ke form 
+				//> modify module
+				// form data
+				form_data.append('tableSeq_'+ x, globalData[tagId]['dataForm'][x].tableSeq);
+				form_data.append('dataTable_Index_'+ x, globalData[tagId]['dataForm'][x].dataTable_Index);
+				form_data.append('col_data_key_'+ x, globalData[tagId]['dataForm'][x].col_data_key);
+				// additional field form here 
+				// (sample)dataFormCol['col_sample'] = globalData[tagId]['dataForm'][x].col_sample;
+				
+                // alert text
+                if (alertField !== '') {
+                    let new_alertField = alertField.substring(0, (alertField.length-2));
+                        alertText += ' <i>'+ new_alertField +'</i><br>';
+                }
+            } // form length
+            
+            if (alertText !== '') {     
+
+                // components/loader
+                _hide_Loader();
+
+                // components/alert
+                set_Alert({
+                    'type': 'warning', 
+                    'body': 'Please complete :<br>'+ alertText,  
+                    'footer': get_Alert_Footer(1)
+                });
+
+            } else {
+				
+                // async save data
+                $.ajax({
+                    type: "post",
+                    url: baseUrl + "myhris/Upload/Profile",
+					cache: false,
+					contentType: false,
+					processData: false,
+                    data: form_data, // data
+                    success: (response) => {    
+                        
+                        // components/loader
+                        _hide_Loader();
+						
+                        const myObj  = JSON.parse(response);
+                       
+                        if (myObj.status === 'success') {
+							
+							const currentData   = globalData[tagId].dataTable;
+							const dataDb        = myObj.response_data.data; 
+							
+							// update global dataTable
+							if (typeof dataDb.col_file_photo !== 'undefined') {
+								currentData[dataDb.dataTable_Index]['col_file_photo'] 	= dataDb.col_file_photo;
+							}
+							if (typeof dataDb.col_file_ktp !== 'undefined') {
+								currentData[dataDb.dataTable_Index]['col_file_ktp'] 	= dataDb.col_file_ktp;
+							}
+							if (typeof dataDb.col_file_kk !== 'undefined') {
+								currentData[dataDb.dataTable_Index]['col_file_kk'] 		= dataDb.col_file_kk;
+							}
+							if (typeof dataDb.col_file_npwp !== 'undefined') {
+								currentData[dataDb.dataTable_Index]['col_file_npwp'] 	= dataDb.col_file_npwp;
+							}
+							if (typeof dataDb.col_file_bpjs_tk !== 'undefined') {
+								currentData[dataDb.dataTable_Index]['col_file_bpjs_tk'] = dataDb.col_file_bpjs_tk;
+							}
+							if (typeof dataDb.col_file_bpjs_k !== 'undefined') {
+								currentData[dataDb.dataTable_Index]['col_file_bpjs_k'] 	= dataDb.col_file_bpjs_k;
+							}
+							
+							// update global dataTable
+							globalData[tagId]['dataTable'] = currentData;
+							
+							// hide_popup
+							_hide_FormPopup(tagId);
+							// reload
+							Profile_Event(tagId, `reload_Key`);
+							
+                            // components/alert
+							if (myObj.message !== '') {
+								set_Alert({
+									'type': 'info', 
+									'body': myObj.message, 
+									'footer': get_Alert_Footer(1) 
+								});             
+                            }
+
+                        } else if (myObj.status === 'reject') {
+
+                            // components/key
+                            unset_LoginKey();
+
+                            // controllers
+                            Load_Redirect();
+
+                        } else {
+                            
+                            // components/loader
+                            _hide_Loader();
+
+                            // components/alert
+                            set_Alert({
+                                'type': 'danger', 
+                                'body': myObj.message, 
+                                'footer': get_Alert_Footer(1)
+                            });
+
+                        }
+                    }, // success
+                    error: (xhr) => {
+                        
+                        // components/loader
+                        _hide_Loader();
+
+                        // components/alert
+                        set_Alert({
+                            'type': 'danger', 
+                            'body': 'Error: '+ xhr.status +', '+xhr.responseText, //'Error connection', 
+                            'footer': get_Alert_Footer(1)
+                        });
+                    }, // error
+                }); // ajax
+            } // alertText
+        } // Form_Attachment_Save
+		
 // ======== FORM
 
     //> modify module
@@ -2168,6 +2921,9 @@ function Profile(getObj) {
         case 'Form_Attachment':
 			functionResult = _Form_Attachment(getObj);
 		break;
+		case 'Form_Attachment_Save':
+			functionResult = _Form_Attachment_Save(getObj);
+		break;
 		default:
             functionResult = set_Alert({
                                 'type': 'danger', 
@@ -2180,9 +2936,12 @@ function Profile(getObj) {
 }
 
 //> modify module
-function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
-   
-	let eventResult= '';
+function Profile_Event(tagId, eventId, targetThis) {
+	
+	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
+    const eventParam 	= eventObj.eventParam;
+	
+	let eventResult		= '';
     switch (eventParam) {
 		case 'Export_Table': 
 			const exportType 	= $("#my-confirm").find("input[name='export_type']:checked").val();
@@ -2191,7 +2950,7 @@ function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
 			
 			eventResult = Profile({
 				'setFunction': eventParam,
-				'tagId': param_1,
+				'tagId': tagId,
 				'exportType': exportType,
 				'exportPage': exportPage,
 				'exportDecSep': exportDecSep 
@@ -2200,27 +2959,36 @@ function Profile_Event(eventParam, param_1, param_2, param_3, param_4) {
 		case 'Delete': 
 			eventResult = Profile({
                 'setFunction': eventParam,
-                'tagId': param_1
+                'tagId': tagId
             });
         break;
         case 'Form': 
 			eventResult = Profile({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'action': param_2
+				'tagId': tagId,
+				'action': eventObj.action
 			});
 		break;
         case 'Save_Data': 
 			eventResult = Profile({
                 'setFunction': eventParam,
-                'tagId': param_1,
-                'action': param_2
+                'tagId': tagId,
+                'action': eventObj.action
             });
         break;
         case 'Form_Attachment': 
 			eventResult = Profile({
 				'setFunction': eventParam,
-				'tagId': param_1
+				'tagId': tagId,				
+				'row': eventObj.row,
+				'dataTable_Index': eventObj.dataTable_Index
+			});
+		break;
+		case 'Form_Attachment_Save': 
+			eventResult = Profile({
+				'setFunction': eventParam,
+				'tagId': tagId,
+				'row': eventObj.row
 			});
 		break;
 		default:

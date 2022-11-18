@@ -1,4 +1,4 @@
-function Confirm_Form(tagId, action, nextFunction) {
+function Confirm_Form(tagId, eventId) {
 	
 	let btnClass = 'btn-sm';
 	if (deviceType === 'mobile') {
@@ -10,13 +10,15 @@ function Confirm_Form(tagId, action, nextFunction) {
 	const baseLevel 	= $("#level-"+ tagId);
 	const dataTable 	= globalData[tagId].dataTable;
 	const count_checked = get_Num_Selected(tagId); // components/topbar
+	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
 	
 	let footer 		  	= '';
 	let body   		  	= '';
-	let eventParam		= '';
-	switch(action) {
+	let newFunction		= '';
+	let eventNew		= '';
+	
+	switch(eventObj.action) {
 		case 'delete':	
-			eventParam = 'Delete';
 			
 			// button blur
 			baseLevel.find(".my-footer").eq(0)
@@ -30,9 +32,11 @@ function Confirm_Form(tagId, action, nextFunction) {
 			});
 			
 			// sample : functionDelete = Time_Sheet_Event()
+			newFunction = eventObj.nextFunction;
+			eventNew 	= newFunction +'(`'+ tagId +'`, `delete_Key`)';
 			footer = '<div style="text-align: right">'+
 					'<hr class="my-hr">'+						
-					'<button onclick="'+ nextFunction +'(`'+ eventParam +'`, `'+ tagId +'`, this)" ondbclick="'+ nextFunction +'(`'+ eventParam +'`, `'+ tagId +'`, this)" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>'+
+					'<button onclick="'+ eventNew +'" ondbclick="'+ eventNew +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>'+
 					'<button onclick="_hide_Confirm()" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
 					'</div>';
 				
@@ -47,15 +51,37 @@ function Confirm_Form(tagId, action, nextFunction) {
 			$("#my-confirm").find(".confirm-action-submit").focus();
 			
 		break;
+		case 'delete_2':	
+			
+			newFunction = eventObj.nextFunction;
+			eventNew 	= newFunction +'(`'+ tagId +'`, `'+ eventId +'`)';
+			footer = '<div style="text-align: right">'+
+					'<hr class="my-hr">'+						
+					'<button onclick="'+ eventNew +'" ondbclick="'+ eventNew +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Ok</button>'+
+					'<button onclick="_hide_Confirm()" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
+					'</div>';
+				
+			body = '<span class="btn btn-default btn-xs btn-group confirm-item">'+ objTemp.notif +'</span>';
+			
+			set_Confirm({
+				'icon': 'glyphicon-warning-sign',
+				'title': 'Delete data ?',
+				'body': body, 
+				'footer': footer
+			});
+			
+			// button focus
+			$("#my-confirm").find(".confirm-action-submit").focus();
+			
+		break;
 		case 'export':	
-			eventParam = 'Export_Table';
 			
 			// button blur
 			baseLevel.find(".my-footer").eq(0)
 				.find(".panel-bottom-right .bottom-action-export").blur();
 			
 			const dataExport = globalData[tagId]['dataExportType'];
-			let export_type		 = '';
+			let export_type	 = '';
 			$.map(dataExport, (val, x) => {
 				let active = '';
 				if (val === 'Excel') {
@@ -95,9 +121,11 @@ function Confirm_Form(tagId, action, nextFunction) {
 					   '</div>'+
 				   '</div></div>';
 				   
+			newFunction = eventObj.nextFunction;
+			eventNew 	= newFunction +'(`'+ tagId +'`, `export_Key`)';
 			footer = '<div style="text-align: right">'+
 					'<hr class="my-hr">'+						
-					'<button onclick="'+ nextFunction +'(`'+ eventParam +'`, `'+ tagId +'`, this)" ondbclick="'+ nextFunction +'(`'+ eventParam +'`, `'+ tagId +'`, this)" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>'+
+					'<button onclick="'+ eventNew +'" ondbclick="'+ eventNew +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>'+
 					'<button onclick="_hide_Confirm()" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
 					'</div>';
 				
@@ -113,10 +141,11 @@ function Confirm_Form(tagId, action, nextFunction) {
 			
 		break;
 		case 'task_active':	
-			
+		
+			eventNew  	 = '_clear_TaskActive(`'+ tagId +'`, `'+ eventObj.callback +'`)';
 			footer = '<div style="text-align: right">'+
 					'<hr class="my-hr">'+						
-					'<button onclick="'+ nextFunction +'" ondbclick="'+ nextFunction +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Ok</button>'+
+					'<button onclick="'+ eventNew +'" ondbclick="'+ eventNew +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Ok</button>'+
 					'<button onclick="_hide_Confirm()" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
 					'</div>';
 				

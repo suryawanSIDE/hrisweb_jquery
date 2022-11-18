@@ -185,5 +185,4 @@ function Route_Content(getObj) {
 				});
 			_screen_Adjust(tagId);
 	} // switchcase
-	
 }

@@ -66,6 +66,40 @@ function Area_City(getObj) {
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
         
+		// set global dataEvent
+        globalData[tagId]['dataEvent']['detail_Key'] = {
+											'eventParam': 'Form',
+											'action': 'detail'
+											}
+		globalData[tagId]['dataEvent']['reload_Key'] = {
+											'eventParam': 'Form',
+											'action': 'reload'
+											}
+		globalData[tagId]['dataEvent']['add_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'add'
+											}
+		globalData[tagId]['dataEvent']['edit_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_delete_Key'] = {
+											'nextFunction': 'Area_City_Event',
+											'action': 'delete'
+											}
+        globalData[tagId]['dataEvent']['delete_Key'] = {
+											'eventParam': 'Delete',
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_export_Key'] = {
+											'nextFunction': 'Area_City_Event',
+											'action': 'export'
+											}
+        globalData[tagId]['dataEvent']['export_Key'] = {
+											'eventParam': 'Export_Table',
+											'action': 'export'
+											}
+		
         // set global field search
         if (Object.keys(globalData[tagId].fieldSearch).length === 0) {
             globalData[tagId]['fieldSearch'] = Field_Search;
@@ -570,14 +604,11 @@ function Area_City(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType 			= globalData[tagId].formType;
-                        const eventDetail 		= 'Area_City_Event(`Form`, `'+ tagId +'`, `detail`)';
-						const eventAdd 			= 'Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
-						const eventEdit			= 'Area_City_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
-						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `Area_City_Event`)';
-						//const eventImport		= '';
-						//const eventImport_Format= '';
-						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `Area_City_Event`)';
+                        const eventDetail 		= 'Area_City_Event(`'+ tagId +'`, `detail_Key`)';
+						const eventAdd 			= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
+						const eventEdit			= 'Area_City_Event(`'+ tagId +'`, `edit_Key`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `confirm_delete_Key`)';
 						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
@@ -989,9 +1020,13 @@ function Area_City(getObj) {
         _show_Form(tagId);
         
 		//> modify module
-        const eventSave_All 	= 'Area_City_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
-        const eventNewForm  	= 'Area_City_Event(`Form`, `'+ tagId +'`, `add`)';
-		const eventReload_All	= 'Area_City_Event(`Form`, `'+ tagId +'`, `reload`)';
+        globalData[tagId]['dataEvent']['save_Key'] = {
+											'eventParam': 'Save_Data',
+											'action': action
+											}
+        const eventSave_All 	= 'Area_City_Event(`'+ tagId +'`, `save_Key`)';
+        const eventNewForm  	= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
+		const eventReload_All	= 'Area_City_Event(`'+ tagId +'`, `reload_Key`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1084,7 +1119,7 @@ function Area_City(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Area_City_Event(`Form`, tagId, `edit`)
+						Area_City_Event(tagId, 'edit_Key')
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1700,9 +1735,12 @@ function Area_City(getObj) {
 }
 
 //> modify module
-function Area_City_Event(eventParam, param_1, param_2, param_3, param_4) {
-   
-	let eventResult= '';
+function Area_City_Event(tagId, eventId, targetThis) {
+	
+	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
+    const eventParam 	= eventObj.eventParam;
+	
+	let eventResult		= '';
     switch (eventParam) {
 		case 'Export_Table': 
 			const exportType 	= $("#my-confirm").find("input[name='export_type']:checked").val();
@@ -1711,7 +1749,7 @@ function Area_City_Event(eventParam, param_1, param_2, param_3, param_4) {
 			
 			eventResult = Area_City({
 				'setFunction': eventParam,
-				'tagId': param_1,
+				'tagId': tagId,
 				'exportType': exportType,
 				'exportPage': exportPage,
 				'exportDecSep': exportDecSep 
@@ -1720,30 +1758,30 @@ function Area_City_Event(eventParam, param_1, param_2, param_3, param_4) {
 		case 'Delete': 
 			eventResult = Area_City({
                 'setFunction': eventParam,
-                'tagId': param_1
+                'tagId': tagId
             });
         break;
         case 'Form': 
 			eventResult = Area_City({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'action': param_2
+				'tagId': tagId,
+				'action': eventObj.action
 			});
 		break;
         case 'Save_Data': 
 			eventResult = Area_City({
                 'setFunction': eventParam,
-                'tagId': param_1,
-                'action': param_2
+                'tagId': tagId,
+                'action': eventObj.action
             });
         break;
         case '_select_Province': 
 			eventResult = Area_City({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
+				'tagId': tagId,
+				'colId': eventObj.colId,
+				'listIndex': eventObj.listIndex,
+				'targetThis': targetThis
 			});
 		break;
 		default:

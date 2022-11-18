@@ -66,6 +66,44 @@ function User_Access(getObj) {
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
         
+		// set global dataEvent
+        globalData[tagId]['dataEvent']['detail_Key'] = {
+											'eventParam': 'Form',
+											'action': 'detail'
+											}
+		globalData[tagId]['dataEvent']['reload_Key'] = {
+											'eventParam': 'Form',
+											'action': 'reload'
+											}
+		globalData[tagId]['dataEvent']['add_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'add'
+											}
+		globalData[tagId]['dataEvent']['edit_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_delete_Key'] = {
+											'nextFunction': 'User_Access_Event',
+											'action': 'delete'
+											}
+        globalData[tagId]['dataEvent']['delete_Key'] = {
+											'eventParam': 'Delete',
+											'action': 'edit'
+											}
+		globalData[tagId]['dataEvent']['confirm_export_Key'] = {
+											'nextFunction': 'User_Access_Event',
+											'action': 'export'
+											}
+        globalData[tagId]['dataEvent']['export_Key'] = {
+											'eventParam': 'Export_Table',
+											'action': 'export'
+											}
+		globalData[tagId]['dataEvent']['copy_Key'] = {
+											'eventParam': globalData[tagId]['formType'],
+											'action': 'copy'
+											}
+		
         // set global field search
         if (Object.keys(globalData[tagId].fieldSearch).length === 0) {
             globalData[tagId]['fieldSearch'] = Field_Search;
@@ -626,14 +664,11 @@ function User_Access(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const formType 			= globalData[tagId].formType;
-                        const eventDetail 		= 'User_Access_Event(`Form`, `'+ tagId +'`, `detail`)';
-						const eventAdd 			= 'User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `add`)';
-						const eventEdit			= 'User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `edit`)';
-						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `export`, `User_Access_Event`)';
-						//const eventImport		= '';
-						//const eventImport_Format= '';
-						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `delete`, `User_Access_Event`)';
+                        const eventDetail 		= 'User_Access_Event(`'+ tagId +'`, `detail_Key`)';
+						const eventAdd 			= 'User_Access_Event(`'+ tagId +'`, `add_Key`)';
+						const eventEdit			= 'User_Access_Event(`'+ tagId +'`, `edit_Key`)';
+						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
+						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `confirm_delete_Key`)';
 						set_Btn_Action_DataTable({
                             'tagId': tagId,
                             'btnDetail': 1, 
@@ -656,7 +691,7 @@ function User_Access(getObj) {
 							// append button action
 							const baseLevel	= $("#level-"+ tagId);
 							const baseEl 	= baseLevel.find(".my-topbar").eq(0);
-							const eventCopy= 'User_Access_Event(`'+ formType +'`, `'+ tagId +'`, `copy`)';
+							const eventCopy= 'User_Access_Event(`'+ tagId +'`, `copy_Key`)';
 							const btn_copy = '<div class="btn-group">'+
 													'<button onclick="'+ eventCopy +'" ondblclick="'+ eventCopy +'" class="btn btn-default btn-xs btn-action-edit" disabled>'+
 														'<span class="glyphicon glyphicon-duplicate"></span><span class="dekstop-label"> Copy</span>'+
@@ -1129,9 +1164,13 @@ function User_Access(getObj) {
         _show_Form(tagId);
         
 		//> modify module
-        const eventSave_All 	= 'User_Access_Event(`Save_Data`, `'+ tagId +'`, `'+ action +'`)';
-        const eventNewForm  	= 'User_Access_Event(`Form`, `'+ tagId +'`, `add`)';
-		const eventReload_All	= 'User_Access_Event(`Form`, `'+ tagId +'`, `reload`)';
+        globalData[tagId]['dataEvent']['save_Key'] = {
+											'eventParam': 'Save_Data',
+											'action': action
+											}
+        const eventSave_All 	= 'User_Access_Event(`'+ tagId +'`, `save_Key`)';
+        const eventNewForm  	= 'User_Access_Event(`'+ tagId +'`, `add_Key`)';
+		const eventReload_All	= 'User_Access_Event(`'+ tagId +'`, `reload_Key`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1224,7 +1263,7 @@ function User_Access(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						User_Access_Event(`Form`, tagId, `edit`)
+						User_Access_Event(tagId, 'edit_Key')
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1959,9 +1998,12 @@ function User_Access(getObj) {
 }
 
 //> modify module
-function User_Access_Event(eventParam, param_1, param_2, param_3, param_4) {
-   
-	let eventResult= '';
+function User_Access_Event(tagId, eventId, targetThis) {
+	
+	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
+    const eventParam 	= eventObj.eventParam;
+	
+	let eventResult		= '';
     switch (eventParam) {
 		case 'Export_Table': 
 			const exportType 	= $("#my-confirm").find("input[name='export_type']:checked").val();
@@ -1970,7 +2012,7 @@ function User_Access_Event(eventParam, param_1, param_2, param_3, param_4) {
 			
 			eventResult = User_Access({
 				'setFunction': eventParam,
-				'tagId': param_1,
+				'tagId': tagId,
 				'exportType': exportType,
 				'exportPage': exportPage,
 				'exportDecSep': exportDecSep 
@@ -1979,46 +2021,46 @@ function User_Access_Event(eventParam, param_1, param_2, param_3, param_4) {
 		case 'Delete': 
 			eventResult = User_Access({
                 'setFunction': eventParam,
-                'tagId': param_1
+                'tagId': tagId
             });
         break;
         case 'Form': 
 			eventResult = User_Access({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'action': param_2
+				'tagId': tagId,
+				'action': eventObj.action
 			});
 		break;
         case 'Form_Item_Append': 
 			eventResult = User_Access({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'form_Index': param_2
+				'tagId': tagId,
+				'form_Index': eventObj.form_Index
 			});
 		break;
         case 'Save_Data': 
 			eventResult = User_Access({
                 'setFunction': eventParam,
-                'tagId': param_1,
-                'action': param_2
+                'tagId': tagId,
+                'action': eventObj.action
             });
         break;
         case '_select_Module': 
 			eventResult = User_Access({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
+				'tagId': tagId,
+				'colId': eventObj.colId,
+				'listIndex': eventObj.listIndex,
+				'targetThis': targetThis
 			});
 		break;
 		case '_select_User': 
 			eventResult = User_Access({
 				'setFunction': eventParam,
-				'tagId': param_1,
-				'colId': param_2,
-				'listIndex': param_3,
-				'targetThis': param_4
+				'tagId': tagId,
+				'colId': eventObj.colId,
+				'listIndex': eventObj.listIndex,
+				'targetThis': targetThis
 			});
 		break;
 		default:

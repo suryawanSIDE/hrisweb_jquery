@@ -143,7 +143,13 @@ function _hide_Form(tagId) {
 			baseEl_Content.find(".my-form-body").html("");
 		}
 	} else {
-		Confirm_Form(tagId, 'task_active', '_clear_TaskActive(`'+ tagId +'`, `_hide_Form`)');
+		let tempId = tempId_Generate();
+		// update globalData dataEvent
+		globalData[tagId]['dataEvent'][tempId] = {
+									'action': 'task_active',
+									'callback': '_hide_Form'
+									}
+		Confirm_Form(tagId, tempId);
 	}
 	
 }
@@ -256,7 +262,19 @@ function get_Map_Form_Input(getObj) {
 				colData['value'] = get_Value_Converter_Form(colData.valueConverter, data[colData.field]);
 				colData['row']   = row;
 				
-				result.push(get_Input_Detail(colData));
+				switch (colData.input_Type) {
+					case 'get_Link_File':
+						colData['file_path'] = data[colData.field_path];
+						result.push(get_Link_File(colData));
+					break;
+					case 'get_Link_File_2':
+						colData['file_path'] = data[colData.field_path];
+						result.push(get_Link_File_2(colData));
+					break;
+					default: // get_Input
+						result.push(get_Input_Detail(colData));
+				} // switchcase input type
+				
 			});
 		break;
 		default:
@@ -294,6 +312,10 @@ function get_Map_Form_Input(getObj) {
 					case 'get_Link_File':
 						colData['file_path'] = data[colData.field_path];
 						result.push(get_Link_File(colData));
+					break;
+					case 'get_Link_File_2':
+						colData['file_path'] = data[colData.field_path];
+						result.push(get_Link_File_2(colData));
 					break;
 					case 'get_Input_Detail':
 						result.push(get_Input_Detail(colData));
@@ -607,11 +629,6 @@ function get_Input_File(getObj) {
 
 function get_Link_File(getObj) {
 	
-	let inputStyle = '';
-	if (getObj.align !== '') {
-		inputStyle = 'text-align: '+ getObj.align +';';
-	}
-	
 	const classXY = getObj.row +'-'+ getObj.col;
 	
 	let value_null = replaceNull(getObj.value);
@@ -620,14 +637,42 @@ function get_Link_File(getObj) {
 	if (value_null === '' || value_null === null) {
 		value_fix = 'empty file';
 	} else {
-		value_fix = '<a href="'+ baseUrl_Upload + getObj.file_path +'" target="blank"> '+ (value_null) +'</a>';;
+		value_fix = '<a href="'+ baseUrl_Upload + getObj.file_path +'" target="blank"> '+ (value_null) +'</a>';
 	}
 
 	const result = `<div class="item-data-col">
 					<div class="col-label">${getObj.label}:</div>
-					<div style="${inputStyle}" data-input="link" class="col-data col-data-${classXY} col-data-detail">${value_fix}</div>
-					<hr class="my-hr">
-				</div>`;
+					<div data-input="link" class="col-data col-data-${classXY} col-data-detail">${value_fix}</div>
+					</div>`;
+				
+	return result;
+}
+
+function get_Link_File_2(getObj) {
+	
+	const classXY = getObj.row +'-'+ getObj.col;
+	
+	let label	  = `<div class="col-label">${getObj.label}:</div>`;
+	let value_fix = '';
+	
+	if (deviceType === 'mobile') {
+		label	  = '';
+		value_fix = replaceNull(getObj.value);
+	} 
+	
+	let path_null = replaceNull(getObj.file_path);
+	let path_fix;
+	
+	if (path_null === '' || path_null === null) {
+		path_fix = '<span class="form-link-file" href="#" target="blank"><span class="glyphicon glyphicon-file"></span> '+ value_fix +'</span>';
+	} else {
+		path_fix = '<a class="form-link-file-active" href="'+ baseUrl_Upload + getObj.file_path +'" target="blank"><span class="glyphicon glyphicon-file"></span> '+ value_fix +'</a>';
+	}
+
+	const result = `<div class="item-data-col">
+					${label}
+					<div data-input="link" class="col-data col-data-${classXY} col-data-detail">${path_fix}</div>
+					</div>`;
 				
 	return result;
 }
@@ -660,7 +705,7 @@ function get_Input_Detail(getObj) {
 					<div class="col-label">${getObj.label}:</div>
 					<div style="${inputStyle}" data-input="div" class="col-data col-data-${classXY} col-data-detail">${value_fix}</div>
 					<hr class="my-hr">
-				</div>`;
+					</div>`;
 	return result;
 }
 
@@ -841,10 +886,14 @@ function set_FormPopup(getObj) {
 		btnClass = 'btn-sm';
 	}
 	
+	let btnSubmit = '';
+	if (getObj.nextFunction !== '') {
+		btnSubmit = '<button onclick="'+ getObj.nextFunction +'" ondbclick="'+ getObj.nextFunction +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>';
+	} 
 	// sample : functionDelete = Time_Sheet_Event()
 	footer = '<div style="text-align: right">'+
 			'<hr class="my-hr">'+						
-			'<button onclick="'+ getObj.nextFunction +'" ondbclick="'+ getObj.nextFunction +'" class="btn btn-default '+ btnClass +' confirm-action-submit"><span class="glyphicon glyphicon-ok"></span> Submit</button>'+
+			btnSubmit + 
 			'<button onclick="_hide_FormPopup(`'+ tagId +'`)" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
 			'</div>';
 		

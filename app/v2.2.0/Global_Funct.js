@@ -1,3 +1,6 @@
+function tempId_Generate() {
+	return get_RandomKey() + Math.floor(Math.random() * 26) + Date.now();
+};
 
 function _clearTimer(tagId, paramTimer) {
 	
@@ -220,6 +223,7 @@ function get_List_Result(getObj) {
 			let label 	 	= replaceNull(rowData['col_display']);
 			let label_index = label.replaceAll(' ', '_');
 			let selected 	= '';
+			let tempId		= '';
 			
 			//> modify module
 			switch(listRequest) {
@@ -237,8 +241,15 @@ function get_List_Result(getObj) {
 					}
 					
 					// list
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-					
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
+				
 				break;
 				case 'province':
 					// update global dataAutofill
@@ -253,8 +264,15 @@ function get_List_Result(getObj) {
 					}
 					
 					// list
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
-									
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
+					
 				break;
 				case 'city':
 					// update global dataAutofill
@@ -269,7 +287,14 @@ function get_List_Result(getObj) {
 					}
 					
 					// list
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
 									
 				break;
 				// area 
@@ -288,7 +313,14 @@ function get_List_Result(getObj) {
 					}
 					
 					// list
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
 									
 				break;
 				case 'module':
@@ -309,7 +341,14 @@ function get_List_Result(getObj) {
 					}
 					
 					// list
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
 									
 				break;
 				case 'user':
@@ -325,7 +364,14 @@ function get_List_Result(getObj) {
 					}
 					
 					// list
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
 									
 				break;
 				// config
@@ -344,14 +390,21 @@ function get_List_Result(getObj) {
 						selected = 'a-item-active';
 					}
 					
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
 					if (listFormat === 'table') {
-						result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
+						result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
 									'<td valign="top">'+ label +'</td>'+
 									'<td valign="top">'+ replaceNull(rowData['col_client_name']) +'</td>'+
 									'<td valign="top">'+ replaceNull(rowData['col_project_manager']) +'</td>'+
 									'</tr>';
 					} else {
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
 					}
 					
 				break;
@@ -365,12 +418,19 @@ function get_List_Result(getObj) {
 						selected = 'a-item-active';
 					}
 					
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
 					if (listFormat === 'table') {
-						result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
+						result += '<tr><td align="center" valign="top"><a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" ><span class="glyphicon glyphicon-ok"></span></a></td>'+
 										'<td valign="top">'+ label +'</td>'+
 										'</tr>';
 					} else {
-						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ eventParam +'`, `'+ tagId +'`, `'+ colId +'`, `'+ label_index +'`, this)" href="#" >'+ label +'</a>';
+						result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
 					}
 			} // switchcase listRequest				
 			

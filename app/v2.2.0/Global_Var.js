@@ -174,7 +174,7 @@ function set_Global_Data(tagId) {
 		}
 		
 		// 	set default enterPressed
-		if (globalData[tagId].hasOwnProperty('enterPressed') === false) {
+		//if (globalData[tagId].hasOwnProperty('enterPressed') === false) {
 			globalData[tagId]['enterPressed'] = {
 				'Form': false,
 				'List': false,
@@ -182,7 +182,7 @@ function set_Global_Data(tagId) {
 				'Filter': false,
 				'Filter_Renge': false
 				};
-		}
+		//}
 		
 		// 	set default formType
 		if (globalData[tagId].hasOwnProperty('formType') === false) {
@@ -190,20 +190,20 @@ function set_Global_Data(tagId) {
 		}
 
 		// 	set default dataForm
-		if (globalData[tagId].hasOwnProperty('dataForm') === false) {
+		//if (globalData[tagId].hasOwnProperty('dataForm') === false) {
 			globalData[tagId]['dataForm'] = [];
-		}
+		//}
 		
 		// set default dataAutofill_Param
 		globalData[tagId]['dataAutofill_Param'] = [];
 		
 		// 	set default dataAutofill
-		if (globalData[tagId].hasOwnProperty('dataAutofill') === false) {
+		//if (globalData[tagId].hasOwnProperty('dataAutofill') === false) {
 			globalData[tagId]['dataAutofill'] = {};
-		}
+		//}
 		
 		// 	set default dataAutofill
-		if (globalData[tagId].hasOwnProperty('dataTimer') === false) {
+		//if (globalData[tagId].hasOwnProperty('dataTimer') === false) {
 			globalData[tagId]['dataTimer'] = {
 				'__Fetch_Data': [],
 				'set_Map_Table': [],
@@ -218,13 +218,18 @@ function set_Global_Data(tagId) {
 				'_press_Input_Filter_Renge': [],
 				'_press_Input_List': []
 				};
-		}
+		//}
 		
 		// 	set default dataTaskActive
-		if (globalData[tagId].hasOwnProperty('dataTaskActive') === false) {
+		//if (globalData[tagId].hasOwnProperty('dataTaskActive') === false) {
 			globalData[tagId]['dataTaskActive'] = {};
 			globalData[tagId]['dataTaskActive']['formChange'] = '';
-		}
+		//}
+		
+		// 	set default dataEvent
+		//if (globalData[tagId].hasOwnProperty('dataEvent') === false) {
+			globalData[tagId]['dataEvent'] = [];
+		//}
 		
 	} // check tagId
 }
@@ -318,6 +323,9 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 					'Filter_Renge': true/false
 					},
 				formType: Form/FormTr,
+				dataEvent: [
+					tempId: {}
+				],
 				dataForm: [
 						{td_1, td_2, next..},
 						{td_1, td_2, next..},
@@ -356,7 +364,7 @@ tagId utama ada di contoller, content login, component  setNav(), elements navIt
 					},
 				dataTaskActive: {
 					formChange: 'title form'
-				},
+				}
 			},
 	tagId_next: {}
 	}
