@@ -604,7 +604,8 @@ function Area_City(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const eventDetail 		= 'Area_City_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'Area_City_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'Area_City_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';

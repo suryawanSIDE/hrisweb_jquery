@@ -634,7 +634,8 @@ function User(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const eventDetail 		= 'User_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'User_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'User_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'User_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';

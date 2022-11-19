@@ -692,7 +692,8 @@ function Address(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const eventDetail 		= 'Address_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'Address_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'Address_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'Address_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';

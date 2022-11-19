@@ -148,9 +148,9 @@ function set_Global_Data(tagId) {
 			globalData[tagId]['tableProperty']['tdParamWidth']   = [];
 		}
 		// 	set default dataTable
-		if (globalData[tagId].hasOwnProperty('dataTable') === false) {
+		//if (globalData[tagId].hasOwnProperty('dataTable') === false) {
 			globalData[tagId]['dataTable'] = [];
-		}
+		//}
 		// 	set default eventSelectedTr
 		if (globalData[tagId].hasOwnProperty('eventSelectedTr') === false) {
 			globalData[tagId]['eventSelectedTr'] = true;
@@ -189,6 +189,11 @@ function set_Global_Data(tagId) {
 			globalData[tagId]['formType'] = '';
 		}
 
+		// 	set default dataEvent
+		//if (globalData[tagId].hasOwnProperty('dataEvent') === false) {
+			globalData[tagId]['dataEvent'] = [];
+		//}
+		
 		// 	set default dataForm
 		//if (globalData[tagId].hasOwnProperty('dataForm') === false) {
 			globalData[tagId]['dataForm'] = [];
@@ -224,11 +229,6 @@ function set_Global_Data(tagId) {
 		//if (globalData[tagId].hasOwnProperty('dataTaskActive') === false) {
 			globalData[tagId]['dataTaskActive'] = {};
 			globalData[tagId]['dataTaskActive']['formChange'] = '';
-		//}
-		
-		// 	set default dataEvent
-		//if (globalData[tagId].hasOwnProperty('dataEvent') === false) {
-			globalData[tagId]['dataEvent'] = [];
 		//}
 		
 	} // check tagId

@@ -143,8 +143,8 @@ function _hide_Form(tagId) {
 			baseEl_Content.find(".my-form-body").html("");
 		}
 	} else {
-		let tempId = tempId_Generate();
 		// update globalData dataEvent
+		let tempId = tempId_Generate();
 		globalData[tagId]['dataEvent'][tempId] = {
 									'action': 'task_active',
 									'callback': '_hide_Form'
@@ -717,7 +717,8 @@ function _press_Input(e, tagId, markProcess) {
 		charCode = e.keyCode;
 	}
 	
-	if (charCode === 13 && globalData[tagId].enterPressed === false) { // enter	
+	if (charCode === 13 && globalData[tagId]['enterPressed'].Form === false) { // enter	
+		
 		const baseLevel = $("#level-"+ tagId);
 		baseLevel.find(".my-content-form").eq(0)
 			.find(".my-form-header .btn-form-action-save").click();

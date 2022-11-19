@@ -779,7 +779,8 @@ function Profile(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const eventDetail 		= 'Profile_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'Profile_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'Profile_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'Profile_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
@@ -1556,14 +1557,22 @@ function Profile(getObj) {
             set_Loader();
                 set_Loader_Progress(selectedLength + ' DATA');
             const mytimer = setTimeout(() => {
-                __process_Form(levelRow_Child)
+                __process_Form(levelRow_Child), 
+				__load_Child()
                 }, 5); // 5 ms
 			
 			// update globaldata dataTimer
 			globalData[tagId]['dataTimer']['_Form'].push(mytimer);
 			
         } else {
-            __process_Form(levelRow_Child);
+           const mytimer = setTimeout(() => {
+                __process_Form(levelRow_Child), 
+				__load_Child()
+                }, 5); // 5 ms
+		
+			// update globaldata dataTimer
+			globalData[tagId]['dataTimer']['_Form'].push(mytimer);
+			
         }
         
         function __process_Form() {
@@ -1597,8 +1606,8 @@ function Profile(getObj) {
                             'action': action,
                             'dataTable_Index': get_Num_Row_Page(tagId)+1,
                             'data': dataTable,
-							'form_Index': 0
-                               // child =>  'levelRow_Child': levelRow_Child,
+							'form_Index': 0,
+                               'levelRow_Child': levelRow_Child
                             }));
                             
                     // components/loader
@@ -1646,8 +1655,8 @@ function Profile(getObj) {
                                 'action': action,
                                 'dataTable_Index': i,
                                 'data': dataTable[i],
-								'form_Index': form_Index
-                                    // child => 'levelRow_Child': levelRow_Child,
+								'form_Index': form_Index,
+                                    'levelRow_Child': levelRow_Child
                                 }));
                                 
                         form_Index++;
@@ -1660,9 +1669,7 @@ function Profile(getObj) {
             } //switchcase
         } // __process_Form
         
-		/*
-		// child => 
-        function __load_Child() {
+		function __load_Child() {
             // map child 
             const dataForm = globalData[tagId].dataForm;
             $.map(dataForm, ( data ) => { 
@@ -1673,7 +1680,7 @@ function Profile(getObj) {
                 });
             });
         } // __load_Child
-        */
+        
     } // _Form
 
     function ___Form_Item(getObj) {
@@ -1730,15 +1737,51 @@ function Profile(getObj) {
                         'form_Index': getObj.form_Index,
                         'formType': globalData[tagId].formType
                      });
-
+		
+		// === child
+		const randId  		 = get_RandomKey();
+		const key 			 = (appId + randId);
+		const levelRow_Child = parseInt(getObj.levelRow_Child);
+		let enable_Child_Update = 0;
+		if (getObj.action === 'add' || getObj.action === 'edit') {
+			enable_Child_Update = 1;
+		}
+			// child 1 
+			const moduleId_Child_1	= 'emp-prf-addr';
+			const tabCode_Child_1	= '-tab_B';
+			const levelCol_Child_1  = 0;
+			const tagId_Child_1	    = key + moduleId_Child_1 +'-'+ levelRow_Child +'-'+ levelCol_Child_1 + tabCode_Child_1; 
+			const paneId_Child_1    = tagId_Child_1 + getObj.form_Index;
+			
+			let setup_Child_1	    = '';
+			if (tagId_Child_1 !== tagId) {
+			
+				// set globaldata child START HERE
+				let colParent_Ref = data[tableHead[2].field];
+				globalData[tagId_Child_1] = {};
+				globalData[tagId_Child_1]['dataRules'] = {};
+				globalData[tagId_Child_1]['dataRules']['tagId_Parent'] 	   	  = tagId;
+				globalData[tagId_Child_1]['dataRules']['dataTable_Index']  	  = dataTable_Index;
+				globalData[tagId_Child_1]['dataRules']['colParent_Ref']       = colParent_Ref;
+				globalData[tagId_Child_1]['dataRules']['enable_Child_Update'] = enable_Child_Update;
+				globalData[tagId_Child_1]['dataLevelRow']   				  = levelRow_Child;
+				globalData[tagId_Child_1]['dataLevelCol']   				  = levelCol_Child_1 + tabCode_Child_1;
+				// components/content
+				setup_Child_1 = {
+								'tagId_Parent': tagId,
+								'tagId': tagId_Child_1
+								};
+			} // check tagChild
+			
+			
         //> modify module
-       let formChild	 = {};
-			/*
+        let formChild	 = {};
 			formChild[0] = {
-					'paneId_Child': tagId + dataTable_Index +'-1',
-					'tabTitle': 'Child 1',
-					'tabContent': 'Content child 1'
+					'paneId_Child': paneId_Child_1,
+					'tabTitle': 'Address',
+					'tabContent': get_Container_Child(setup_Child_1)
 					};
+			/*
 			formChild[1] = {
 					'paneId_Child': tagId + dataTable_Index +'-2',
 					'tabTitle': 'Child 2',
@@ -1922,7 +1965,9 @@ function Profile(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-			'arrChild': []
+			'arrChild': [
+				setup_Child_1
+				]
 			});
 		
 		let objBody_Item = '';	
@@ -2440,7 +2485,8 @@ function Profile(getObj) {
 										'action': 'delete_2',
 										'category': 'photo',
 										'notif': 'File '+ col_reg_employee,
-										'data_key': col_data_key
+										'col_data_key': col_data_key,
+										'dataTable_Index': dataTable_Index
 										}
 			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_photo +'`)';
 			photo_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
@@ -2463,7 +2509,8 @@ function Profile(getObj) {
 										'action': 'delete_2',
 										'category': 'ktp',
 										'notif': 'File '+ col_ktp,
-										'data_key': col_data_key
+										'col_data_key': col_data_key,
+										'dataTable_Index': dataTable_Index
 										}
 			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_ktp +'`)';
 			ktp_delete 	 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
@@ -2486,7 +2533,8 @@ function Profile(getObj) {
 										'action': 'delete_2',
 										'category': 'kk',
 										'notif': 'File '+ col_kk,
-										'data_key': col_data_key
+										'col_data_key': col_data_key,
+										'dataTable_Index': dataTable_Index
 										}
 			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_kk +'`)';
 			kk_delete 			= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
@@ -2509,7 +2557,8 @@ function Profile(getObj) {
 										'action': 'delete_2',
 										'category': 'npwp',
 										'notif': 'File '+ col_npwp,
-										'data_key': col_data_key
+										'col_data_key': col_data_key,
+										'dataTable_Index': dataTable_Index
 										}
 			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_npwp +'`)';
 			npwp_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
@@ -2532,7 +2581,8 @@ function Profile(getObj) {
 										'action': 'delete_2',
 										'category': 'bpjs_tk',
 										'notif': 'File '+ col_bpjs_tk,
-										'data_key': col_data_key
+										'col_data_key': col_data_key,
+										'dataTable_Index': dataTable_Index
 										}
 			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_bpjs_tk +'`)';
 			bpjs_tk_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
@@ -2555,7 +2605,8 @@ function Profile(getObj) {
 										'action': 'delete_2',
 										'category': 'bpjs_k',
 										'notif': 'File '+ col_bpjs_k,
-										'data_key': col_data_key
+										'col_data_key': col_data_key,
+										'dataTable_Index': dataTable_Index
 										}
 			eventConfirm 		= 'Confirm_Form(`'+ tagId +'`, `'+ tempId_bpjs_k +'`)';
 			bpjs_k_delete 		= '<button onclick="'+ eventConfirm +'" ondblclick="'+ eventConfirm +'" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove my-required"></span></button>';
@@ -2563,35 +2614,35 @@ function Profile(getObj) {
 		}
 		
 		const list_file= `<table class="my-table table-condensed table-bordered">
-							<tr>
+							<tr class="${col_data_key}-photo">
 								<td width="20%">Photo</td>
-								<td width="70%">${photo_fix}</td>
-								<td width="10%" align="center">${photo_delete}</td>
+								<td width="70%" class="file-name">${photo_fix}</td>
+								<td width="10%" class="file-act" align="center">${photo_delete}</td>
 							</tr>
-							<tr>
+							<tr class="${col_data_key}-ktp">
 								<td>KTP</td>
-								<td>${ktp_fix}</td>
-								<td align="center">${ktp_delete}</td>
+								<td class="file-name">${ktp_fix}</td>
+								<td class="file-act" align="center">${ktp_delete}</td>
 							</tr>
-							<tr>
+							<tr class="${col_data_key}-kk">
 								<td>KK</td>
-								<td>${kk_fix}</td>
-								<td align="center">${kk_delete}</td>
+								<td class="file-name">${kk_fix}</td>
+								<td class="file-act" align="center">${kk_delete}</td>
 							</tr>
-							<tr>
+							<tr class="${col_data_key}-npwp">
 								<td>NPWP</td>
-								<td>${npwp_fix}</td>
-								<td align="center">${npwp_delete}</td>
+								<td class="file-name">${npwp_fix}</td>
+								<td class="file-act" align="center">${npwp_delete}</td>
 							</tr>
-							<tr>
+							<tr class="${col_data_key}-bpjs_tk">
 								<td>BPJS TK</td>
-								<td>${bpjs_tk_fix}</td>
-								<td align="center">${bpjs_tk_delete}</td>
+								<td class="file-name">${bpjs_tk_fix}</td>
+								<td class="file-act" align="center">${bpjs_tk_delete}</td>
 							</tr>
-							<tr>
-								<td>BPJS Kesehatan</td>
-								<td>${bpjs_k_fix}</td>
-								<td align="center">${bpjs_k_delete}</td>
+							<tr class="${col_data_key}-bpjs_k">
+								<td>BPJS Kes.</td>
+								<td class="file-name">${bpjs_k_fix}</td>
+								<td class="file-act" align="center">${bpjs_k_delete}</td>
 							</tr>
 						</table>
 						<hr class="my-hr">
@@ -2603,7 +2654,7 @@ function Profile(getObj) {
 									'form_Index': '',
 									'formType': '',
 									'value': '',
-									'label': 'Photo',
+									'label': 'Photo (jpg, jpeg, png)',
 									'align': '',
 									'require': 0,
 									'row': row,
@@ -2616,7 +2667,7 @@ function Profile(getObj) {
 									'form_Index': '',
 									'formType': '',
 									'value': '',
-									'label': 'File KTP',
+									'label': 'File KTP (jpg, jpeg, png, pdf)',
 									'align': '',
 									'require': 0,
 									'row': row,
@@ -2629,7 +2680,7 @@ function Profile(getObj) {
 									'form_Index': '',
 									'formType': '',
 									'value': '',
-									'label': 'File KK',
+									'label': 'File KK (jpg, jpeg, png, pdf)',
 									'align': '',
 									'require': 0,
 									'row': row,
@@ -2642,7 +2693,7 @@ function Profile(getObj) {
 									'form_Index': '',
 									'formType': '',
 									'value': '',
-									'label': 'File NPWP',
+									'label': 'File NPWP (jpg, jpeg, png, pdf)',
 									'align': '',
 									'require': 0,
 									'row': row,
@@ -2655,7 +2706,7 @@ function Profile(getObj) {
 									'form_Index': '',
 									'formType': '',
 									'value': '',
-									'label': 'File BPJS TK',
+									'label': 'File BPJS TK (jpg, jpeg, png, pdf)',
 									'align': '',
 									'require': 0,
 									'row': row,
@@ -2668,7 +2719,7 @@ function Profile(getObj) {
 									'form_Index': '',
 									'formType': '',
 									'value': '',
-									'label': 'File BPJS Kesehatan',
+									'label': 'File BPJS Kes. (jpg, jpeg, png, pdf)',
 									'align': '',
 									'require': 0,
 									'row': row,
@@ -2707,6 +2758,8 @@ function Profile(getObj) {
 	
 	function _Form_Attachment_Save(getObj) {
 		
+		set_Loader();
+        
 		const tagId 		= getObj.tagId;
 		const row	 		= getObj.row;
 		
@@ -2893,6 +2946,138 @@ function Profile(getObj) {
             } // alertText
         } // Form_Attachment_Save
 		
+	function _Form_Attachment_Delete(getObj) {
+		
+		set_Loader();
+        
+		const tagId 			= getObj.tagId;
+		const row	 			= getObj.row;
+		const col_data_key		= getObj.col_data_key;
+		const category			= getObj.category;
+		const dataTable_Index 	= getObj.dataTable_Index;
+		
+		const urlController 	= globalData[tagId].urlController;
+        const baseLevel     	= $("#level-"+ tagId);
+        const baseEl_Form   	= baseLevel.find(".my-content-form").eq(0).find(".my-form-popup");
+        
+		let alertText       = '';
+        
+            if (alertText !== '') {     
+
+                // components/loader
+                _hide_Loader();
+
+                // components/alert
+                set_Alert({
+                    'type': 'warning', 
+                    'body': 'Please complete :<br>'+ alertText,  
+                    'footer': get_Alert_Footer(1)
+                });
+
+            } else {
+				
+                // async save data
+                $.ajax({
+                    type: "post",
+					url: baseUrl + urlController,
+					dataType: "json",
+					data: {
+						'appId': appId,
+						'loginKey': get_LoginKey(), // components/key
+						'randomKey': get_RandomKey(), // components/key
+						'moduleId': globalData[tagId].moduleId,
+						'reqAction': 'delete_file',
+						'setObj': {
+							'col_data_key': col_data_key,
+							'category': category,
+							'dataRules': globalData[tagId]['dataRules']
+						}
+					}, // data
+                    success: (response) => {    
+                        
+                        // components/loader
+                        _hide_Loader();
+						_hide_Confirm();
+						
+                        const myObj  = response;
+                       
+                        if (myObj.status === 'success') {
+							
+							// update tr file
+							baseEl_Form.find("."+ col_data_key +"-"+ category)
+								.find(".file-name").html("empty file");
+							baseEl_Form.find("."+ col_data_key +"-"+ category)
+								.find(".file-act").html("");
+							
+							const currentData   = globalData[tagId].dataTable;
+							
+							// additional field here 
+							switch(category) {
+								case 'photo':
+									currentData[dataTable_Index]['col_file_photo']   = null;
+								break;
+								case 'ktp':
+									currentData[dataTable_Index]['col_file_ktp'] 	 = null;
+								break;
+								case 'kk':
+									currentData[dataTable_Index]['col_file_kk'] 	 = null;
+								break;
+								case 'npwp':
+									currentData[dataTable_Index]['col_file_npwp']    = null;
+								break;
+								case 'bpjs_tk':
+									currentData[dataTable_Index]['col_file_bpjs_tk'] = null;
+								break;
+								case 'bpjs_k':
+									currentData[dataTable_Index]['col_file_bpjs_k']  = null;
+								break;
+								default:
+							} // switch
+							
+							// update global dataTable
+							globalData[tagId]['dataTable'] = currentData;
+                                
+							// reload
+							Profile_Event(tagId, `reload_Key`);
+							
+                        } else if (myObj.status === 'reject') {
+
+                            // components/key
+                            unset_LoginKey();
+
+                            // controllers
+                            Load_Redirect();
+
+                        } else {
+                            
+                            // components/loader
+                            _hide_Loader();
+
+                            // components/alert
+                            set_Alert({
+                                'type': 'danger', 
+                                'body': myObj.message, 
+                                'footer': get_Alert_Footer(1)
+                            });
+
+                        }
+                    }, // success
+                    error: (xhr) => {
+                        
+                        // components/loader
+                        _hide_Loader();
+
+                        // components/alert
+                        set_Alert({
+                            'type': 'danger', 
+                            'body': 'Error: '+ xhr.status +', '+xhr.responseText, //'Error connection', 
+                            'footer': get_Alert_Footer(1)
+                        });
+                    }, // error
+                }); // ajax
+            } // alertText
+        } // Form_Attachment_Delete
+		
 // ======== FORM
 
     //> modify module
@@ -2923,6 +3108,9 @@ function Profile(getObj) {
 		break;
 		case 'Form_Attachment_Save':
 			functionResult = _Form_Attachment_Save(getObj);
+		break;
+		case 'Form_Attachment_Delete':
+			functionResult = _Form_Attachment_Delete(getObj);
 		break;
 		default:
             functionResult = set_Alert({
@@ -2989,6 +3177,15 @@ function Profile_Event(tagId, eventId, targetThis) {
 				'setFunction': eventParam,
 				'tagId': tagId,
 				'row': eventObj.row
+			});
+		break;
+		case 'Form_Attachment_Delete': 
+			eventResult = Profile({
+				'setFunction': eventParam,
+				'tagId': tagId,
+				'category': eventObj.category,
+				'col_data_key': eventObj.col_data_key,
+				'dataTable_Index': eventObj.dataTable_Index
 			});
 		break;
 		default:

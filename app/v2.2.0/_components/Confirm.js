@@ -61,7 +61,7 @@ function Confirm_Form(tagId, eventId) {
 					'<button onclick="_hide_Confirm()" class="btn btn-default '+ btnClass +' confirm-action-close"><span class="glyphicon glyphicon-remove"></span> Close</button>'+
 					'</div>';
 				
-			body = '<span class="btn btn-default btn-xs btn-group confirm-item">'+ objTemp.notif +'</span>';
+			body = '<span class="btn btn-default btn-xs btn-group confirm-item">'+ eventObj.notif +'</span>';
 			
 			set_Confirm({
 				'icon': 'glyphicon-warning-sign',

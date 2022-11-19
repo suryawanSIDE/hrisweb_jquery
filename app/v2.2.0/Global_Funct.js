@@ -249,7 +249,7 @@ function get_List_Result(getObj) {
 												'listIndex': label_index
 												}
 					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
-				
+					
 				break;
 				case 'province':
 					// update global dataAutofill

@@ -35,6 +35,18 @@ function Route_Content(getObj) {
 			_screen_Adjust(tagId);
 		break;
 		// myhris/profile 
+		// myhris/profile-address
+		case (key +'emp-prf-addr'+ markLevel) :
+			globalData[tagId]['moduleId'] = 'emp-prf-addr';
+			Profile({
+				'setFunction': 'Main',
+				'tagId': tagId,
+				'loadMethode': loadMethode,
+				'level': level
+				});
+			_screen_Adjust(tagId);
+		break;
+		// myhris/profile-address 
 		// myhris/address
 		case (key +'emp-addr'+ markLevel) :
 			globalData[tagId]['moduleId'] = 'emp-addr';

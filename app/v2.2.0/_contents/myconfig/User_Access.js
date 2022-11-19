@@ -664,7 +664,8 @@ function User_Access(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const eventDetail 		= 'User_Access_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'User_Access_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'User_Access_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'User_Access_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';

@@ -627,7 +627,8 @@ function Parameter_Bank(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                          
-                        const eventDetail 		= 'Parameter_Bank_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'Parameter_Bank_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'Parameter_Bank_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'Parameter_Bank_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';

@@ -100,7 +100,10 @@ function List_Fixed_Currency(tagId, colId) {
 
 } // List_Fixed_Currency
 
-function _select_List_Fixed(tagId, colId, targetThis) {
+function _select_List_Fixed(tagId, eventId, targetThis) {
+	
+	const eventObj   		= globalData[tagId]['dataEvent'][eventId];
+    const colId				= eventObj.colId;
 	
 	const baseLevel 		= $("#level-"+ tagId);
 	const formType 			= globalData[tagId].formType;
@@ -341,7 +344,11 @@ function _List_Fetch(getObj) {
 	}); // ajax
 }
 
-function _select_List_Autofill(eventParam, tagId, colId, indexData, targetThis) {
+function _select_List_Autofill(tagId, eventId, targetThis) {
+	
+	const eventObj   		= globalData[tagId]['dataEvent'][eventId];
+    const colId				= eventObj.colId;
+	const listIndex			= eventObj.listIndex;
 	
 	const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
 	const dataTable_Index 	= dataAutofill.dataTable_Index;
@@ -360,7 +367,7 @@ function _select_List_Autofill(eventParam, tagId, colId, indexData, targetThis) 
 		baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
 	}
 	
-	baseEl_Item.find(".col-data-"+ colId).val(dataTable[indexData].col_display);
+	baseEl_Item.find(".col-data-"+ colId).val(dataTable[listIndex].col_display);
 	baseEl_Item.find(".select-container-"+ colId +" .list-item").removeClass("a-item-active");
 	baseEl_Item.find(".col-notif").html("");
 	

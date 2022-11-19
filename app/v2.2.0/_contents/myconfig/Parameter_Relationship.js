@@ -609,7 +609,8 @@ function Parameter_Relationship(getObj) {
                         // components/form
                         set_Form_Title(tagId, titleBar);
                             
-                        const eventDetail 		= 'Parameter_Relationship_Event(`'+ tagId +'`, `detail_Key`)';
+                        // > modify
+						const eventDetail 		= 'Parameter_Relationship_Event(`'+ tagId +'`, `detail_Key`)';
 						const eventAdd 			= 'Parameter_Relationship_Event(`'+ tagId +'`, `add_Key`)';
 						const eventEdit			= 'Parameter_Relationship_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
