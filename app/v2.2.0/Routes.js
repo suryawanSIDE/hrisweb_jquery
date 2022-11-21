@@ -82,6 +82,19 @@ function Route_Content(getObj) {
 			break;
 			// myhris/institution 
 			
+			// myhris/structure
+			case (key +'strctr'+ markLevel) :
+				globalData[tagId]['moduleId'] = 'strctr';
+				Structure({
+					'setFunction': 'Main',
+					'tagId': tagId,
+					'loadMethode': loadMethode,
+					'level': level
+					});
+				_screen_Adjust(tagId);
+			break;
+			// myhris/structure 
+			
 			// myhris/area 
 			case (key +'ar-cou'+ markLevel) :
 				globalData[tagId]['moduleId'] = 'ar-cou';
@@ -129,6 +142,16 @@ function Route_Content(getObj) {
 			case (key +'cfg-accs'+ markLevel) : 
 				globalData[tagId]['moduleId'] = 'cfg-accs';
 				User_Access({
+					'setFunction': 'Main',
+					'tagId': tagId,
+					'loadMethode': loadMethode,
+					'level': level
+					});
+				_screen_Adjust(tagId);
+			break;
+			case (key +'dprt'+ markLevel) : 
+				globalData[tagId]['moduleId'] = 'dprt';
+				Department({
 					'setFunction': 'Main',
 					'tagId': tagId,
 					'loadMethode': loadMethode,

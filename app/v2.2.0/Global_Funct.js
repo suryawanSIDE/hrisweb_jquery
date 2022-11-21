@@ -221,12 +221,63 @@ function get_List_Result(getObj) {
 		$.map(dataDb, ( rowData, x ) => {
 			
 			let label 	 	= replaceNull(rowData['col_display']);
-			let label_index = label.replaceAll(' ', '_');
+			let label_index = rowData.col_list_index;
 			let selected 	= '';
 			let tempId		= '';
 			
 			//> modify module
 			switch(listRequest) {
+				
+					case 'department':
+					// update global dataAutofill
+					dataAutofill['dataTable'][label_index] = {
+									'col_display': label, 
+									'col_code_department': replaceNull(rowData['col_code_department']), 
+									'col_department': replaceNull(rowData['col_department']),
+									'col_level': replaceNull(rowData['col_level'])
+									};
+					
+					if (currentValue === label) {
+						selected = 'a-item-active';
+					}
+					
+					// list
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
+					
+				break;
+				case 'structure':
+					// update global dataAutofill
+					dataAutofill['dataTable'][label_index] = {
+									'col_display': label, 
+									'col_code_structure': replaceNull(rowData['col_code_structure']), 
+									'col_structure': replaceNull(rowData['col_structure']),
+									'col_level': replaceNull(rowData['col_level']),
+									'col_code_department': replaceNull(rowData['col_code_department']), 
+									'col_department': replaceNull(rowData['col_department']),
+									};
+					
+					if (currentValue === label) {
+						selected = 'a-item-active';
+					}
+					
+					// list
+					tempId = listRequest + label_index;
+					// update globalData dataEvent
+					globalData[tagId]['dataEvent'][tempId] = {
+												'eventParam': eventParam,
+												'colId': colId,
+												'listIndex': label_index
+												}
+					result += '<a class="'+ selected +' list-item" onclick="'+ selectedFunction +'(`'+ tagId +'`, `'+ tempId +'`, this)" href="#" >'+ label +'</a>';
+					
+				break;
 				// area
 				case 'country':
 					// update global dataAutofill
