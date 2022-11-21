@@ -23,10 +23,6 @@ function Parameter_Relationship(getObj) {
             // components/content
             set_Containter(tagId);
 			
-			const Field     = _Field();
-			const tableHead = Field.tableHead;
-			globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
-			
             // components/topbar
             set_TopBar({
                 'tagId': tagId, 
@@ -59,7 +55,9 @@ function Parameter_Relationship(getObj) {
         
         const Field_Search  = _Field_Search();
         const Field_Filter  = _Field_Filter();
-        
+        const Field     	= _Field();
+		const tableHead 	= Field.tableHead;
+		
         // set global urlController
         globalData[tagId]['urlController'] = 'myconfig/Parameter/'; //> modify module
         
@@ -159,11 +157,16 @@ function Parameter_Relationship(getObj) {
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
+		
 		// update globalData eventSelectedTr
 		globalData[tagId]['eventSelectedTr'] = true;
+		
 		// update globalData dataExportType
 		globalData[tagId]['dataExportType']	 = ['Excel', 'CSV (,)', 'CSV (;)'];
 		
+		// tableProperty
+		globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
+			
     } // __Global_Data_This
 // ======== MAIN
 // ======== SETUP
@@ -1195,21 +1198,31 @@ function Parameter_Relationship(getObj) {
                 let colId = row +'-'+ val.col;
                 let dataAutofill = globalData[tagId]['dataAutofill'][colId] = {};
                     if (val.hasOwnProperty('listRequest') === true) {
-                        dataAutofill['listRequest'] = val.listRequest;
+                        dataAutofill['listRequest'] 	 = val.listRequest;
                     }
                     if (val.hasOwnProperty('listFormat') === true) {
-                        dataAutofill['listFormat'] = val.listFormat;
+                        dataAutofill['listFormat']  	 = val.listFormat;
                     }
                     if (val.hasOwnProperty('selectedFunction') === true) {
                         dataAutofill['selectedFunction'] = val.selectedFunction;
                     }
                     if (val.hasOwnProperty('eventParam') === true) {
-                        dataAutofill['eventParam'] = val.eventParam;
+                        dataAutofill['eventParam']  	 = val.eventParam;
                     }
+					if (val.hasOwnProperty('colParent') === true) {
+                        dataAutofill['colParent']   	 = val.colParent;
+                    }
+					if (val.hasOwnProperty('listNested') === true) {
+                        dataAutofill['listNested']  	 = true;
+                    } else {
+						dataAutofill['listNested']  	 = false;
+					}
                 // tambahkan object baru ke dataAutofill
                     dataAutofill['dataTable_Index']  = dataTable_Index;
                     dataAutofill['dataTable']        = [];
 					dataAutofill['form_Index']  	 = getObj.form_Index;
+            		
+               globalData[tagId]['dataAutofill'][colId] = dataAutofill;
             });
         }
 		

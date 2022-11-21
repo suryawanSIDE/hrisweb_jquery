@@ -7,10 +7,8 @@ function set_Containter_Form(tagId) {
 	let contentFormStyle = 'background-color: rgba(191, 191, 190, 0.50);';
 	let formStyle 		 = 'background-color: transparent;';
 	if (dataLevelRow > 0) { // child
-		const myContent	 	= baseLevel.find(".my-content").eq(0);
-		const wContainer 	= myContent.parents(".my-container").width(); 
-		contentFormStyle 	= 'background-color: rgba(191, 191, 190, 0.50); border: 1px solid #707778; border-radius: 5px; width: '+ wContainer +'px;';
-		formStyle			= 'background-color: transparent; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;';
+		contentFormStyle 	= 'margin-left: -10px; background-color: rgba(191, 191, 190, 0.50); border: 1px solid #707778; border-radius: 5px;';
+		formStyle			= 'background-color: #fff; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;';
 	}
 	
 	const result = `<div style="${contentFormStyle}" class="my-content-form my-hide">

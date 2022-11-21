@@ -1,5 +1,5 @@
 //> modify module
-function Area_City(getObj) {
+function Institution(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -59,7 +59,7 @@ function Area_City(getObj) {
 		const tableHead 	= Field.tableHead;
 		
         // set global urlController
-        globalData[tagId]['urlController'] = 'myhris/Area_Sub/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Institution/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -82,7 +82,7 @@ function Area_City(getObj) {
 											'action': 'edit'
 											}
 		globalData[tagId]['dataEvent']['confirm_delete_Key'] = {
-											'nextFunction': 'Area_City_Event',
+											'nextFunction': 'Institution_Event',
 											'action': 'delete'
 											}
         globalData[tagId]['dataEvent']['delete_Key'] = {
@@ -90,7 +90,7 @@ function Area_City(getObj) {
 											'action': 'edit'
 											}
 		globalData[tagId]['dataEvent']['confirm_export_Key'] = {
-											'nextFunction': 'Area_City_Event',
+											'nextFunction': 'Institution_Event',
 											'action': 'export'
 											}
         globalData[tagId]['dataEvent']['export_Key'] = {
@@ -153,7 +153,7 @@ function Area_City(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['AreaLevel'] = 2;
+		// sample globalData[tagId]['dataRules']['ShowData'] = 'all';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
@@ -163,7 +163,7 @@ function Area_City(getObj) {
 		
 		// update globalData dataExportType
 		globalData[tagId]['dataExportType']	 = ['Excel', 'CSV (,)', 'CSV (;)'];
-
+		
 		// tableProperty
 		globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
 			
@@ -223,35 +223,21 @@ function Area_City(getObj) {
             'field_value_default': 'Aktif',
             'require': 1
             });
-			
-		tdWidth    = 20;
+		
+		tdWidth    = 35;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Provinsi',
+            'label': 'Nama Institusi',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_parent_area',
+            'field': 'col_institution_name',
             'field_value_default': '',
             'require': 1
             });
-			
-		tdWidth    = 20;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
-            'label': 'Kab/Kota',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_area',
-            'field_value_default': '',
-            'require': 1
-            });
-			
+		
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -268,12 +254,8 @@ function Area_City(getObj) {
 
         const field = [
 				{
-                'label': 'Provinsi',
-                'field': 'col_parent_area'
-                },
-				{
-                'label': 'Kab/Kota',
-                'field': 'col_area'
+                'label': 'Nama',
+                'field': 'col_institution_name'
                 }
             ];
 
@@ -293,13 +275,6 @@ function Area_City(getObj) {
 				'field': 'col_status_sw_active',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 0,
-				'defaultFilter': []
-				},
-				{
-				'label': 'Provinsi',
-				'field': 'col_parent_area',
-				'filterModel': 'list', // (list/rangeDate)
-				'searchInput': 1,
 				'defaultFilter': []
 				}
 			];
@@ -538,11 +513,9 @@ function Area_City(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_area;
+                                    dataTable_Col['col_text_alert'] = rowData.col_institution_name;
 									// additional field here 
-									dataTable_Col['col_parent_code']	 = rowData.col_parent_code;
-                                    dataTable_Col['col_parent_code_old'] = rowData.col_parent_code_old;
-                                   
+									
                                 dataTable_Row.push(dataTable_Col);
 
                             }); // map row
@@ -608,9 +581,9 @@ function Area_City(getObj) {
                         set_Form_Title(tagId, titleBar);
                             
                         // > modify
-						const eventDetail 		= 'Area_City_Event(`'+ tagId +'`, `detail_Key`)';
-						const eventAdd 			= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
-						const eventEdit			= 'Area_City_Event(`'+ tagId +'`, `edit_Key`)';
+						const eventDetail 		= 'Institution_Event(`'+ tagId +'`, `detail_Key`)';
+						const eventAdd 			= 'Institution_Event(`'+ tagId +'`, `add_Key`)';
+						const eventEdit			= 'Institution_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
 						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `confirm_delete_Key`)';
 						set_Btn_Action_DataTable({
@@ -652,12 +625,10 @@ function Area_City(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_institution_name;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								currentData[selectedCb_Index]['col_parent_code']	= rowData.col_parent_code;
-								currentData[selectedCb_Index]['col_parent_code_old']= rowData.col_parent_code_old;
-								  
+								
 						}); // map row
 						
 						// update global dataTable
@@ -951,38 +922,8 @@ function Area_City(getObj) {
 			
 			col = (col+1); 
 			fieldForm.push({ // 3
-						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_parent_area
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 1, // search 1/0
-											'col': col
-										}
-					});
-					// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'province',
-						'listFormat': 'list', // list/table
-						'selectedFunction': 'Area_City_Event',
-						'eventParam': '_select_Province'
-						});	
-					}
-					
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_area
+						'input_Type': 'get_Input',
+						'label': tableHead[col].label, // col_institution_name
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -992,8 +933,8 @@ function Area_City(getObj) {
 						'maxlength': 200,
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(200)',
 						'readonly': ''
-					});
-			
+					});		
+				
         return fieldForm;
         
     } // _Form_Field
@@ -1028,9 +969,9 @@ function Area_City(getObj) {
 											'eventParam': 'Save_Data',
 											'action': action
 											}
-        const eventSave_All 	= 'Area_City_Event(`'+ tagId +'`, `save_Key`)';
-        const eventNewForm  	= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
-		const eventReload_All	= 'Area_City_Event(`'+ tagId +'`, `reload_Key`)';
+        const eventSave_All 	= 'Institution_Event(`'+ tagId +'`, `save_Key`)';
+        const eventNewForm  	= 'Institution_Event(`'+ tagId +'`, `add_Key`)';
+		const eventReload_All	= 'Institution_Event(`'+ tagId +'`, `reload_Key`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1085,9 +1026,7 @@ function Area_City(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    dataTable['col_parent_code']	= '';
-                    dataTable['col_parent_code_old']= '';
-                                
+								            
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
@@ -1123,7 +1062,7 @@ function Area_City(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Area_City_Event(tagId, 'edit_Key')
+						Institution_Event(tagId, 'edit_Key')
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1220,7 +1159,7 @@ function Area_City(getObj) {
                     dataAutofill['dataTable_Index']  = dataTable_Index;
                     dataAutofill['dataTable']        = [];
 					dataAutofill['form_Index']  	 = getObj.form_Index;
-            		
+					
                globalData[tagId]['dataAutofill'][colId] = dataAutofill;
             });
         }
@@ -1279,8 +1218,6 @@ function Area_City(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-				'col_parent_code': data['col_parent_code'],
-				'col_parent_code_old': data['col_parent_code_old'],
 			'arrChild': []
 			});
 		
@@ -1405,9 +1342,7 @@ function Area_City(getObj) {
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
 					// additional field form here 
-					dataFormCol['col_parent_code']  	= globalData[tagId]['dataForm'][x].col_parent_code;
-					dataFormCol['col_parent_code_old']  = globalData[tagId]['dataForm'][x].col_parent_code_old;
-					 
+					
                 dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
                 dataFormRow[x] 	  = dataFormCol;
                 
@@ -1508,11 +1443,9 @@ function Area_City(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_area;
+                                        dataTable_Col['col_text_alert'] = rowData.col_institution_name;
 										// additional field
-										dataTable_Col['col_parent_code']	= rowData.col_parent_code;
-                                    	dataTable_Col['col_parent_code_old']= rowData.col_parent_code_old;
-                                       
+										
                                     dataTable_Row.push(dataTable_Col);
                                     
                                     // replace globalData dataTable
@@ -1577,20 +1510,17 @@ function Area_City(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_area;
+                                        currentData[x]['col_text_alert'] = rowData.col_institution_name;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										currentData[x]['col_parent_code']	 = rowData.col_parent_code;
-                                        currentData[x]['col_parent_code_old']= rowData.col_parent_code_old;
-                                        
+										
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
 									let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
-									globalData[tagId]['dataForm'][form_Index]['col_parent_code_old'] = rowData.col_parent_code_old;
-								
+									// sample globalData[tagId]['dataForm'][form_Index]['col_reg_employee_ref'] 	= rowData.col_reg_employee_ref;
+									
                                 }); // map row
                                 
                                 // update global dataTable
@@ -1665,50 +1595,6 @@ function Area_City(getObj) {
         } // setSave
     } // _Save_Data
 	
-	function __select_Province(getObj) {
-		
-		const tagId 			= getObj.tagId;
-		const colId 			= getObj.colId;
-		const listIndex 		= getObj.listIndex;
-		const targetThis 		= getObj.targetThis;
-		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
-		const dataTable_Index 	= dataAutofill.dataTable_Index;
-		const dataTable 		= dataAutofill.dataTable;
-		
-		const baseLevel 		= $("#level-"+ tagId);
-		const formType 			= globalData[tagId]['formType'];
-		
-		const getClass			= $(targetThis).parents(".form-item").attr("class");
-		const arrClass			= getClass.split(" ");
-		const clasForm_Index	= arrClass[1];
-		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
-			
-		// content/Form
-		set_TaskActive_Form(tagId);
-		
-		let baseEl_Item			= '';
-		
-		if (formType === 'Form') {
-			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
-		} else {
-			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
-		}
-		
-		// this input
-		baseEl_Item.find(".item-data-col .col-data").eq(1)
-			.val(dataTable[listIndex].col_area);
-		
-		// update globalData dataForm
-		globalData[tagId]['dataForm'][form_Index]['col_parent_code'] = dataTable[listIndex].col_code_area;
-	
-		
-		baseEl_Item.find(".select-container-"+ colId 
-			+" .list-item").removeClass("a-item-active");
-			
-		$(targetThis).addClass('a-item-active');
-		
-		_hide_List_Autofill(tagId, colId);
-	}
 // ======== FORM
 
     //> modify module
@@ -1734,10 +1620,7 @@ function Area_City(getObj) {
             _clearTimer(getObj.tagId, '__process_Save_edit'); // global
             functionResult = _Save_Data(getObj);
         break;
-        case '_select_Province': 
-			functionResult = __select_Province(getObj);
-		break;
-		default:
+        default:
             functionResult = set_Alert({
                                 'type': 'danger', 
                                 'body': 'Undefined (setFunction)', 
@@ -1749,7 +1632,7 @@ function Area_City(getObj) {
 }
 
 //> modify module
-function Area_City_Event(tagId, eventId, targetThis) {
+function Institution_Event(tagId, eventId, targetThis) {
 	
 	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
     const eventParam 	= eventObj.eventParam;
@@ -1761,7 +1644,7 @@ function Area_City_Event(tagId, eventId, targetThis) {
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Area_City({
+			eventResult = Institution({
 				'setFunction': eventParam,
 				'tagId': tagId,
 				'exportType': exportType,
@@ -1770,35 +1653,26 @@ function Area_City_Event(tagId, eventId, targetThis) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = Area_City({
+			eventResult = Institution({
                 'setFunction': eventParam,
                 'tagId': tagId
             });
         break;
         case 'Form': 
-			eventResult = Area_City({
+			eventResult = Institution({
 				'setFunction': eventParam,
 				'tagId': tagId,
 				'action': eventObj.action
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Area_City({
+			eventResult = Institution({
                 'setFunction': eventParam,
                 'tagId': tagId,
                 'action': eventObj.action
             });
         break;
-        case '_select_Province': 
-			eventResult = Area_City({
-				'setFunction': eventParam,
-				'tagId': tagId,
-				'colId': eventObj.colId,
-				'listIndex': eventObj.listIndex,
-				'targetThis': targetThis
-			});
-		break;
-		default:
+        default:
             eventResult = set_Alert({
                             'type': 'danger', 
                             'body': 'Undefined (eventParam)', 

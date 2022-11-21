@@ -118,8 +118,8 @@ function get_eventListener_Form(getObj) {
 		case 'List_Autofill':
 			result = 'onclick="List_Autofill(`'+ tagId +'`, `'+ classXY +'`, '+ getObj.searchInput +')"';
 		break;
-		case 'List_Autofill_City':
-			result = 'onclick="List_Autofill_City(`'+ tagId +'`, `'+ classXY +'`, '+ getObj.searchInput +')"';
+		case 'List_Autofill_Nested':
+			result = 'onclick="List_Autofill_Nested(`'+ tagId +'`, `'+ classXY +'`, '+ getObj.searchInput +')"';
 		break;
 		case 'Pick_Date':
 			result = 'onmouseover="_pick_Date(this)"';

@@ -23,10 +23,6 @@ function Profile(getObj) {
             // components/content
             set_Containter(tagId);
 			
-			const Field     = _Field();
-			const tableHead = Field.tableHead;
-			globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
-			
             // components/topbar
             set_TopBar({
                 'tagId': tagId, 
@@ -59,7 +55,9 @@ function Profile(getObj) {
         
         const Field_Search  = _Field_Search();
         const Field_Filter  = _Field_Filter();
-        
+        const Field     	= _Field();
+		const tableHead 	= Field.tableHead;
+		
         // set global urlController
         globalData[tagId]['urlController'] = 'myhris/Profile/'; //> modify module
         
@@ -159,11 +157,16 @@ function Profile(getObj) {
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
+		
 		// update globalData eventSelectedTr
 		globalData[tagId]['eventSelectedTr'] = true;
+		
 		// update globalData dataExportType
 		globalData[tagId]['dataExportType']	 = ['Excel', 'CSV (,)', 'CSV (;)'];
 		
+		// tableProperty
+		globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
+			
     } // __Global_Data_This
 // ======== MAIN
 // ======== SETUP
@@ -1707,21 +1710,31 @@ function Profile(getObj) {
                 let colId = row +'-'+ val.col;
                 let dataAutofill = globalData[tagId]['dataAutofill'][colId] = {};
                     if (val.hasOwnProperty('listRequest') === true) {
-                        dataAutofill['listRequest'] = val.listRequest;
+                        dataAutofill['listRequest'] 	 = val.listRequest;
                     }
                     if (val.hasOwnProperty('listFormat') === true) {
-                        dataAutofill['listFormat'] = val.listFormat;
+                        dataAutofill['listFormat']  	 = val.listFormat;
                     }
                     if (val.hasOwnProperty('selectedFunction') === true) {
                         dataAutofill['selectedFunction'] = val.selectedFunction;
                     }
                     if (val.hasOwnProperty('eventParam') === true) {
-                        dataAutofill['eventParam'] = val.eventParam;
+                        dataAutofill['eventParam']  	 = val.eventParam;
                     }
+					if (val.hasOwnProperty('colParent') === true) {
+                        dataAutofill['colParent']   	 = val.colParent;
+                    }
+					if (val.hasOwnProperty('listNested') === true) {
+                        dataAutofill['listNested']  	 = true;
+                    } else {
+						dataAutofill['listNested']  	 = false;
+					}
                 // tambahkan object baru ke dataAutofill
                     dataAutofill['dataTable_Index']  = dataTable_Index;
                     dataAutofill['dataTable']        = [];
 					dataAutofill['form_Index']  	 = getObj.form_Index;
+            		
+               globalData[tagId]['dataAutofill'][colId] = dataAutofill;
             });
         }
 		
@@ -1748,8 +1761,8 @@ function Profile(getObj) {
 		}
 			// child 1 
 			const moduleId_Child_1	= 'emp-prf-addr';
-			const tabCode_Child_1	= '-tab_B';
 			const levelCol_Child_1  = 0;
+			const tabCode_Child_1	= '-tab_B';
 			const tagId_Child_1	    = key + moduleId_Child_1 +'-'+ levelRow_Child +'-'+ levelCol_Child_1 + tabCode_Child_1; 
 			const paneId_Child_1    = tagId_Child_1 + getObj.form_Index;
 			
@@ -1884,7 +1897,6 @@ function Profile(getObj) {
 						'fieldForm': pre_segment_3
 						});
 		// segment 4
-			
 			let segment_4_block_1 = '<div class="col-sm-6">'+
 						add_Class_Row(
 								'<div class="col-sm-10" style="padding-left: 0px; '+ customStyle_1 +'">'+
@@ -1985,8 +1997,8 @@ function Profile(getObj) {
                         `;
         } // formBody
         
-        const result = `<div class="col-sm-2"></div>
-					<div class="col-sm-8">
+        const result = add_Class_Row(`<div class="col-sm-1"></div>
+					<div class="col-sm-10">
                     <div class="form-item form-index-${getObj.form_Index} form-item-${dataTable_Index}">
                     <div class="form-item-inner">
 
@@ -2001,7 +2013,7 @@ function Profile(getObj) {
 
                     </div>
                     </div>
-                    </div>`;
+                    </div>`);
 		
         return result;
     } // ___Form_Item

@@ -23,10 +23,6 @@ function Address(getObj) {
             // components/content
             set_Containter(tagId);
 			
-			const Field     = _Field();
-			const tableHead = Field.tableHead;
-			globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
-			
             // components/topbar
             set_TopBar({
                 'tagId': tagId, 
@@ -59,7 +55,9 @@ function Address(getObj) {
         
         const Field_Search  = _Field_Search();
         const Field_Filter  = _Field_Filter();
-        
+        const Field     	= _Field();
+		const tableHead 	= Field.tableHead;
+		
         // set global urlController
         globalData[tagId]['urlController'] = 'myhris/Address/'; //> modify module
         
@@ -159,11 +157,16 @@ function Address(getObj) {
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
+		
 		// update globalData eventSelectedTr
 		globalData[tagId]['eventSelectedTr'] = true;
+		
 		// update globalData dataExportType
 		globalData[tagId]['dataExportType']	 = ['Excel', 'CSV (,)', 'CSV (;)'];
 		
+		// tableProperty
+		globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
+			
     } // __Global_Data_This
 // ======== MAIN
 // ======== SETUP
@@ -220,21 +223,7 @@ function Address(getObj) {
             'field_value_default': 'Aktif',
             'require': 1
             });
-			
-		tdWidth    = 15;
-        tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
-            'label': 'Karyawan',
-            'width': (tdWidth),
-            'short': true,
-            'type': 'text',
-            'align': '',
-                'valueConverter': [],
-            'field': 'col_name',
-            'field_value_default': '',
-            'require': 1
-            });
-			
+		
 		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 4
@@ -249,6 +238,20 @@ function Address(getObj) {
             'require': 1
             });
 		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 3
+            'label': 'Karyawan',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_name',
+            'field_value_default': '',
+            'require': 1
+            });
+			
 		tdWidth    = 12;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 5
@@ -622,7 +625,7 @@ function Address(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_area;
+                                    dataTable_Col['col_text_alert'] = rowData.col_name +' '+ rowData.col_address_type;
 									// additional field here 
 									dataTable_Col['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
                                     dataTable_Col['col_code_province']		= rowData.col_code_province;
@@ -737,7 +740,7 @@ function Address(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_name +' '+ rowData.col_address_type;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
 								currentData[selectedCb_Index]['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
@@ -1034,9 +1037,38 @@ function Address(getObj) {
 						'col': col
 						});	
 					}
-			
+					
 			col = (col+1); 
 			fieldForm.push({ // 3
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_address_type
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 0, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'address_type',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
+						});	
+					}
+				
+			col = (col+1); 
+			fieldForm.push({ // 4
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_name
 						'field': tableHead[col].field,
@@ -1064,36 +1096,7 @@ function Address(getObj) {
 						'eventParam': '_select_Employee'
 						});	
 					}
-					
-			col = (col+1); 
-			fieldForm.push({ // 4
-						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_address_type
-						'field': tableHead[col].field,
-							'valueConverter': '',
-						'type': tableHead[col].type,
-						'align': tableHead[col].align,
-						'require': tableHead[col].require,
-						'col': col,
-						'maxlength': -1,
-						'placeholder': 'select-item',
-						'readonly': '',
-							'eventObject': {
-											'eventInput': 'List_Autofill',
-											'searchInput': 0, // search 1/0
-											'col': col
-										}
-					});
-					// update globalData
-					if (paramLength === 0) {
-						globalData[tagId]['dataAutofill_Param'].push({
-						'col': col,
-						'listRequest': 'address_type',
-						'listFormat': 'list', // list/table
-						'selectedFunction': '_select_List_Autofill'
-						});	
-					}
-					
+				
 			col = (col+1); 
 			fieldForm.push({ // 5
 						'input_Type': 'get_Input_Select',
@@ -1125,7 +1128,7 @@ function Address(getObj) {
 					}
 					
 			col = (col+1); 
-			fieldForm.push({ // 8
+			fieldForm.push({ // 6
 						'input_Type': 'get_Input_Select',
 						'label': tableHead[col].label, // col_area_city
 						'field': tableHead[col].field,
@@ -1138,7 +1141,7 @@ function Address(getObj) {
 						'placeholder': 'select-item',
 						'readonly': '',
 							'eventObject': {
-											'eventInput': 'List_Autofill_City',
+											'eventInput': 'List_Autofill_Nested',
 											'searchInput': 1, // search 1/0
 											'col': col
 										}
@@ -1149,12 +1152,15 @@ function Address(getObj) {
 						'col': col,
 						'listRequest': 'city',
 						'listFormat': 'list', // list/table
-						'selectedFunction': '_select_List_Autofill_City'
+						'selectedFunction': 'Address_Event',
+						'eventParam': '_select_City',
+						'listNested': true,
+						'colParent': ['col_code_province']
 						});	
 					}
 					
 			col = (col+1); 
-			fieldForm.push({ // 9
+			fieldForm.push({ // 7
 						'input_Type': 'get_Input',
 						'label': tableHead[col].label, // col_address_detail_1/desa_kelurahan
 						'field': tableHead[col].field,
@@ -1169,7 +1175,7 @@ function Address(getObj) {
 					});		
 					
 			col = (col+1); 
-			fieldForm.push({ // 3
+			fieldForm.push({ // 8
 						'input_Type': 'get_Input',
 						'label': tableHead[col].label, // col_address_detail_2/rt_rw
 						'field': tableHead[col].field,
@@ -1184,7 +1190,7 @@ function Address(getObj) {
 					});	
 					
 			col = (col+1); 
-			fieldForm.push({ // 3
+			fieldForm.push({ // 9
 						'input_Type': 'get_Input_Textarea',
 						'label': tableHead[col].label, // col_address
 						'field': tableHead[col].field,
@@ -1290,8 +1296,8 @@ function Address(getObj) {
                     dataTable['col_text_alert'] = '';
 					// additional field here
                     dataTable['col_reg_employee_ref']	= '';
-                    dataTable['col_code_province'] = '';
-					dataTable['col_code_city']	 = '';
+                    dataTable['col_code_province'] 		= '';
+					dataTable['col_code_city']	 		= '';
 								            
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
@@ -1402,22 +1408,31 @@ function Address(getObj) {
                 let colId = row +'-'+ val.col;
                 let dataAutofill = globalData[tagId]['dataAutofill'][colId] = {};
                     if (val.hasOwnProperty('listRequest') === true) {
-                        dataAutofill['listRequest'] = val.listRequest;
+                        dataAutofill['listRequest'] 	 = val.listRequest;
                     }
                     if (val.hasOwnProperty('listFormat') === true) {
-                        dataAutofill['listFormat'] = val.listFormat;
+                        dataAutofill['listFormat']  	 = val.listFormat;
                     }
                     if (val.hasOwnProperty('selectedFunction') === true) {
                         dataAutofill['selectedFunction'] = val.selectedFunction;
                     }
                     if (val.hasOwnProperty('eventParam') === true) {
-                        dataAutofill['eventParam'] = val.eventParam;
+                        dataAutofill['eventParam']  	 = val.eventParam;
                     }
+					if (val.hasOwnProperty('colParent') === true) {
+                        dataAutofill['colParent']   	 = val.colParent;
+                    }
+					if (val.hasOwnProperty('listNested') === true) {
+                        dataAutofill['listNested']  	 = true;
+                    } else {
+						dataAutofill['listNested']  	 = false;
+					}
                 // tambahkan object baru ke dataAutofill
                     dataAutofill['dataTable_Index']  = dataTable_Index;
                     dataAutofill['dataTable']        = [];
 					dataAutofill['form_Index']  	 = getObj.form_Index;
-                    
+					
+               globalData[tagId]['dataAutofill'][colId] = dataAutofill;
             });
         }
 		
@@ -1463,11 +1478,48 @@ function Address(getObj) {
 		const formNotif  = get_Form_Notif({'body': ''});
 		
 		// sample->FormDisplay
+		/*
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
 			objForm += val;
-		});
+		});*/
+		
+		let pre_segment_1 = add_Class_Row(
+								'<div class="col-sm-4">'+
+									new_fieldForm[0]+ // col_status_sw_active
+								'</div>'+
+								'<div class="col-sm-4">'+
+									new_fieldForm[1]+ // col_address_type
+								'</div>'
+							) +
+							'<div class="col-sm-12">'+
+								new_fieldForm[2]+ // col_name
+							'</div>' +
+							'<div class="col-sm-12">'+
+								new_fieldForm[3]+ // col_area_province
+							'</div>' +
+							'<div class="col-sm-12">'+
+								new_fieldForm[4]+ // col_area_city
+							'</div>' +
+							add_Class_Row(
+								'<div class="col-sm-8">'+
+									new_fieldForm[5]+ // col_address_detail_1
+								'</div>' +
+								'<div class="col-sm-4">'+
+									new_fieldForm[6]+ // col_address_detail_2
+								'</div>'
+							) +
+							'<div class="col-sm-12">'+
+								new_fieldForm[7]+ // col_address
+							'</div>';
+							
+		const segment_1  = get_Form_Segment({
+						'segmentModel': 'modify',
+						'fieldForm': pre_segment_1
+						});
+						
+		objForm = segment_1;
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1706,7 +1758,7 @@ function Address(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_area;
+                                        dataTable_Col['col_text_alert'] = rowData.col_name +' '+ rowData.col_address_type;
 										// additional field
 										dataTable_Col['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
                                     	dataTable_Col['col_code_province']		= rowData.col_code_province;
@@ -1776,7 +1828,7 @@ function Address(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_area;
+                                        currentData[x]['col_text_alert'] = rowData.col_name +' '+ rowData.col_address_type;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
 										currentData[x]['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
@@ -1896,7 +1948,7 @@ function Address(getObj) {
 		}
 		
 		// this input
-		baseEl_Item.find(".item-data-col .col-data").eq(1)
+		baseEl_Item.find(".item-data-col .col-data").eq(2)
 			.val(dataTable[listIndex].col_name);
 		
 		// update globalData dataForm
@@ -1946,14 +1998,59 @@ function Address(getObj) {
 		
 		// reset child
 		let sp 		= colId.split('-');
-		let rowId 	= sp[0];
+		let colId_2 = sp[0] +'-6';
 		baseEl_Item.find(".item-data-col .col-data").eq(4)
 			.val('');
-		baseEl_Item.find(".select-container-"+ rowId +"-6" 
-			+" .select-content-body").html('');
+		baseEl_Item.find(".select-container-"+ colId_2 + 
+			" .select-content-body").html('');
+		globalData[tagId]['dataAutofill'][colId_2]['dataTable'] = [];
 		
 		// update globalData dataForm
 		globalData[tagId]['dataForm'][form_Index]['col_code_province'] = dataTable[listIndex].col_code_area;
+	
+		baseEl_Item.find(".select-container-"+ colId 
+			+" .list-item").removeClass("a-item-active");
+			
+		$(targetThis).addClass('a-item-active');
+		
+		_hide_List_Autofill(tagId, colId);
+	}
+	
+	function __select_City(getObj) {
+		
+		const tagId 			= getObj.tagId;
+		const colId 			= getObj.colId;
+		const listIndex 		= getObj.listIndex;
+		const targetThis 		= getObj.targetThis;
+		const dataAutofill		= globalData[tagId]['dataAutofill'][colId];
+		const dataTable_Index 	= dataAutofill.dataTable_Index;
+		const dataTable 		= dataAutofill.dataTable;
+		
+		const baseLevel 		= $("#level-"+ tagId);
+		const formType 			= globalData[tagId]['formType'];
+		
+		const getClass			= $(targetThis).parents(".form-item").attr("class");
+		const arrClass			= getClass.split(" ");
+		const clasForm_Index	= arrClass[1];
+		const form_Index		= parseInt(clasForm_Index.replaceAll('form-index-', ''));
+			
+		// content/Form
+		set_TaskActive_Form(tagId);
+		
+		let baseEl_Item			= '';
+		
+		if (formType === 'Form') {
+			baseEl_Item	 = baseLevel.find(".my-content-form").eq(0).find(".my-form-body .form-item-"+ dataTable_Index);
+		} else {
+			baseEl_Item	 = baseLevel.find(".my-tbody").eq(0).find(".my-tr").eq(dataTable_Index);
+		}
+		
+		// this input
+		baseEl_Item.find(".item-data-col .col-data").eq(4)
+			.val(dataTable[listIndex].col_area);
+		
+		// update globalData dataForm
+		globalData[tagId]['dataForm'][form_Index]['col_code_city'] = dataTable[listIndex].col_code_area;
 	
 		baseEl_Item.find(".select-container-"+ colId 
 			+" .list-item").removeClass("a-item-active");
@@ -1992,6 +2089,9 @@ function Address(getObj) {
 		break;
 		case '_select_Province': 
 			functionResult = __select_Province(getObj);
+		break;
+		case '_select_City': 
+			functionResult = __select_City(getObj);
 		break;
 		default:
             functionResult = set_Alert({
@@ -2055,6 +2155,15 @@ function Address_Event(tagId, eventId, targetThis) {
 			});
 		break;
 		case '_select_Province': 
+			eventResult = Address({
+				'setFunction': eventParam,
+				'tagId': tagId,
+				'colId': eventObj.colId,
+				'listIndex': eventObj.listIndex,
+				'targetThis': targetThis
+			});
+		break;
+		case '_select_City': 
 			eventResult = Address({
 				'setFunction': eventParam,
 				'tagId': tagId,

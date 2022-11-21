@@ -974,7 +974,7 @@ function _table_Width(getObj) {
 		
 		// update global data 
 		if (globalData[tagId]['tableProperty'].containerWidth === 0) {
-			const contWidth = baseEl_Cont.width();
+			let contWidth = baseEl_Cont.width();
 				globalData[tagId]['tableProperty']['containerWidth'] = contWidth;
 		}
 		const newContWidth = globalData[tagId]['tableProperty'].containerWidth;
@@ -1004,8 +1004,10 @@ function _table_Width(getObj) {
 			
 			const tdWidth = globalData[tagId]['tableProperty']['tdWidth'][y];
 			
-			baseEl_Th_Box.find(".th-sizer-col-"+ y).css("width", tdWidth +"px");
-			baseEl_Tb_Box.find(".td-sizer-col-"+ y).css("width", tdWidth +"px");
+			baseEl_Th_Box.find(".th-sizer-col-"+ y)
+				.css("width", tdWidth +"px");
+			baseEl_Tb_Box.find(".td-sizer-col-"+ y)
+				.css("width", tdWidth +"px");
 			
 		});	
 	} // dekstop

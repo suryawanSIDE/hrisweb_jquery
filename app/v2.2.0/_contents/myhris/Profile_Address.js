@@ -1,5 +1,5 @@
 //> modify module
-function Area_City(getObj) {
+function Profile_Address(getObj) {
 // ======== MAIN
     function _Main(getObj) {
         
@@ -42,6 +42,7 @@ function Area_City(getObj) {
 			
             // this 
             __Global_Data_This(tagId);
+
         } // reload 
         
 		_clearTimer(tagId, 'all');
@@ -59,7 +60,7 @@ function Area_City(getObj) {
 		const tableHead 	= Field.tableHead;
 		
         // set global urlController
-        globalData[tagId]['urlController'] = 'myhris/Area_Sub/'; //> modify module
+        globalData[tagId]['urlController'] = 'myhris/Address/'; //> modify module
         
         // set global formType
         globalData[tagId]['formType'] = 'Form'; // Form/FormTr
@@ -82,7 +83,7 @@ function Area_City(getObj) {
 											'action': 'edit'
 											}
 		globalData[tagId]['dataEvent']['confirm_delete_Key'] = {
-											'nextFunction': 'Area_City_Event',
+											'nextFunction': 'Profile_Address_Event',
 											'action': 'delete'
 											}
         globalData[tagId]['dataEvent']['delete_Key'] = {
@@ -90,7 +91,7 @@ function Area_City(getObj) {
 											'action': 'edit'
 											}
 		globalData[tagId]['dataEvent']['confirm_export_Key'] = {
-											'nextFunction': 'Area_City_Event',
+											'nextFunction': 'Profile_Address_Event',
 											'action': 'export'
 											}
         globalData[tagId]['dataEvent']['export_Key'] = {
@@ -153,20 +154,24 @@ function Area_City(getObj) {
         }
 		
 		// set globalData dataRules
-		globalData[tagId]['dataRules']['AreaLevel'] = 2;
+		globalData[tagId]['dataRules']['ShowData'] = 'personal';
 		
 		// update globalData styleModel
 		globalData[tagId]['styleModel']  	 = 'model_1';
-		
 		// update globalData eventSelectedTr
 		globalData[tagId]['eventSelectedTr'] = true;
-		
 		// update globalData dataExportType
 		globalData[tagId]['dataExportType']	 = ['Excel', 'CSV (,)', 'CSV (;)'];
-
+		
 		// tableProperty
 		globalData[tagId]['tableProperty']['thLength'] = tableHead.length;
 			
+		if (deviceType === 'mobile') {
+			globalData[tagId]['tableProperty']['containerWidth'] = ((95*wWidth)/100);
+		} else {
+			globalData[tagId]['tableProperty']['containerWidth'] = ((80*wWidth)/100);
+		}
+		
     } // __Global_Data_This
 // ======== MAIN
 // ======== SETUP
@@ -224,34 +229,90 @@ function Area_City(getObj) {
             'require': 1
             });
 			
-		tdWidth    = 20;
+		tdWidth    = 10;
         tableWidth = (tableWidth+tdWidth);
         tableHead.push({ // 3
-            'label': 'Provinsi',
+            'label': 'Kategori',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_parent_area',
+            'field': 'col_address_type',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 12;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 4
+            'label': 'Povinsi',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_area_province',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 15;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 5
+            'label': 'Kabupaten/Kota',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_area_city',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 10;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 6
+            'label': 'Desa/Kelurahan',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_address_detail_1',
+            'field_value_default': '',
+            'require': 1
+            });
+		
+		tdWidth    = 10;
+        tableWidth = (tableWidth+tdWidth);
+        tableHead.push({ // 7
+            'label': 'RT/RW',
+            'width': (tdWidth),
+            'short': true,
+            'type': 'text',
+            'align': '',
+                'valueConverter': [],
+            'field': 'col_address_detail_2',
             'field_value_default': '',
             'require': 1
             });
 			
 		tdWidth    = 20;
         tableWidth = (tableWidth+tdWidth);
-        tableHead.push({ // 3
-            'label': 'Kab/Kota',
+        tableHead.push({ // 8
+            'label': 'Alamat',
             'width': (tdWidth),
             'short': true,
             'type': 'text',
             'align': '',
                 'valueConverter': [],
-            'field': 'col_area',
+            'field': 'col_address',
             'field_value_default': '',
             'require': 1
             });
-			
+		
         result['tableWidth'] = tableWidth;
         result['tableHead']  = tableHead;
         result['tdHeight']   = 30;//tdHeightDefault;
@@ -268,12 +329,8 @@ function Area_City(getObj) {
 
         const field = [
 				{
-                'label': 'Provinsi',
-                'field': 'col_parent_area'
-                },
-				{
-                'label': 'Kab/Kota',
-                'field': 'col_area'
+                'label': 'Alamat',
+                'field': 'col_address'
                 }
             ];
 
@@ -296,8 +353,22 @@ function Area_City(getObj) {
 				'defaultFilter': []
 				},
 				{
+				'label': 'Kategori',
+				'field': 'col_address_type',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 0,
+				'defaultFilter': []
+				},
+				{
 				'label': 'Provinsi',
-				'field': 'col_parent_area',
+				'field': 'col_area_province',
+				'filterModel': 'list', // (list/rangeDate)
+				'searchInput': 1,
+				'defaultFilter': []
+				},
+				{
+				'label': 'Kabupaten/Kota',
+				'field': 'col_area_city',
 				'filterModel': 'list', // (list/rangeDate)
 				'searchInput': 1,
 				'defaultFilter': []
@@ -538,10 +609,11 @@ function Area_City(getObj) {
                                     //> modify module
                                     // relate to _Save_Data
                                     dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                    dataTable_Col['col_text_alert'] = rowData.col_area;
+                                    dataTable_Col['col_text_alert'] = rowData.col_address_type;
 									// additional field here 
-									dataTable_Col['col_parent_code']	 = rowData.col_parent_code;
-                                    dataTable_Col['col_parent_code_old'] = rowData.col_parent_code_old;
+									dataTable_Col['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+                                    dataTable_Col['col_code_province']		= rowData.col_code_province;
+                                    dataTable_Col['col_code_city']	 		= rowData.col_code_city;
                                    
                                 dataTable_Row.push(dataTable_Col);
 
@@ -608,9 +680,9 @@ function Area_City(getObj) {
                         set_Form_Title(tagId, titleBar);
                             
                         // > modify
-						const eventDetail 		= 'Area_City_Event(`'+ tagId +'`, `detail_Key`)';
-						const eventAdd 			= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
-						const eventEdit			= 'Area_City_Event(`'+ tagId +'`, `edit_Key`)';
+						const eventDetail 		= 'Profile_Address_Event(`'+ tagId +'`, `detail_Key`)';
+						const eventAdd 			= 'Profile_Address_Event(`'+ tagId +'`, `add_Key`)';
+						const eventEdit			= 'Profile_Address_Event(`'+ tagId +'`, `edit_Key`)';
 						const eventExport		= 'Confirm_Form(`'+ tagId +'`, `confirm_export_Key`)';
 						const eventDelete		= 'Confirm_Form(`'+ tagId +'`, `confirm_delete_Key`)';
 						set_Btn_Action_DataTable({
@@ -652,11 +724,12 @@ function Area_City(getObj) {
 								//> modify module
 								// relate to __Fetch_Data
 								currentData[selectedCb_Index]['col_data_key']   = rowData.col_data_key;
-								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_area;
+								currentData[selectedCb_Index]['col_text_alert'] = rowData.col_address_type;
 								currentData[selectedCb_Index]['indexTr'] 		= selectedCb_Index;
 								// additional field here 
-								currentData[selectedCb_Index]['col_parent_code']	= rowData.col_parent_code;
-								currentData[selectedCb_Index]['col_parent_code_old']= rowData.col_parent_code_old;
+								currentData[selectedCb_Index]['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+								currentData[selectedCb_Index]['col_code_province']		= rowData.col_code_province;
+								currentData[selectedCb_Index]['col_code_city']			= rowData.col_code_city;
 								  
 						}); // map row
 						
@@ -952,7 +1025,36 @@ function Area_City(getObj) {
 			col = (col+1); 
 			fieldForm.push({ // 3
 						'input_Type': 'get_Input_Select',
-						'label': tableHead[col].label, // col_parent_area
+						'label': tableHead[col].label, // col_address_type
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill',
+											'searchInput': 0, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'address_type',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill'
+						});	
+					}
+					
+			col = (col+1); 
+			fieldForm.push({ // 4
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_area_province
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -974,15 +1076,46 @@ function Area_City(getObj) {
 						'col': col,
 						'listRequest': 'province',
 						'listFormat': 'list', // list/table
-						'selectedFunction': 'Area_City_Event',
+						'selectedFunction': 'Profile_Address_Event',
 						'eventParam': '_select_Province'
 						});	
 					}
 					
-			col = (col+1); // 4
-			fieldForm.push({
-                        'input_Type': 'get_Input',
-                        'label': tableHead[col].label, // col_area
+			col = (col+1); 
+			fieldForm.push({ // 5
+						'input_Type': 'get_Input_Select',
+						'label': tableHead[col].label, // col_area_city
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'select-item',
+						'readonly': '',
+							'eventObject': {
+											'eventInput': 'List_Autofill_Nested',
+											'searchInput': 1, // search 1/0
+											'col': col
+										}
+					});
+					// update globalData
+					if (paramLength === 0) {
+						globalData[tagId]['dataAutofill_Param'].push({
+						'col': col,
+						'listRequest': 'city',
+						'listFormat': 'list', // list/table
+						'selectedFunction': '_select_List_Autofill',
+						'listNested': true,
+						'colParent': ['col_code_province']
+						});	
+					}
+					
+			col = (col+1); 
+			fieldForm.push({ // 6
+						'input_Type': 'get_Input',
+						'label': tableHead[col].label, // col_address_detail_1/desa_kelurahan
 						'field': tableHead[col].field,
 							'valueConverter': '',
 						'type': tableHead[col].type,
@@ -992,8 +1125,38 @@ function Area_City(getObj) {
 						'maxlength': 200,
 						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(200)',
 						'readonly': ''
-					});
-			
+					});		
+					
+			col = (col+1); 
+			fieldForm.push({ // 7
+						'input_Type': 'get_Input',
+						'label': tableHead[col].label, // col_address_detail_2/rt_rw
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': 15,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type) + ' max(15)',
+						'readonly': ''
+					});	
+					
+			col = (col+1); 
+			fieldForm.push({ // 8
+						'input_Type': 'get_Input_Textarea',
+						'label': tableHead[col].label, // col_address
+						'field': tableHead[col].field,
+							'valueConverter': '',
+						'type': tableHead[col].type,
+						'align': tableHead[col].align,
+						'require': tableHead[col].require,
+						'col': col,
+						'maxlength': -1,
+						'placeholder': 'input-'+ replaceMy(tableHead[col].type),
+						'readonly': ''
+					});	
+					
         return fieldForm;
         
     } // _Form_Field
@@ -1028,9 +1191,9 @@ function Area_City(getObj) {
 											'eventParam': 'Save_Data',
 											'action': action
 											}
-        const eventSave_All 	= 'Area_City_Event(`'+ tagId +'`, `save_Key`)';
-        const eventNewForm  	= 'Area_City_Event(`'+ tagId +'`, `add_Key`)';
-		const eventReload_All	= 'Area_City_Event(`'+ tagId +'`, `reload_Key`)';
+        const eventSave_All 	= 'Profile_Address_Event(`'+ tagId +'`, `save_Key`)';
+        const eventNewForm  	= 'Profile_Address_Event(`'+ tagId +'`, `add_Key`)';
+		const eventReload_All	= 'Profile_Address_Event(`'+ tagId +'`, `reload_Key`)';
 		set_Form_Button({
             'tagId': tagId,
             'action': action,
@@ -1085,9 +1248,10 @@ function Area_City(getObj) {
                     dataTable['col_data_key']   = 0;
                     dataTable['col_text_alert'] = '';
 					// additional field here
-                    dataTable['col_parent_code']	= '';
-                    dataTable['col_parent_code_old']= '';
-                                
+                    dataTable['col_reg_employee_ref']	= '';
+                    dataTable['col_code_province'] 		= '';
+					dataTable['col_code_city']	 		= '';
+								            
                         // components/form
                         set_Content_Form(tagId, ___Form_Item({
                             'tagId': tagId,
@@ -1123,7 +1287,7 @@ function Area_City(getObj) {
 							'selectedCb': selectedCb,
 							'selectedData': selectedData
 							}),
-						Area_City_Event(tagId, 'edit_Key')
+						Profile_Address_Event(tagId, 'edit_Key')
 					}, 5); // 5 ms
 					
 					// update globaldata dataTimer
@@ -1267,11 +1431,45 @@ function Area_City(getObj) {
 		const formNotif  = get_Form_Notif({'body': ''});
 		
 		// sample->FormDisplay
+		/*
 		// default, tampilkan input form secara berurutan
 		let objForm	 = '';
 		$.map(new_fieldForm, ( val ) => {
 			objForm += val;
-		});
+		});*/
+		
+		let pre_segment_1 = add_Class_Row(
+								'<div class="col-sm-4">'+
+									new_fieldForm[0]+ // col_status_sw_active
+								'</div>'+
+								'<div class="col-sm-4">'+
+									new_fieldForm[1]+ // col_address_type
+								'</div>'
+							) +
+							'<div class="col-sm-12">'+
+								new_fieldForm[2]+ // col_area_province
+							'</div>' +
+							'<div class="col-sm-12">'+
+								new_fieldForm[3]+ // col_area_city
+							'</div>' +
+							add_Class_Row(
+								'<div class="col-sm-8">'+
+									new_fieldForm[4]+ // col_address_detail_1
+								'</div>' +
+								'<div class="col-sm-4">'+
+									new_fieldForm[5]+ // col_address_detail_2
+								'</div>'
+							) +
+							'<div class="col-sm-12">'+
+								new_fieldForm[6]+ // col_address
+							'</div>';
+							
+		const segment_1  = get_Form_Segment({
+						'segmentModel': 'modify',
+						'fieldForm': pre_segment_1
+						});
+						
+		objForm = segment_1;
 		
 		// update global dataForm 
 		globalData[tagId]['dataForm'].push({
@@ -1279,8 +1477,9 @@ function Area_City(getObj) {
 			'dataTable_Index': dataTable_Index,
 			'col_data_key': data['col_data_key'],
 				// additional field form here
-				'col_parent_code': data['col_parent_code'],
-				'col_parent_code_old': data['col_parent_code_old'],
+				'col_reg_employee_ref': data['col_reg_employee_ref'],
+				'col_code_province': data['col_code_province'],
+				'col_code_city': data['col_code_city'],
 			'arrChild': []
 			});
 		
@@ -1299,7 +1498,8 @@ function Area_City(getObj) {
                         `;
         } // formBody
         
-        const result = `<div class="col-sm-6">
+        const result = add_Class_Row(
+					`<div class="col-sm-12">
                     <div class="form-item form-index-${getObj.form_Index} form-item-${dataTable_Index}">
                     <div class="form-item-inner">
 
@@ -1314,7 +1514,7 @@ function Area_City(getObj) {
 
                     </div>
                     </div>
-                    </div>`;
+                    </div>`);
 		
         return result;
     } // ___Form_Item
@@ -1405,8 +1605,9 @@ function Area_City(getObj) {
                     dataFormCol['dataTable_Index']  = globalData[tagId]['dataForm'][x].dataTable_Index;
                     dataFormCol['col_data_key']     = globalData[tagId]['dataForm'][x].col_data_key;
 					// additional field form here 
-					dataFormCol['col_parent_code']  	= globalData[tagId]['dataForm'][x].col_parent_code;
-					dataFormCol['col_parent_code_old']  = globalData[tagId]['dataForm'][x].col_parent_code_old;
+					dataFormCol['col_reg_employee_ref'] = globalData[tagId]['dataForm'][x].col_reg_employee_ref;
+					dataFormCol['col_code_province']  	= globalData[tagId]['dataForm'][x].col_code_province;
+					dataFormCol['col_code_city']  		= globalData[tagId]['dataForm'][x].col_code_city;
 					 
                 dataKey_onForm[x] = globalData[tagId]['dataForm'][x].col_data_key;
                 dataFormRow[x] 	  = dataFormCol;
@@ -1508,11 +1709,12 @@ function Area_City(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         dataTable_Col['col_data_key']   = rowData.col_data_key;
-                                        dataTable_Col['col_text_alert'] = rowData.col_area;
+                                        dataTable_Col['col_text_alert'] = rowData.col_address_type;
 										// additional field
-										dataTable_Col['col_parent_code']	= rowData.col_parent_code;
-                                    	dataTable_Col['col_parent_code_old']= rowData.col_parent_code_old;
-                                       
+										dataTable_Col['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+                                    	dataTable_Col['col_code_province']		= rowData.col_code_province;
+                                    	dataTable_Col['col_code_city']			= rowData.col_code_city;
+                                    	
                                     dataTable_Row.push(dataTable_Col);
                                     
                                     // replace globalData dataTable
@@ -1577,19 +1779,21 @@ function Area_City(getObj) {
                                         //> modify module
                                         // relate to __Fetch_Data
                                         currentData[x]['col_data_key']   = rowData.col_data_key;
-                                        currentData[x]['col_text_alert'] = rowData.col_area;
+                                        currentData[x]['col_text_alert'] = rowData.col_address_type;
                                         currentData[x]['indexTr'] 		 = x;
 										// additional field here 
-										currentData[x]['col_parent_code']	 = rowData.col_parent_code;
-                                        currentData[x]['col_parent_code_old']= rowData.col_parent_code_old;
-                                        
+										currentData[x]['col_reg_employee_ref']	= rowData.col_reg_employee_ref;
+                                        currentData[x]['col_code_province']		= rowData.col_code_province;
+                                    	currentData[x]['col_code_city']			= rowData.col_code_city;
+                                    	
                                     dataTable_Row.push(currentData[x]);
                                     
 									// apply perubahan ke form hidden value
 									let form_Index = dataKey_onForm.indexOf(rowData.col_data_key);
 									// update globalData dataForm
-									globalData[tagId]['dataForm'][form_Index]['col_parent_code'] 	= rowData.col_parent_code;
-									globalData[tagId]['dataForm'][form_Index]['col_parent_code_old'] = rowData.col_parent_code_old;
+									globalData[tagId]['dataForm'][form_Index]['col_reg_employee_ref'] 	= rowData.col_reg_employee_ref;
+									globalData[tagId]['dataForm'][form_Index]['col_code_province'] 		= rowData.col_code_province;
+									globalData[tagId]['dataForm'][form_Index]['col_code_city'] 			= rowData.col_code_city;
 								
                                 }); // map row
                                 
@@ -1695,13 +1899,21 @@ function Area_City(getObj) {
 		}
 		
 		// this input
-		baseEl_Item.find(".item-data-col .col-data").eq(1)
+		baseEl_Item.find(".item-data-col .col-data").eq(2)
 			.val(dataTable[listIndex].col_area);
 		
-		// update globalData dataForm
-		globalData[tagId]['dataForm'][form_Index]['col_parent_code'] = dataTable[listIndex].col_code_area;
-	
+		// reset child
+		let sp 		= colId.split('-');
+		let colId_2 = sp[0] +'-5';
+		baseEl_Item.find(".item-data-col .col-data").eq(3)
+			.val('');
+		baseEl_Item.find(".select-container-"+ colId_2 + 
+			" .select-content-body").html('');
+		globalData[tagId]['dataAutofill'][colId_2]['dataTable'] = [];
 		
+		// update globalData dataForm
+		globalData[tagId]['dataForm'][form_Index]['col_code_province'] = dataTable[listIndex].col_code_area;
+	
 		baseEl_Item.find(".select-container-"+ colId 
 			+" .list-item").removeClass("a-item-active");
 			
@@ -1749,7 +1961,7 @@ function Area_City(getObj) {
 }
 
 //> modify module
-function Area_City_Event(tagId, eventId, targetThis) {
+function Profile_Address_Event(tagId, eventId, targetThis) {
 	
 	const eventObj   	= globalData[tagId]['dataEvent'][eventId];
     const eventParam 	= eventObj.eventParam;
@@ -1761,7 +1973,7 @@ function Area_City_Event(tagId, eventId, targetThis) {
 			const exportDecSep  = $("#my-confirm").find("input[name='export_decimal_separator']:checked").val();
 			const exportPage 	= $("#my-confirm").find("input[name='export_page']:checked").val();
 			
-			eventResult = Area_City({
+			eventResult = Profile_Address({
 				'setFunction': eventParam,
 				'tagId': tagId,
 				'exportType': exportType,
@@ -1770,27 +1982,27 @@ function Area_City_Event(tagId, eventId, targetThis) {
 			});
 		break;
 		case 'Delete': 
-			eventResult = Area_City({
+			eventResult = Profile_Address({
                 'setFunction': eventParam,
                 'tagId': tagId
             });
         break;
         case 'Form': 
-			eventResult = Area_City({
+			eventResult = Profile_Address({
 				'setFunction': eventParam,
 				'tagId': tagId,
 				'action': eventObj.action
 			});
 		break;
         case 'Save_Data': 
-			eventResult = Area_City({
+			eventResult = Profile_Address({
                 'setFunction': eventParam,
                 'tagId': tagId,
                 'action': eventObj.action
             });
         break;
         case '_select_Province': 
-			eventResult = Area_City({
+			eventResult = Profile_Address({
 				'setFunction': eventParam,
 				'tagId': tagId,
 				'colId': eventObj.colId,
